@@ -21,7 +21,7 @@ public class JwtTokenManager {
     private Long accessTokenExpiration;
 
     @Value("${jwt.refresh.expiration}")
-    private Long refreshExpiration;
+    private Long refreshTokenExpiration;
 
     @Value("${jwt.access.header}")
     private String accessTokenHeader;
@@ -51,7 +51,7 @@ public class JwtTokenManager {
         Date now = new Date();
         return JWT.create()
                 .withSubject(REFRESH_TOKEN_SUBJECT)
-                .withExpiresAt(new Date(now.getTime() + refreshExpiration))
+                .withExpiresAt(new Date(now.getTime() + refreshTokenExpiration))
                 .sign(Algorithm.HMAC512(secretKey));
     }
 }
