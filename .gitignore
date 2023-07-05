@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 application.yml
 !**/server_log.log
+log
 .gradle
 build
 
