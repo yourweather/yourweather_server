@@ -63,4 +63,14 @@ public class JwtTokenManager {
         response.setHeader(accessTokenHeader, accessToken);
         log.info("Access Token, Refresh Token 헤더 설정 완료");
     }
+
+    public void sendAccessTokenAndRefreshToken(HttpServletResponse response,
+                                               String accessToken,
+                                               String refreshToken) {
+        response.setStatus(HttpServletResponse.SC_OK);
+
+        response.setHeader(accessTokenHeader, accessToken);
+        response.setHeader(refreshTokenHeader, refreshToken);
+        log.info("Access Token, Refresh Token 헤더 설정 완료");
+    }
 }
