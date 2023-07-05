@@ -86,4 +86,18 @@ public class JwtTokenManager {
                 .map(refreshToken -> refreshToken.replace(BEARER, ""));
     }
 
+    public Optional<String> extractEmail(String accessToken) {
+        try {
+            return Optional.ofNullable(
+                    JWT.require(Algorithm.HMAC512(secretKey))
+                            .build()
+                            .verify(accessToken)
+                            .getClaim(EMAIL)
+                            .asString()
+            );
+        } catch (Exception e) {
+            log.error("유효하지 않은 액세스 토큰입니다.");
+            return Optional.empty();
+        }
+    }
 }
