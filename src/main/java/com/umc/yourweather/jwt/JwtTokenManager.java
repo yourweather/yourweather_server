@@ -46,4 +46,12 @@ public class JwtTokenManager {
                 .withClaim(EMAIL, user.getEmail())
                 .sign(Algorithm.HMAC512(secretKey));
     }
+
+    public String createRefreshToken() {
+        Date now = new Date();
+        return JWT.create()
+                .withSubject(REFRESH_TOKEN_SUBJECT)
+                .withExpiresAt(new Date(now.getTime() + refreshExpiration))
+                .sign(Algorithm.HMAC512(secretKey));
+    }
 }
