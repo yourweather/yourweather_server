@@ -71,20 +71,22 @@ public class JwtTokenManager {
         log.info("Access Token, Refresh Token 헤더 설정 완료");
     }
 
+    public Optional<String> extractToken(String token) {
+        return Optional.ofNullable(token)
+                .filter(tokenValue -> tokenValue.startsWith(BEARER))
+                .map(tokenValue -> tokenValue.replace(BEARER, ""));
+    }
+
     public Optional<String> extractAccessToken(HttpServletRequest request) {
         String token = request.getHeader(accessTokenHeader);
 
-        return Optional.ofNullable(token)
-                .filter(accessToken -> accessToken.startsWith(BEARER))
-                .map(accessToken -> accessToken.replace(BEARER, ""));
+        return extractToken(token);
     }
 
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
         String token = request.getHeader(refreshTokenHeader);
 
-        return Optional.ofNullable(token)
-                .filter(refreshToken -> refreshToken.startsWith(BEARER))
-                .map(refreshToken -> refreshToken.replace(BEARER, ""));
+        return extractToken(token);
     }
 
     public Optional<String> extractEmail(String accessToken) {
