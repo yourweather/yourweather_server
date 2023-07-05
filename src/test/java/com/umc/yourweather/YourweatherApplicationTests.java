@@ -1,0 +1,13 @@
+package com.umc.yourweather;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class YourweatherApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
