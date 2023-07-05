@@ -19,6 +19,8 @@ public class User {
     private String provider;
     private String providerId;
 
+    private String refreshToken;
+
     @Builder
     public User(String email, String userPw, String nickname, String provider, String providerId) {
         this.email = email;
@@ -30,5 +32,9 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }
