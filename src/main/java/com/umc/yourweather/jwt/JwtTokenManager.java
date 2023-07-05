@@ -77,4 +77,13 @@ public class JwtTokenManager {
                 .filter(accessToken -> accessToken.startsWith(BEARER))
                 .map(accessToken -> accessToken.replace(BEARER, ""));
     }
+
+    public Optional<String> extractRefreshToken(HttpServletRequest request) {
+        String token = request.getHeader(refreshTokenHeader);
+
+        return Optional.ofNullable(token)
+                .filter(refreshToken -> refreshToken.startsWith(BEARER))
+                .map(refreshToken -> refreshToken.replace(BEARER, ""));
+    }
+
 }
