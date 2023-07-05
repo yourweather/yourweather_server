@@ -61,5 +61,6 @@ public class JwtTokenManager {
     public void sendAccessToken(HttpServletResponse response, String accessToken) {
         response.setStatus(HttpServletResponse.SC_OK);
         response.setHeader(accessTokenHeader, accessToken);
+        log.info("Access Token, Refresh Token 헤더 설정 완료");
     }
 }
