@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.umc.yourweather.domain.User;
 import com.umc.yourweather.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -53,5 +54,10 @@ public class JwtTokenManager {
                 .withSubject(REFRESH_TOKEN_SUBJECT)
                 .withExpiresAt(new Date(now.getTime() + refreshTokenExpiration))
                 .sign(Algorithm.HMAC512(secretKey));
+    }
+
+    public void sendAccessToken(HttpServletResponse response, String accessToken) {
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setHeader(accessTokenHeader, accessToken);
     }
 }
