@@ -1,9 +1,14 @@
 package com.umc.yourweather.jwt;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.umc.yourweather.domain.User;
 import com.umc.yourweather.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
@@ -32,4 +37,13 @@ public class JwtTokenManager {
     private static final String BEARER = "Bearer ";
 
     private final UserRepository userRepository;
+
+    public String createAccessToken(User user) {
+        Date now = new Date();
+        return JWT.create()
+                .withSubject(ACCESS_TOKEN_SUBJECT)
+                .withExpiresAt(new Date(now.getTime() + accessTokenExpiration))
+                .withClaim(EMAIL, user.getEmail())
+                .sign(Algorithm.HMAC512(secretKey));
+    }
 }
