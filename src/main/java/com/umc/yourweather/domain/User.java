@@ -27,4 +27,8 @@ public class User {
         this.provider = provider;
         this.providerId = providerId;
     }
+
+    public String getEmail() {
+        return email;
+    }
 }
