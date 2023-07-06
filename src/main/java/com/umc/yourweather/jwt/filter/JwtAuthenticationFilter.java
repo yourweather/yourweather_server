@@ -47,6 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if(checkRefreshToken(refreshToken)) {
                 reissueToken(response, refreshToken);
             }
+            // 만약 refresh 토큰이 온 경우에는 더 이상 인증을 진행시키지 않고 필터 진행 자체를 끊어버린다.
             return;
         }
 
