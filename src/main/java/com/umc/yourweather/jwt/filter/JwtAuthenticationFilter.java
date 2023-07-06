@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -88,5 +89,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private boolean checkEmailIsInDB(String email) {
         return userRepository.findByEmail(email).isPresent();
+    }
+
+    private void setAuthentication(User user) {
+        String userPw = user.getUserPw();
+
+        // 이 경우에는 타 플랫폼(네이버, 구글, 카카오)로 회원가입한 사람들이다.
+        // 이 사람들에게 비밀번호 필ㄷ는 의미가 없는 것이니, 대충 아무거나 막 랜덤한거로 해서 넣는다.
+        if(userPw == null) {
+            userPw = UUID.randomUUID().toString();
+        }
+
+        UserDetails userDetails = new CustomUserDetails(user);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
+                authoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
+
+        // 세션에 Authentication 저장.
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
