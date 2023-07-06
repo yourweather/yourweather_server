@@ -2,6 +2,7 @@ package com.umc.yourweather.jwt.filter;
 
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,5 +44,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // else 문은 지양하는 것이 가독성면에서 좋기에 쓰지 않음.
         // refreshToken이 요청에 없었다는 것은 Access Token을 보낸 경우밖에 없으니까,
         // Access Token을 검증하여 인가해주는 코드 필요.
+    }
+
+    private boolean checkRefreshToken(String refreshToken) {
+        try {
+            userRepository.findByRefreshToken(refreshToken);
+            return true;
+        } catch (EntityNotFoundException e) {
+            log.error(refreshToken + "해당 refresh token을 소유하고 있는 유저없음.");
+            return false;
+        }
     }
 }
