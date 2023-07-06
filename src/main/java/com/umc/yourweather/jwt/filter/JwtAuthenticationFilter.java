@@ -54,6 +54,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // else 문은 지양하는 것이 가독성면에서 좋기에 쓰지 않음.
         // refreshToken이 요청에 없었다는 것은 Access Token을 보낸 경우밖에 없으니까,
         // Access Token을 검증하여 인가해주는 코드 필요.
+        if(checkEmailInAccessToken(accessToken)) {
+
+        }
     }
 
     private boolean checkRefreshToken(String refreshToken) {
@@ -72,4 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         jwtTokenManager.sendAccessTokenAndRefreshToken(response, newAccessToken, newRefreshToken);
     }
 
+    private boolean checkEmailInAccessToken(String accessToken) {
+        return jwtTokenManager.extractEmail(accessToken).isPresent();
+    }
 }
