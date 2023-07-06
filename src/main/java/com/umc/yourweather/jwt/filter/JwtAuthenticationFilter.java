@@ -47,13 +47,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Access Token을 검증하여 인가해주는 코드 필요.
     }
 
-    private User checkRefreshToken(String refreshToken) {
-        try {
-            return userRepository.findByRefreshToken(refreshToken);
-        } catch (EntityNotFoundException e) {
-            log.error(refreshToken + "해당 refresh token을 소유하고 있는 유저없음.");
-            return null;
-        }
+    private boolean checkRefreshToken(String refreshToken) {
+        boolean isUserEmpty = userRepository.findByRefreshToken(refreshToken).isEmpty();
+        return !isUserEmpty;
     }
 
     private void reissueToken(User user, HttpServletResponse response) {
