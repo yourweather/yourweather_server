@@ -7,6 +7,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
@@ -19,8 +21,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findByRefreshToken(String refreshToken) {
-        return userJpaRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new EntityNotFoundException(refreshToken + ": 해당 Refresh Token을 가지고 있는 사용자가 없습니다."));
+    public Optional<User> findByRefreshToken(String refreshToken) {
+        return userJpaRepository.findByRefreshToken(refreshToken);
     }
 }
