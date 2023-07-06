@@ -21,6 +21,8 @@ public class User {
 
     private String refreshToken;
 
+    private Role role;
+
     @Builder
     public User(String email, String userPw, String nickname, String provider, String providerId) {
         this.email = email;
