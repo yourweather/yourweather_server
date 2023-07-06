@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -52,12 +53,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return !isUserEmpty;
     }
 
-    private void reissueToken(User user, HttpServletResponse response) {
-        String accessToken = jwtTokenManager.createAccessToken(user);
-        String refreshToken = jwtTokenManager.createRefreshToken();
+    private void reissueToken(HttpServletResponse response, String refreshToken) {
+        Optional<User> optionalUser = userRepository.findByRefreshToken(refreshToken);
+        User user = optionalUser.orElse(null);
+
+        String newAccessToken = jwtTokenManager.createAccessToken(user);
+        String newRefreshToken = jwtTokenManager.createRefreshToken();
 
         jwtTokenManager.updateRefreshToken(user, refreshToken);
 
-        jwtTokenManager.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);
+        jwtTokenManager.sendAccessTokenAndRefreshToken(response, newAccessToken, newRefreshToken);
     }
 }
