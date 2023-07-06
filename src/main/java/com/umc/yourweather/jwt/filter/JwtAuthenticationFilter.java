@@ -78,4 +78,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private boolean checkEmailInAccessToken(String accessToken) {
         return jwtTokenManager.extractEmail(accessToken).isPresent();
     }
+
+    private boolean checkEmailIsInDB(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
 }
