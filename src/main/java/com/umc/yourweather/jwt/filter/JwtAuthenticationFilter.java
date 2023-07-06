@@ -1,5 +1,6 @@
 package com.umc.yourweather.jwt.filter;
 
+import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.User;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.repository.UserRepository;
@@ -10,10 +11,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -25,6 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenManager jwtTokenManager;
     private final UserRepository userRepository;
 
+    private final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -55,7 +63,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // refreshToken이 요청에 없었다는 것은 Access Token을 보낸 경우밖에 없으니까,
         // Access Token을 검증하여 인가해주는 코드 필요.
         if(checkEmailInAccessToken(accessToken)) {
-
         }
     }
 
