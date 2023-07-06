@@ -66,4 +66,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         jwtTokenManager.sendAccessTokenAndRefreshToken(response, newAccessToken, newRefreshToken);
     }
+
+    private boolean checkAccessToken(HttpServletRequest request) {
+        return jwtTokenManager.extractAccessToken(request)
+                .filter(jwtTokenManager::isTokenValid)
+                .isPresent();
+    }
 }
