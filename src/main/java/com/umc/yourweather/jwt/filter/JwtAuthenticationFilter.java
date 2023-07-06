@@ -40,6 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(refreshToken != null) {
             // refreshToken이 실존하는 토큰인지 검증한 뒤,
             // Access Token, Refresh Token 둘 다 재발행 해주는 코드가 필요.
+            if(checkRefreshToken(refreshToken)) {
+                reissueToken(response, refreshToken);
+            }
             return;
         }
 
