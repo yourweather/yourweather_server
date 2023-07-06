@@ -49,8 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean checkRefreshToken(String refreshToken) {
-        boolean isUserEmpty = userRepository.findByRefreshToken(refreshToken).isEmpty();
-        return !isUserEmpty;
+        return userRepository.findByRefreshToken(refreshToken).isPresent();
     }
 
     private void reissueToken(HttpServletResponse response, String refreshToken) {
