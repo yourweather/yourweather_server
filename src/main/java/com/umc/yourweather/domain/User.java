@@ -46,6 +46,9 @@ public class User {
     public String getUserPw() {
         return userPw;
     }
+    public Role getRole() {
+        return role;
+    }
 
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
