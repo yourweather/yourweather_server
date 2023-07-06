@@ -18,4 +18,14 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
     private static final String CONTENT_TYPE = "application/json";
     private static final String USERNAME_KEY = "email";
     private static final String PASSWORD_KEY = "password";
+
+    private ObjectMapper objectMapper;
+
+    private static final AntPathRequestMatcher DEFAULT_LOGIN_PATH_REQUEST_MATCHER =
+            new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URI, HTTP_METHOD);
+
+    public CustomLoginFilter(ObjectMapper objectMapper) {
+        super(DEFAULT_LOGIN_PATH_REQUEST_MATCHER);
+        this.objectMapper = objectMapper;
+    }
 }
