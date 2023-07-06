@@ -24,12 +24,20 @@ public class User {
     private Role role;
 
     @Builder
-    public User(String email, String userPw, String nickname, String provider, String providerId) {
+    public User(String email,
+                String userPw,
+                String nickname,
+                String provider,
+                String providerId,
+                String refreshToken,
+                Role role) {
         this.email = email;
         this.userPw = userPw;
         this.nickname = nickname;
         this.provider = provider;
         this.providerId = providerId;
+        this.refreshToken = refreshToken;
+        this.role = role;
     }
 
     public String getEmail() {
