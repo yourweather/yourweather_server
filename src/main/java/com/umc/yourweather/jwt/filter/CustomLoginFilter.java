@@ -28,4 +28,9 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
         super(DEFAULT_LOGIN_PATH_REQUEST_MATCHER);
         this.objectMapper = objectMapper;
     }
+
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+        return null;
+    }
 }
