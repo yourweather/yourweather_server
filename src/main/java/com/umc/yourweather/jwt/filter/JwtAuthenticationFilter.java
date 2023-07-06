@@ -25,5 +25,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if(request.getRequestURI().equals(NO_CHECK_URI)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        String refreshToken = jwtTokenManager.extractRefreshToken(request)
+                .filter(jwtTokenManager::isTokenValid)
+                .orElse(null);
+
+        if(refreshToken != null) {
+            // refreshToken이 실존하는 토큰인지 검증한 뒤,
+            // Access Token, Refresh Token 둘 다 재발행 해주는 코드가 필요.
+            return;
+        }
+
+        // else 문은 지양하는 것이 가독성면에서 좋기에 쓰지 않음.
+        // refreshToken이 요청에 없었다는 것은 Access Token을 보낸 경우밖에 없으니까,
+        // Access Token을 검증하여 인가해주는 코드 필요.
     }
 }
