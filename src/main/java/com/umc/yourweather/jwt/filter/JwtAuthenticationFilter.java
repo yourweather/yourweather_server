@@ -55,4 +55,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return null;
         }
     }
+
+    private void reissueToken(User user, HttpServletResponse response) {
+        String accessToken = jwtTokenManager.createAccessToken(user);
+        String refreshToken = jwtTokenManager.createRefreshToken();
+
+        jwtTokenManager.updateRefreshToken(user, refreshToken);
+
+        jwtTokenManager.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);
+    }
 }
