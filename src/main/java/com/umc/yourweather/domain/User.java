@@ -33,6 +33,9 @@ public class User {
     public String getEmail() {
         return email;
     }
+    public String getUserPw() {
+        return userPw;
+    }
 
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
