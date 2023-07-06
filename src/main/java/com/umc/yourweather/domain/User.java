@@ -50,6 +50,10 @@ public class User {
         return role;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
