@@ -64,6 +64,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // refreshToken이 요청에 없었다는 것은 Access Token을 보낸 경우밖에 없으니까,
         // Access Token을 검증하여 인가해주는 코드 필요.
         if(checkEmailInAccessToken(accessToken)) {
+            String email = jwtTokenManager.extractEmail(accessToken).get();
+
+            if(checkEmailIsInDB(email)) {
+                // 쿼리가 두 번 날아갈 것 같지만 영속성 컨텍스트에 잘 저장하고 있을테니 상관 X
+                User user = userRepository.findByEmail(email).get();
+
+                setAuthentication(user);
+                filterChain.doFilter(request, response);
+            }
         }
     }
 
