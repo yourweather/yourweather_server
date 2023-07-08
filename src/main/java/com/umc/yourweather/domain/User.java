@@ -21,17 +21,37 @@ public class User {
 
     private String refreshToken;
 
+    private Role role;
+
     @Builder
-    public User(String email, String userPw, String nickname, String provider, String providerId) {
+    public User(String email,
+                String userPw,
+                String nickname,
+                String provider,
+                String providerId,
+                String refreshToken,
+                Role role) {
         this.email = email;
         this.userPw = userPw;
         this.nickname = nickname;
         this.provider = provider;
         this.providerId = providerId;
+        this.refreshToken = refreshToken;
+        this.role = role;
     }
 
     public String getEmail() {
         return email;
+    }
+    public String getUserPw() {
+        return userPw;
+    }
+    public Role getRole() {
+        return role;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     public void updateRefreshToken(String refreshToken) {
