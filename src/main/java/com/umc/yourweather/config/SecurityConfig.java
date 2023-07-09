@@ -32,6 +32,14 @@ public class SecurityConfig {
 
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                })
+
+                .authorizeHttpRequests(authorize -> {
+                    // /test에 대한건 다 허락.
+                    authorize.requestMatchers("/test").permitAll();
+
+                    // 그 외의 모든 요청은 인증이 되어있어야함.
+                    authorize.anyRequest().authenticated();
                 });
         return http.build();
     }
