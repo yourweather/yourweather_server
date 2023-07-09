@@ -2,6 +2,7 @@ package com.umc.yourweather.service;
 
 import com.umc.yourweather.domain.User;
 import com.umc.yourweather.dto.SignupRequestDto;
+import com.umc.yourweather.repository.UserRepository;
 import com.umc.yourweather.repository.jpa.UserJpaRepository;
 import jakarta.validation.Valid;
 import java.util.Optional;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserService {
 
-    private final UserJpaRepository userRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public String signup(@Valid SignupRequestDto signupRequestDto) {
