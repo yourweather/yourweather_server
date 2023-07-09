@@ -13,11 +13,10 @@ public class User {
     private Long id;
 
     private String email;
-    private String userPw;
+    private String password;
 
     private String nickname;
-    private String provider;
-    private String providerId;
+    private String platform;
 
     private String refreshToken;
 
@@ -25,17 +24,15 @@ public class User {
 
     @Builder
     public User(String email,
-                String userPw,
+                String password,
                 String nickname,
-                String provider,
-                String providerId,
+                String platform,
                 String refreshToken,
                 Role role) {
         this.email = email;
-        this.userPw = userPw;
+        this.password = password;
         this.nickname = nickname;
-        this.provider = provider;
-        this.providerId = providerId;
+        this.platform = platform;
         this.refreshToken = refreshToken;
         this.role = role;
     }
@@ -43,8 +40,8 @@ public class User {
     public String getEmail() {
         return email;
     }
-    public String getUserPw() {
-        return userPw;
+    public String getPassword() {
+        return password;
     }
     public Role getRole() {
         return role;
