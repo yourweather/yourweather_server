@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
+
     private final UserJpaRepository userJpaRepository;
 
     @Override
@@ -22,5 +23,10 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Optional<User> findByRefreshToken(String refreshToken) {
         return userJpaRepository.findByRefreshToken(refreshToken);
+    }
+
+    @Override
+    public Optional<User> save(User user) {
+        return userJpaRepository.save(user);
     }
 }
