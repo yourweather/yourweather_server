@@ -3,7 +3,6 @@ package com.umc.yourweather.service;
 import com.umc.yourweather.domain.User;
 import com.umc.yourweather.dto.SignupRequestDto;
 import com.umc.yourweather.repository.UserRepository;
-import com.umc.yourweather.repository.jpa.UserJpaRepository;
 import jakarta.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
