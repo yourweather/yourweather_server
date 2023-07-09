@@ -27,10 +27,9 @@ class JwtTokenManagerTest {
     void setUser() {
         user = User.builder()
                 .email("asdf@gmail.com")
-                .userPw("asdf")
+                .password("asdf")
                 .nickname("ffff")
-                .provider("google")
-                .providerId("asdf2")
+                .platform("google")
                 .build();
     }
 
