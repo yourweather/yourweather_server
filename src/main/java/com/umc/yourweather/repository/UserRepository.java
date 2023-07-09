@@ -10,5 +10,5 @@ public interface UserRepository {
 
     Optional<User> findByRefreshToken(String refreshToken);
 
-    Optional<User> save(User user);
+    User save(User user);
 }
