@@ -1,9 +1,12 @@
 package com.umc.yourweather.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.umc.yourweather.auth.CustomUserDetailsService;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.jwt.filter.CustomLoginFilter;
 import com.umc.yourweather.jwt.filter.JwtAuthenticationFilter;
+import com.umc.yourweather.jwt.handler.LoginFailureHandler;
+import com.umc.yourweather.jwt.handler.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +31,9 @@ public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtTokenManager jwtTokenManager;
 
-    private final CustomLoginFilter customLoginFilter;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final LoginSuccessHandler loginSuccessHandler;
+    private final LoginFailureHandler loginFailureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -55,8 +59,7 @@ public class SecurityConfig {
 
         // 우리가 만든 CustomLoginFilter를 LogoutFilter 이후에 꽂아넣어준다.
         // 원래 시큐리티 필터가 LogoutFilter 이후에 로그인 필터를 동작 시킨다.
-        http.addFilterAfter(customLoginFilter, LogoutFilter.class);
-        http.addFilterBefore(jwtAuthenticationFilter, CustomLoginFilter.class);
+        http.addFilterAfter(customLoginFilter(), LogoutFilter.class);
 
         return http.build();
     }
@@ -73,5 +76,17 @@ public class SecurityConfig {
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(customUserDetailsService);
         return new ProviderManager(daoAuthenticationProvider);
+    }
+
+    @Bean
+    public CustomLoginFilter customLoginFilter() {
+        CustomLoginFilter customLoginFilter
+                = new CustomLoginFilter(objectMapper);
+
+        customLoginFilter.setAuthenticationManager(authenticationManager());
+        customLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler);
+        customLoginFilter.setAuthenticationFailureHandler(loginFailureHandler);
+
+        return customLoginFilter;
     }
 }
