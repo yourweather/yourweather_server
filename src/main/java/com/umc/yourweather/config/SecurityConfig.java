@@ -7,6 +7,7 @@ import com.umc.yourweather.jwt.filter.CustomLoginFilter;
 import com.umc.yourweather.jwt.filter.JwtAuthenticationFilter;
 import com.umc.yourweather.jwt.handler.LoginFailureHandler;
 import com.umc.yourweather.jwt.handler.LoginSuccessHandler;
+import com.umc.yourweather.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,8 @@ public class SecurityConfig {
     private final JwtTokenManager jwtTokenManager;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final UserRepository userRepository;
+
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
 
@@ -88,5 +91,10 @@ public class SecurityConfig {
         customLoginFilter.setAuthenticationFailureHandler(loginFailureHandler);
 
         return customLoginFilter;
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtTokenManager, userRepository);
     }
 }
