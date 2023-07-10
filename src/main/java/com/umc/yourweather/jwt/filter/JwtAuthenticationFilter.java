@@ -19,15 +19,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     // login 요청이 들어오면 필터에서 토큰 검증 건너뜀.
-    private static final String NO_CHECK_URI = "/login";
+    private static final String[] NO_CHECK_URI_ARRAY = {"/login", "/api/users/signup"};
+    private static final List<String> NO_CHECK_URIS = new ArrayList<>(Arrays.asList(NO_CHECK_URI_ARRAY));
 
     private final JwtTokenManager jwtTokenManager;
     private final UserRepository userRepository;
@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(request.getRequestURI().equals(NO_CHECK_URI)) {
+        if(NO_CHECK_URIS.contains(request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
         }
