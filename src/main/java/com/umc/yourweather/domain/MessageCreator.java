@@ -69,4 +69,8 @@ public class MessageCreator {
         }
         return key.toString();
     }
+
+    public String getCode() {
+        return code;
+    }
 }
