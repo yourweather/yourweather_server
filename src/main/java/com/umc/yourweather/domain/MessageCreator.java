@@ -19,6 +19,36 @@ public class MessageCreator {
     @Value("${AdminMail.id}")
     private String id;
 
+
+    public MimeMessage createMessage(String to)
+            throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = emailSender.createMimeMessage();
+
+        message.addRecipients(RecipientType.TO, to); //보내는 대상
+        message.setSubject("유어웨더 인증 코드"); //제목
+
+        String messageHtml="";
+        messageHtml+= "<div style=\"margin: 10px; display: flex; justify-content: center;\">";
+        messageHtml+= "<div>";
+        messageHtml+= "<h1>유어웨더 메일 인증</h1>";
+        messageHtml+= "<p>아래의 코드를 복사하여 붙여넣어 주세요!</p>";
+        messageHtml+= "<div style=\"border: 1px solid rgb(213, 213, 213); border-radius: 7px; display: flex; justify-content: center; height: 200px;\">";
+        messageHtml+= "<div style=\"text-align: center;\">";
+        messageHtml+= "<h2 style=\"margin: 30px; margin-bottom: 50px;\">인증 코드</h2>";
+        messageHtml+= "<span style=\"font-size: 130%;\">";
+        messageHtml+= "<strong>" + code + "</strong>";
+        messageHtml+= "</span>";
+        messageHtml+= "</div>";
+        messageHtml+= "</div>";
+        messageHtml+= "</div>";
+        messageHtml+= "</div>";
+
+        message.setText(messageHtml, "utf-8", "html");//내용
+        message.setFrom(new InternetAddress(id,"팀 유어웨더")); //보내는 사람
+
+        return message;
+    }
+
     public static String createKey() {
         StringBuilder key = new StringBuilder();
         Random rnd = new Random();
