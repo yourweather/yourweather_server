@@ -11,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "Users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,10 +28,10 @@ public class User {
 
     @Builder
     public User(String email,
-                String password,
-                String nickname,
-                String platform,
-                Role role) {
+            String password,
+            String nickname,
+            String platform,
+            Role role) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -42,9 +43,11 @@ public class User {
     public String getEmail() {
         return email;
     }
+
     public String getPassword() {
         return password;
     }
+
     public Role getRole() {
         return role;
     }

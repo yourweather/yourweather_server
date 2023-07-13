@@ -34,11 +34,11 @@ public class UserService {
         }
 
         User newUser = User.builder()
-            .email(email)
-            .password(password)
-            .nickname(nickname)
-            .platform(platform)
-            .build();
+                .email(email)
+                .password(password)
+                .nickname(nickname)
+                .platform(platform)
+                .build();
         userRepository.save(newUser);
         return "회원 가입 완료";
     }
