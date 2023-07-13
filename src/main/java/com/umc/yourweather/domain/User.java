@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "Users")
@@ -28,13 +30,12 @@ public class User {
                 String password,
                 String nickname,
                 String platform,
-                String refreshToken,
                 Role role) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.platform = platform;
-        this.refreshToken = refreshToken;
+        this.refreshToken = UUID.randomUUID().toString();
         this.role = role;
     }
 
