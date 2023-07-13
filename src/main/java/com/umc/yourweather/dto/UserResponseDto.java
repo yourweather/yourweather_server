@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MypageResponseDto {
+public class UserResponseDto {
 
     private String nickname;
     private String email;
