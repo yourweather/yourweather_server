@@ -9,6 +9,7 @@ import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 @RequiredArgsConstructor
 public class MessageCreator {
@@ -16,7 +17,7 @@ public class MessageCreator {
 
     private final String code = createKey();
 
-    @Value("${AdminMail.id}")
+    @Value("${spring.mail.username}")
     private String id;
 
 
@@ -24,8 +25,10 @@ public class MessageCreator {
             throws MessagingException, UnsupportedEncodingException {
         MimeMessage message = emailSender.createMimeMessage();
 
-        message.addRecipients(RecipientType.TO, to); //보내는 대상
-        message.setSubject("유어웨더 인증 코드"); //제목
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true, "UTF-8");
+
+//        message.addRecipients(RecipientType.TO, to); //보내는 대상
+//        message.setSubject(); //제목
 
         String messageHtml="";
         messageHtml+= "<div style=\"margin: 10px; display: flex; justify-content: center;\">";
@@ -43,8 +46,13 @@ public class MessageCreator {
         messageHtml+= "</div>";
         messageHtml+= "</div>";
 
-        message.setText(messageHtml, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress(id,"팀 유어웨더")); //보내는 사람
+//        message.setText(messageHtml, "utf-8", "html");//내용
+//        message.setFrom(new InternetAddress(id,"팀 유어웨더")); //보내는 사람
+
+        mimeMessageHelper.setTo(to);
+        mimeMessageHelper.setFrom("팀 유어웨더<" + id + "@gmail.com" + ">");
+        mimeMessageHelper.setSubject("유어웨더 인증 코드");
+        mimeMessageHelper.setText("유어웨더 인증 코드", messageHtml);
 
         return message;
     }
@@ -53,7 +61,7 @@ public class MessageCreator {
         StringBuilder key = new StringBuilder();
         Random rnd = new Random();
 
-        for (int i = 0; i < 8; i++) { // 인증코드 8자리
+        for (int i = 0; i < 6; i++) { // 인증코드 8자리
             int index = rnd.nextInt(3); // 0~2 까지 랜덤
 
             switch (index) {

@@ -17,7 +17,7 @@ public class EmailService {
     public String sendMessage(String to) throws Exception {
         MessageCreator messageCreator = new MessageCreator(emailSender);
         MimeMessage message = messageCreator.createMessage(to);
-        log.info("message 생성: " + message.getMessageID());
+        log.info("message 생성: " + message.getContent());
         try{//예외처리
             emailSender.send(message);
         }catch(MailException es){
