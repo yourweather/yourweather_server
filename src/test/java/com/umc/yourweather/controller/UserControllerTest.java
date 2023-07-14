@@ -29,8 +29,12 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     "{\"email\":\"test@gmail.com.\", \"password\" : \"1234\",\"nickname\":\"tester\",\"platform\":\"google\"}"))
-//            .andExpect(MockMvcResultMatchers.status().isOk())
             .andDo(print());
+    }
+
+    @Test
+    @DisplayName("로그인 테스트")
+    void login(){
 
     }
 }

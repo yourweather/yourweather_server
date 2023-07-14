@@ -1,6 +1,8 @@
 package com.umc.yourweather.service;
 
+import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.User;
+import com.umc.yourweather.dto.UserResponseDto;
 import com.umc.yourweather.dto.SignupRequestDto;
 import com.umc.yourweather.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -41,5 +43,13 @@ public class UserService {
             .build();
         userRepository.save(newUser);
         return "회원 가입 완료";
+    }
+
+    public UserResponseDto mypage(CustomUserDetails userDetails) {
+        Optional<User> user = userRepository.findByEmail(userDetails.getUser().getEmail());
+        if (!user.isPresent()) {
+            throw new IllegalArgumentException("등록된 사용자가 없습니다.");
+        }
+        return new UserResponseDto(user.get().getNickname(), user.get().getEmail());
     }
 }
