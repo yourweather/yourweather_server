@@ -1,5 +1,6 @@
 package com.umc.yourweather.controller;
 
+import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.User;
 import com.umc.yourweather.dto.UserResponseDto;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/v1/users/")
+@RequestMapping(RequestURI.commonURI + "/users")
 public class UserController {
 
     private final UserService userService;
