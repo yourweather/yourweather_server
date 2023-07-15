@@ -1,5 +1,6 @@
 package com.umc.yourweather.controller;
 
+import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.dto.ResponseDto;
 import com.umc.yourweather.service.EmailService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/email")
+@RequestMapping(RequestURI.commonURI + "/email")
 @RequiredArgsConstructor
 @Slf4j
 public class EmailController {
