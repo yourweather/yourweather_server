@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,14 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public String signup(@Valid SignupRequestDto signupRequestDto) {
         String email = signupRequestDto.getEmail();
         String password = signupRequestDto.getPassword();
+
         if (password == null) {
             password = UUID.randomUUID().toString();
         }
+
+        password = passwordEncoder.encode(password);
         String nickname = signupRequestDto.getNickname();
         String platform = signupRequestDto.getPlatform();
 
