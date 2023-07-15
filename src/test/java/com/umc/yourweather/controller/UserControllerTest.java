@@ -25,12 +25,10 @@ class UserControllerTest {
     @Test
     @DisplayName("회원 가입 테스트")
     void signup() throws Exception {
-        mockMvc.perform(post("/api/test/signup")
+        mockMvc.perform(post("/api/v1/users/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     "{\"email\":\"test@gmail.com.\", \"password\" : \"1234\",\"nickname\":\"tester\",\"platform\":\"google\"}"))
-//            .andExpect(MockMvcResultMatchers.status().isOk())
             .andDo(print());
-
     }
 }
