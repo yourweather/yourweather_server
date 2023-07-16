@@ -46,6 +46,8 @@ public class UserService {
             .password(password)
             .nickname(nickname)
             .platform(platform)
+            .role(Role.ROLE_USER)
+            .isActivate(true)
             .build();
         userRepository.save(newUser);
         return "회원 가입 완료";
