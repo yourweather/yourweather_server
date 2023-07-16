@@ -14,7 +14,7 @@ public class EmailCodeRedisRepository {
     private final StringRedisTemplate template;
 
     @Value("${spring.redis.life}")
-    private final Long duration;
+    private long duration;
 
     public String getData(String key) {
         ValueOperations<String, String> valueOperations = template.opsForValue();
