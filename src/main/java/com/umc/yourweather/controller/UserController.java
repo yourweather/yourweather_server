@@ -3,6 +3,7 @@ package com.umc.yourweather.controller;
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.User;
+import com.umc.yourweather.dto.ChangePasswordDto;
 import com.umc.yourweather.dto.UserResponseDto;
 import com.umc.yourweather.dto.ResponseDto;
 import com.umc.yourweather.dto.SignupRequestDto;
@@ -31,8 +32,16 @@ public class UserController {
     }
 
     @GetMapping("/mypage")
-    public ResponseDto<UserResponseDto> mypage(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseDto<UserResponseDto> mypage(
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("마이 페이지 조회 완료", userService.mypage(userDetails));
+    }
+
+    @PostMapping("/password")
+    public ResponseDto<UserResponseDto> password(
+        @RequestBody @Valid ChangePasswordDto changePasswordDto,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseDto.success(userService.changePassword(changePasswordDto, userDetails));
     }
 }
 
