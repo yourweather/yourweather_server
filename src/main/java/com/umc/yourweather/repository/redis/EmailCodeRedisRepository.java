@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class EmailCodeRedisRepository {
+
     private final StringRedisTemplate template;
 
     @Value("${spring.redis.life}")
