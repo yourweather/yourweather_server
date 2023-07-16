@@ -35,4 +35,9 @@ public class EmailService {
     private void setCode(String email, String code) {
         emailCodeRedisRepository.setData(email, code);
     }
+
+    public boolean certifyingData(String email, String code) {
+        String value = emailCodeRedisRepository.getData(email);
+        return value.equals(code);
+    }
 }
