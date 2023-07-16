@@ -1,6 +1,7 @@
 package com.umc.yourweather.service;
 
 import com.umc.yourweather.domain.MessageCreator;
+import com.umc.yourweather.repository.redis.EmailCodeRedisRepository;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class EmailService {
     private final JavaMailSender emailSender;
+    private final EmailCodeRedisRepository emailCodeRedisRepository;
 
     public String sendMessage(String to) throws Exception {
         MessageCreator messageCreator = new MessageCreator(emailSender);
@@ -25,5 +27,9 @@ public class EmailService {
             throw new IllegalArgumentException("email 전송 실패: 받는 사람 이메일을 다시 확인해주세요");
         }
         return messageCreator.getCode();
+    }
+
+    public void setCode(String email, String code) {
+        emailCodeRedisRepository.setData(email, code);
     }
 }
