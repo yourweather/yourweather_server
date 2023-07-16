@@ -26,4 +26,8 @@ public class EmailCodeRedisRepository {
         valueOperations.set(key, value, expireDuration);
 
     }
+
+    public void deleteData(String key) {
+        template.delete(key);
+    }
 }
