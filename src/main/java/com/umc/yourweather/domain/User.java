@@ -13,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Table(name = "Users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,10 +30,10 @@ public class User {
 
     @Builder
     public User(String email,
-                String password,
-                String nickname,
-                String platform,
-                Role role) {
+        String password,
+        String nickname,
+        String platform,
+        Role role) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -41,21 +42,11 @@ public class User {
         this.role = role;
     }
 
-    public String getEmail() {
-        return email;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public Role getRole() {
-        return role;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
     }
 }
