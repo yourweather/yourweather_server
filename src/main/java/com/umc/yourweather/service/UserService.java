@@ -1,6 +1,7 @@
 package com.umc.yourweather.service;
 
 import com.umc.yourweather.auth.CustomUserDetails;
+import com.umc.yourweather.domain.Role;
 import com.umc.yourweather.domain.User;
 import com.umc.yourweather.dto.ChangePasswordDto;
 import com.umc.yourweather.dto.UserResponseDto;
@@ -69,5 +70,15 @@ public class UserService {
         }
         user.get().changePassword(changePasswordDto.getPassword());
         return "비밀번호 변경 완료";
+    }
+
+    public String withdraw(CustomUserDetails userDetails) {
+        Optional<User> user = userRepository.findByEmail(userDetails.getUser().getEmail());
+        if (!user.isPresent()) {
+            throw new IllegalArgumentException("등록된 사용자가 없습니다.");
+        }
+        user.get().unActivate();
+
+        return "회원 탈퇴 완료";
     }
 }
