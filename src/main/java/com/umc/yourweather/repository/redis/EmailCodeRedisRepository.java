@@ -9,4 +9,9 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class EmailCodeRedisRepository {
     private final StringRedisTemplate template;
+
+    public String getData(String key) {
+        ValueOperations<String, String> valueOperations = template.opsForValue();
+        return valueOperations.get(key);
+    }
 }
