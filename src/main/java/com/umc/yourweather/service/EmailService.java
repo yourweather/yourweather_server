@@ -26,10 +26,13 @@ public class EmailService {
             es.printStackTrace();
             throw new IllegalArgumentException("email 전송 실패: 받는 사람 이메일을 다시 확인해주세요");
         }
-        return messageCreator.getCode();
+
+        String code = messageCreator.getCode();
+        setCode(to, code);
+        return code;
     }
 
-    public void setCode(String email, String code) {
+    private void setCode(String email, String code) {
         emailCodeRedisRepository.setData(email, code);
     }
 }
