@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
+
     private final UserRepository userRepository;
 
     // loadUserByUsername이지만, CustomLoginFilter에서 email을 username으로 삽입했기 때문에
@@ -20,7 +21,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException(email + " : 해당 이메일을 가진 유저가 존재하지 않습니다."));
+                .orElseThrow(
+                        () -> new EntityNotFoundException(email + " : 해당 이메일을 가진 유저가 존재하지 않습니다."));
 
         return new CustomUserDetails(user);
     }

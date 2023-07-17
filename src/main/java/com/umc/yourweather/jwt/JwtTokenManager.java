@@ -62,8 +62,8 @@ public class JwtTokenManager {
     }
 
     public void sendAccessTokenAndRefreshToken(HttpServletResponse response,
-                                               String accessToken,
-                                               String refreshToken) {
+            String accessToken,
+            String refreshToken) {
         response.setStatus(HttpServletResponse.SC_OK);
 
         response.setHeader(accessTokenHeader, accessToken);
