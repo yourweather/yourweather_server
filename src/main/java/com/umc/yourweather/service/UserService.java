@@ -50,10 +50,10 @@ public class UserService {
     }
 
     public UserResponseDto mypage(CustomUserDetails userDetails) {
-        Optional<User> user = userRepository.findByEmail(userDetails.getUser().getEmail());
-        if (!user.isPresent()) {
-            throw new IllegalArgumentException("등록된 사용자가 없습니다.");
-        }
-        return new UserResponseDto(user.get().getNickname(), user.get().getEmail());
+        User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
+            () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
+        );
+
+        return new UserResponseDto(user.getNickname(), user.getEmail());
     }
 }
