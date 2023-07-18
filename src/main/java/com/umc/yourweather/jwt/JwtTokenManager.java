@@ -47,23 +47,23 @@ public class JwtTokenManager {
     public String createAccessToken(User user) {
         Date now = new Date();
         return JWT.create()
-                .withSubject(ACCESS_TOKEN_SUBJECT)
-                .withExpiresAt(new Date(now.getTime() + accessTokenExpiration))
-                .withClaim(EMAIL, user.getEmail())
-                .sign(Algorithm.HMAC512(secretKey));
+            .withSubject(ACCESS_TOKEN_SUBJECT)
+            .withExpiresAt(new Date(now.getTime() + accessTokenExpiration))
+            .withClaim(EMAIL, user.getEmail())
+            .sign(Algorithm.HMAC512(secretKey));
     }
 
     public String createRefreshToken() {
         Date now = new Date();
         return JWT.create()
-                .withSubject(REFRESH_TOKEN_SUBJECT)
-                .withExpiresAt(new Date(now.getTime() + refreshTokenExpiration))
-                .sign(Algorithm.HMAC512(secretKey));
+            .withSubject(REFRESH_TOKEN_SUBJECT)
+            .withExpiresAt(new Date(now.getTime() + refreshTokenExpiration))
+            .sign(Algorithm.HMAC512(secretKey));
     }
 
     public void sendAccessTokenAndRefreshToken(HttpServletResponse response,
-            String accessToken,
-            String refreshToken) {
+        String accessToken,
+        String refreshToken) {
         response.setStatus(HttpServletResponse.SC_OK);
 
         response.setHeader(accessTokenHeader, accessToken);
@@ -73,8 +73,8 @@ public class JwtTokenManager {
 
     public Optional<String> extractToken(String token) {
         return Optional.ofNullable(token)
-                .filter(tokenValue -> tokenValue.startsWith(BEARER))
-                .map(tokenValue -> tokenValue.replace(BEARER, ""));
+            .filter(tokenValue -> tokenValue.startsWith(BEARER))
+            .map(tokenValue -> tokenValue.replace(BEARER, ""));
     }
 
     public Optional<String> extractAccessToken(HttpServletRequest request) {
@@ -92,11 +92,11 @@ public class JwtTokenManager {
     public Optional<String> extractEmail(String accessToken) {
         try {
             return Optional.ofNullable(
-                    JWT.require(Algorithm.HMAC512(secretKey))
-                            .build()
-                            .verify(accessToken)
-                            .getClaim(EMAIL)
-                            .asString()
+                JWT.require(Algorithm.HMAC512(secretKey))
+                    .build()
+                    .verify(accessToken)
+                    .getClaim(EMAIL)
+                    .asString()
             );
         } catch (Exception e) {
             log.error("유효하지 않은 액세스 토큰입니다.");
@@ -107,9 +107,9 @@ public class JwtTokenManager {
     public boolean isTokenValid(String token) {
         try {
             JWT
-                    .require(Algorithm.HMAC512(secretKey))
-                    .build()
-                    .verify(token);
+                .require(Algorithm.HMAC512(secretKey))
+                .build()
+                .verify(token);
 
             return true;
         } catch (Exception e) {
@@ -123,3 +123,5 @@ public class JwtTokenManager {
         user.updateRefreshToken(refreshToken);
     }
 }
+
+

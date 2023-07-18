@@ -28,20 +28,28 @@ public class User {
 
     private Role role;
 
+    private boolean isActivate;
+
     @Builder
     public User(String email,
-            String password,
-            String nickname,
-            String platform,
-            Role role) {
+        String password,
+        String nickname,
+        String platform,
+        Role role,
+        boolean isActivate) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.platform = platform;
         this.refreshToken = UUID.randomUUID().toString();
         this.role = role;
+        this.isActivate = isActivate;
     }
 
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+  
     public String getEmail() {
         return email;
     }
@@ -54,11 +62,12 @@ public class User {
         return role;
     }
 
-    public String getNickname() {
-        return nickname;
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
     }
 
-    public void updateRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
+    public void unActivate() {
+        this.isActivate = false;
+
     }
 }

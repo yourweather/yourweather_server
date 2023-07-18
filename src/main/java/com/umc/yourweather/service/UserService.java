@@ -1,7 +1,9 @@
 package com.umc.yourweather.service;
 
 import com.umc.yourweather.auth.CustomUserDetails;
+import com.umc.yourweather.domain.Role;
 import com.umc.yourweather.domain.User;
+import com.umc.yourweather.dto.ChangePasswordDto;
 import com.umc.yourweather.dto.UserResponseDto;
 import com.umc.yourweather.dto.SignupRequestDto;
 import com.umc.yourweather.repository.UserRepository;
@@ -43,13 +45,32 @@ public class UserService {
             .password(password)
             .nickname(nickname)
             .platform(platform)
+            .role(Role.ROLE_USER)
+            .isActivate(true)
             .build();
         userRepository.save(user);
         return "회원 가입 완료";
     }
 
     public UserResponseDto mypage(CustomUserDetails userDetails) {
-        User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
+        User user = userRepository.findByEmail(userDetails.getUser().getEmail())
+            .orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
+        return new UserResponseDto(user.getNickname(), user.getEmail());
+    }
+
+    public String changePassword(ChangePasswordDto changePasswordDto,
+        CustomUserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUser().getEmail())
+            .orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
+
+        user.changePassword(changePasswordDto.getPassword());
+        return "비밀번호 변경 완료";
+    }
+
+    public String withdraw(CustomUserDetails userDetails) {
+  
+
+      User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
             () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
 
