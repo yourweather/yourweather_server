@@ -35,18 +35,17 @@ public class UserService {
         String platform = signupRequestDto.getPlatform();
 
         // 이메일 중복 검증 로직
-        Optional<User> findUser = userRepository.findByEmail(email);
-        if (findUser.isPresent()) {
+        if (userRepository.findByEmail(email).isPresent()) {
             throw new IllegalArgumentException("이미 해당 이메일로 가입된 유저가 존재합니다.");
         }
 
-        User newUser = User.builder()
-                .email(email)
-                .password(password)
-                .nickname(nickname)
-                .platform(platform)
-                .build();
-        userRepository.save(newUser);
+        User user = User.builder()
+            .email(email)
+            .password(password)
+            .nickname(nickname)
+            .platform(platform)
+            .build();
+        userRepository.save(user);
         return "회원 가입 완료";
     }
 
