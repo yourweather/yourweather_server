@@ -1,7 +1,7 @@
 package com.umc.yourweather.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +28,7 @@ public class Weather {
     private Double temperature; //온도
     private String diary; //diary? comment?기
 
-    @NotNull
+    @NotBlank
     private String datetime; //yyyyMMDD 형식으로 받아와서, 파싱해서 넣을 예정
 
     private Integer year;
