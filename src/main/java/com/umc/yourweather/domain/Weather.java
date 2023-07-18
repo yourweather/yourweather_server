@@ -27,7 +27,7 @@ public class Weather {
     //enum 이름 추천 받아요..
     //enum을 클래스로 따로 빼는게 맞는가? inner class로 하는게 맞는가?
 
-    private String temperature; //온도
+    private Double temperature; //온도
     private String diary; //diary? comment?기
 
     @NotNull
@@ -42,7 +42,7 @@ public class Weather {
     @Builder
     public Weather(String email,
                    Condition condition,
-                   String temperature,
+                   Double temperature,
                    String diary,
                    String datetime,
                    Time time) {
