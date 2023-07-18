@@ -8,7 +8,6 @@ import com.umc.yourweather.dto.UserResponseDto;
 import com.umc.yourweather.dto.SignupRequestDto;
 import com.umc.yourweather.repository.UserRepository;
 import jakarta.validation.Valid;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,7 +40,7 @@ public class UserService {
             throw new IllegalArgumentException("이미 해당 이메일로 가입된 유저가 존재합니다.");
         }
 
-        User newUser = User.builder()
+        User user = User.builder()
             .email(email)
             .password(password)
             .nickname(nickname)
@@ -49,7 +48,7 @@ public class UserService {
             .role(Role.ROLE_USER)
             .isActivate(true)
             .build();
-        userRepository.save(newUser);
+        userRepository.save(user);
         return "회원 가입 완료";
     }
 
@@ -69,12 +68,12 @@ public class UserService {
     }
 
     public String withdraw(CustomUserDetails userDetails) {
-        Optional<User> user = userRepository.findByEmail(userDetails.getUser().getEmail());
-        if (!user.isPresent()) {
-            throw new IllegalArgumentException("등록된 사용자가 없습니다.");
-        }
-        user.get().unActivate();
+  
 
-        return "회원 탈퇴 완료";
+      User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
+            () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
+        );
+
+        return new UserResponseDto(user.getNickname(), user.getEmail());
     }
 }

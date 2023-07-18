@@ -3,7 +3,6 @@ package com.umc.yourweather.repository.impl;
 import com.umc.yourweather.domain.User;
 import com.umc.yourweather.repository.UserRepository;
 import com.umc.yourweather.repository.jpa.UserJpaRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

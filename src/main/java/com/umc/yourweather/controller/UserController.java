@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping(RequestURI.commonURI + "/users")
+@RequestMapping(RequestURI.USER_URI)
 public class UserController {
 
     private final UserService userService;

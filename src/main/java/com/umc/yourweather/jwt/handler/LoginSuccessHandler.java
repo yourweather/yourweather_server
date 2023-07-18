@@ -22,6 +22,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Component
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
     private final JwtTokenManager jwtTokenManager;
     private final UserRepository userRepository;
 
@@ -31,10 +32,11 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Transactional
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+            Authentication authentication) throws IOException, ServletException {
         String email = extractEmail(authentication);
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException(email + " : 해당하는 이메일을 가진 유저가 없습니다."));
+                .orElseThrow(
+                        () -> new EntityNotFoundException(email + " : 해당하는 이메일을 가진 유저가 없습니다."));
 
         String accessToken = jwtTokenManager.createAccessToken(user);
         String refreshToken = jwtTokenManager.createRefreshToken();

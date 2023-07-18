@@ -1,6 +1,8 @@
 package com.umc.yourweather.api;
 
 public class RequestURI {
-    public static final String commonURI = "/api/v1/";
+    private static final String CURRENT_VER = "/api/v1";
+    public static final String USER_URI = CURRENT_VER + "/users";
+    public static final String EMAIL_URI = CURRENT_VER + "/email";
 
 }
