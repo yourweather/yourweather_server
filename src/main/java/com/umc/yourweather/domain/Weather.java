@@ -21,7 +21,7 @@ public class Weather {
 
     private String email; //PK
 
-    private Condition condition; //날씨 상태 enums
+    private Status status; //날씨 상태 enums
 
     private Time time; //낮, 밤 -> day, night enums
     //enum 이름 추천 받아요..
@@ -41,13 +41,13 @@ public class Weather {
 
     @Builder
     public Weather(String email,
-                   Condition condition,
+                   Status status,
                    Double temperature,
                    String diary,
                    String datetime,
                    Time time) {
         this.email = email;
-        this.condition = condition;
+        this.status = status;
         this.temperature = temperature;
         this.diary = diary;
         this.datetime = datetime; //yyyyMMDD
