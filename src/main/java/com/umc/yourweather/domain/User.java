@@ -16,6 +16,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     private String email;
@@ -49,7 +50,7 @@ public class User {
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
-  
+
     public String getEmail() {
         return email;
     }

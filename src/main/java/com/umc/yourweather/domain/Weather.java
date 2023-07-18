@@ -18,6 +18,7 @@ public class Weather {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "weather_id")
     private Long id;
 
     private String email; //PK
