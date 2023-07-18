@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 //@RequiredArgsConstructor
 @Slf4j
-@RequestMapping(RequestURI.commonURI + "/weather")
+@RequestMapping(RequestURI.WEATHER_URI)
 public class WeatherController {
 
     private final WeatherService weatherService;
