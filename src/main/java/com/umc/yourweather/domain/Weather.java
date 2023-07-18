@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Getter
 @Table(name = "Weathers")
 public class Weather {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,10 +23,6 @@ public class Weather {
     private String email; //PK
 
     private Status status; //날씨 상태 enums
-
-    private Time time; //낮, 밤 -> day, night enums
-    //enum 이름 추천 받아요..
-    //enum을 클래스로 따로 빼는게 맞는가? inner class로 하는게 맞는가?
 
     private Double temperature; //온도
     private String diary; //diary? comment?기
@@ -41,19 +38,18 @@ public class Weather {
 
     @Builder
     public Weather(String email,
-                   Status status,
-                   Double temperature,
-                   String diary,
-                   String datetime,
-                   Time time) {
+        Status status,
+        Double temperature,
+        String diary,
+        String datetime) {
+
         this.email = email;
         this.status = status;
         this.temperature = temperature;
         this.diary = diary;
         this.datetime = datetime; //yyyyMMDD
-        this.year =date.getYear();
-        this.month =date.getMonthValue();
-        this.day=date.getDayOfMonth();
-        this.time = time;
+        this.year = date.getYear();
+        this.month = date.getMonthValue();
+        this.day = date.getDayOfMonth();
     }
 }
