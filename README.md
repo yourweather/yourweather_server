@@ -1,5 +1,7 @@
 # yourweather_server
-오늘 당신의 감정날씨는?  
+![image](https://github.com/yourweather/yourweather-server/assets/65557784/d6b7ce15-3df7-4110-b605-c3ae19c0fcab)
+
+
 
 
 ## commit message convention
