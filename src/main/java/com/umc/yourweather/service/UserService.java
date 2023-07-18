@@ -6,7 +6,6 @@ import com.umc.yourweather.dto.UserResponseDto;
 import com.umc.yourweather.dto.SignupRequestDto;
 import com.umc.yourweather.repository.UserRepository;
 import jakarta.validation.Valid;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
