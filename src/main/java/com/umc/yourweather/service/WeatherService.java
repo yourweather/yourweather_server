@@ -7,9 +7,11 @@ import com.umc.yourweather.dto.WeatherRequestDto;
 import com.umc.yourweather.repository.WeatherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class WeatherService {
 
     private final WeatherRepository weatherRepository;
