@@ -23,6 +23,7 @@ public class Weather {
     private int day;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     User user;
 
     @OneToMany(mappedBy = "weather")
