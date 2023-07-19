@@ -3,32 +3,27 @@ package com.umc.yourweather.service;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.User;
 import com.umc.yourweather.domain.Weather;
-import com.umc.yourweather.dto.SignupRequestDto;
-import com.umc.yourweather.dto.UserResponseDto;
-import com.umc.yourweather.repository.UserRepository;
+import com.umc.yourweather.dto.WeatherRequestDto;
 import com.umc.yourweather.repository.WeatherRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
-//@RequiredArgsConstructor
-@Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class WeatherService {
 
     private final WeatherRepository weatherRepository;
 
-    @Autowired
-    public WeatherService(WeatherRepository weatherRepository) {
-        this.weatherRepository = weatherRepository;
-    }
+    public String create(WeatherRequestDto weatherRequestDto, CustomUserDetails userDetails) {
+        Weather weather = Weather.builder()
+            .user(userDetails.getUser())
+            .year(weatherRequestDto.getYear())
+            .month(weatherRequestDto.getMonth())
+            .day(weatherRequestDto.getDay())
+            .build();
 
-        return "날씨 추가 완료";
+        weatherRepository.save(weather);
+
+        return "날씨 생성 완료";
     }
 }
