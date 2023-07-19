@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,7 @@ public class Memo {
 
     @Enumerated(EnumType.STRING)
     private Status status; //날씨 상태 enums
-    private String time;
+    private LocalDateTime time;
     private int condition;
     private String content;
 
