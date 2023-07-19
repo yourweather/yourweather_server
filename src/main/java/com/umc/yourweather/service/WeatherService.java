@@ -29,8 +29,6 @@ public class WeatherService {
         this.weatherRepository = weatherRepository;
     }
 
-    public Weather saveWeather(Weather weather) {
-
-        return weatherRepository.save(weather);
+        return "날씨 추가 완료";
     }
 }
