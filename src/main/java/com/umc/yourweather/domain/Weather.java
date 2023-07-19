@@ -22,25 +22,22 @@ public class Weather {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "weather_id")
     private Long id;
-    private String email; //PK
-    @NotBlank
-    private String datetime; //yyyyMMDD 형식으로 받아와서, 파싱해서 넣을 예정
-    private Integer year;
-    private Integer month;
-    private Integer day;
+    private int year;
+    private int month;
+    private int day;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    User user;
 
     @OneToMany(mappedBy = "weather")
     List<Memo> memos = new LinkedList<>();
 
-    LocalDate date = LocalDate.parse(datetime, java.time.format.DateTimeFormatter.BASIC_ISO_DATE);
-
     @Builder
-    public Weather(String email,
-        String datetime) {
-        this.email = email;
-        this.datetime = datetime; //yyyyMMDD
-        this.year = date.getYear();
-        this.month = date.getMonthValue();
-        this.day = date.getDayOfMonth();
+    public Weather(int year, int month, int day, User user, List<Memo> memos) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.user = user;
+        this.memos = memos;
     }
 }
