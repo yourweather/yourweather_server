@@ -16,6 +16,7 @@ public class WeatherService {
 
     private final WeatherRepository weatherRepository;
 
+    @Transactional
     public String create(WeatherRequestDto weatherRequestDto, CustomUserDetails userDetails) {
         Weather weather = Weather.builder()
             .user(userDetails.getUser())
