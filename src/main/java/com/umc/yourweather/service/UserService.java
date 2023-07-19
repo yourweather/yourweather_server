@@ -71,6 +71,8 @@ public class UserService {
         User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
             () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
+
+        user.unActivate();
         return "회원 탈퇴 완료";
     }
 }
