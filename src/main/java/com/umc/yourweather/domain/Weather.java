@@ -1,7 +1,7 @@
 package com.umc.yourweather.domain;
 
 import jakarta.persistence.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -27,7 +27,7 @@ public class Weather {
     User user;
 
     @OneToMany(mappedBy = "weather")
-    List<Memo> memos = new LinkedList<>();
+    List<Memo> memos = new ArrayList<>();
 
     @Builder
     public Weather(int year, int month, int day, User user) {
