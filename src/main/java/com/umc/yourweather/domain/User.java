@@ -1,6 +1,8 @@
 package com.umc.yourweather.domain;
 
 import jakarta.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,6 +33,9 @@ public class User {
 
     private boolean isActivate;
 
+    @OneToMany(mappedBy = "user")
+    List<Weather> weathers = new LinkedList<>();
+
     @Builder
     public User(String email,
         String password,
@@ -49,18 +54,6 @@ public class User {
 
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Role getRole() {
-        return role;
     }
 
     public void changePassword(String newPassword) {
