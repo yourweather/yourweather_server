@@ -4,6 +4,7 @@ import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.Role;
 import com.umc.yourweather.domain.User;
 import com.umc.yourweather.dto.ChangePasswordDto;
+import com.umc.yourweather.dto.ResponseDto;
 import com.umc.yourweather.dto.UserResponseDto;
 import com.umc.yourweather.dto.SignupRequestDto;
 import com.umc.yourweather.repository.UserRepository;
@@ -63,13 +64,12 @@ public class UserService {
         return "비밀번호 변경 완료";
     }
 
-    public String withdraw(CustomUserDetails userDetails) {
-  
-
-      User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
+    public ResponseDto<UserResponseDto> withdraw(CustomUserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
             () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
 
-        return new UserResponseDto(user.getNickname(), user.getEmail());
+        UserResponseDto result = new UserResponseDto(user.getNickname(), user.getEmail());
+        return ResponseDto.success("회원 탈퇴 성공", result);
     }
 }
