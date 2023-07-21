@@ -1,6 +1,7 @@
 package com.umc.yourweather.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetailsService;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.jwt.filter.CustomLoginFilter;
@@ -55,8 +56,9 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> {
                     // /signup에 대한건 다 허락.
-                    authorize.requestMatchers("/api/v1/users/signup").permitAll();
-                    authorize.requestMatchers("/api/v1/users/login").permitAll();
+                    authorize.requestMatchers(RequestURI.USER_URI + "/signup").permitAll();
+                    authorize.requestMatchers(RequestURI.USER_URI + "/login").permitAll();
+                    authorize.requestMatchers(RequestURI.USER_URI + "/oauth-login");
 
                     // 그 외의 모든 요청은 인증이 되어있어야함.
                     authorize.anyRequest().authenticated();
