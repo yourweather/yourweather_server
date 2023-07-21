@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.umc.yourweather.auth.CustomUserDetailsService;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.jwt.filter.CustomLoginFilter;
+import com.umc.yourweather.jwt.filter.CustomOAuthLoginFilter;
 import com.umc.yourweather.jwt.filter.JwtAuthenticationFilter;
 import com.umc.yourweather.jwt.handler.LoginFailureHandler;
 import com.umc.yourweather.jwt.handler.LoginSuccessHandler;
@@ -64,6 +65,7 @@ public class SecurityConfig {
         // 우리가 만든 CustomLoginFilter를 LogoutFilter 이후에 꽂아넣어준다.
         // 원래 시큐리티 필터가 LogoutFilter 이후에 로그인 필터를 동작 시킨다.
         http.addFilterAfter(customLoginFilter(), LogoutFilter.class);
+        http.addFilterAfter(customOAuthLoginFilter(), CustomLoginFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), CustomLoginFilter.class);
 
         return http.build();
@@ -85,14 +87,24 @@ public class SecurityConfig {
 
     @Bean
     public CustomLoginFilter customLoginFilter() {
-        CustomLoginFilter customLoginFilter
-                = new CustomLoginFilter(objectMapper);
+        CustomLoginFilter customLoginFilter = new CustomLoginFilter(objectMapper);
 
         customLoginFilter.setAuthenticationManager(authenticationManager());
         customLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler);
         customLoginFilter.setAuthenticationFailureHandler(loginFailureHandler);
 
         return customLoginFilter;
+    }
+
+    @Bean
+    public CustomOAuthLoginFilter customOAuthLoginFilter() {
+        CustomOAuthLoginFilter customOAuthLoginFilter = new CustomOAuthLoginFilter(objectMapper);
+
+        customOAuthLoginFilter.setAuthenticationManager(authenticationManager());
+        customOAuthLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler);
+        customOAuthLoginFilter.setAuthenticationFailureHandler(loginFailureHandler);
+
+        return customOAuthLoginFilter;
     }
 
     @Bean

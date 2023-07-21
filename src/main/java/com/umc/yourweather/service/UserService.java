@@ -27,10 +27,6 @@ public class UserService {
         String email = signupRequestDto.getEmail();
         String password = signupRequestDto.getPassword();
 
-        if (password == null) {
-            password = UUID.randomUUID().toString();
-        }
-
         password = passwordEncoder.encode(password);
         String nickname = signupRequestDto.getNickname();
         String platform = signupRequestDto.getPlatform();
@@ -67,10 +63,8 @@ public class UserService {
         return "비밀번호 변경 완료";
     }
 
-    public String withdraw(CustomUserDetails userDetails) {
-  
-
-      User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
+    public UserResponseDto withdraw(CustomUserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
             () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
 

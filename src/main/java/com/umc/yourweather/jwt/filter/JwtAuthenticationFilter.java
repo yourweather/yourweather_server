@@ -27,8 +27,11 @@ import java.util.*;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     // login 요청이 들어오면 필터에서 토큰 검증 건너뜀.
-    private static final String[] NO_CHECK_URI_ARRAY = {RequestURI.USER_URI + "/login",
-            RequestURI.USER_URI + "/api/v1/users/signup"};
+    private static final String[] NO_CHECK_URI_ARRAY = {
+            RequestURI.USER_URI + "/login",
+            RequestURI.USER_URI + "/signup",
+            RequestURI.USER_URI + "/oauth-login"
+    };
     private static final List<String> NO_CHECK_URIS = new ArrayList<>(
             Arrays.asList(NO_CHECK_URI_ARRAY));
 

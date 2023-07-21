@@ -48,7 +48,7 @@ public class UserController {
     @PutMapping("/withdraw")
     public ResponseDto<UserResponseDto> withdraw(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return ResponseDto.success(userService.withdraw(userDetails));
+        return ResponseDto.success("회원 탈퇴 성공", userService.withdraw(userDetails));
     }
 }
 
