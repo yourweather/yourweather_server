@@ -3,10 +3,12 @@ package com.umc.yourweather.service;
 import com.umc.yourweather.domain.MessageCreator;
 import com.umc.yourweather.repository.redis.EmailCodeRedisRepository;
 import jakarta.mail.internet.MimeMessage;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +18,8 @@ public class EmailService {
     private final JavaMailSender emailSender;
     private final EmailCodeRedisRepository emailCodeRedisRepository;
 
-    public String sendMessage(String to) throws Exception {
+    @Async
+    public CompletableFuture<String> sendMessage(String to) throws Exception {
         MessageCreator messageCreator = new MessageCreator(emailSender);
         MimeMessage message = messageCreator.createMessage(to);
         log.info("message 생성: " + message.getContent());
@@ -29,7 +32,7 @@ public class EmailService {
 
         String code = messageCreator.getCode();
         setCode(to, code);
-        return code;
+        return CompletableFuture.completedFuture(code);
     }
 
     private void setCode(String email, String code) {

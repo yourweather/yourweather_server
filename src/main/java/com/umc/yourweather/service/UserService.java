@@ -63,8 +63,10 @@ public class UserService {
         return "비밀번호 변경 완료";
     }
 
-    public UserResponseDto withdraw(CustomUserDetails userDetails) {
-        User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
+    public String withdraw(CustomUserDetails userDetails) {
+  
+
+      User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
             () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
 

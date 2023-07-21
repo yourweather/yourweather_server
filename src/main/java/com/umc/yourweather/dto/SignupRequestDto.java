@@ -1,5 +1,6 @@
 package com.umc.yourweather.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.ToString;
@@ -8,11 +9,11 @@ import lombok.ToString;
 @ToString
 public class SignupRequestDto {
 
-    @NotNull
+    @NotBlank
     private String email;
     private String password;
-    @NotNull
+    @NotBlank
     private String nickname;
-    @NotNull
+    @NotBlank
     private String platform;
 }

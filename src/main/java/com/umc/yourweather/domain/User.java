@@ -1,6 +1,8 @@
 package com.umc.yourweather.domain;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +18,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     private String email;
@@ -26,9 +29,13 @@ public class User {
 
     private String refreshToken;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     private boolean isActivate;
+
+    @OneToMany(mappedBy = "user", cascade=CascadeType.REMOVE)
+    List<Weather> weathers = new ArrayList<>();
 
     @Builder
     public User(String email,
@@ -48,18 +55,6 @@ public class User {
 
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
-    }
-  
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Role getRole() {
-        return role;
     }
 
     public void changePassword(String newPassword) {
