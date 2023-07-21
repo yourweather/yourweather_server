@@ -2,9 +2,6 @@ package com.umc.yourweather.jwt.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.umc.yourweather.api.RequestURI;
-import com.umc.yourweather.domain.User;
-import com.umc.yourweather.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -14,21 +11,19 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StreamUtils;
 
 public class CustomOAuthLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    private static final String DEFAULT_LOGIN_REQUEST_URI = RequestURI.USER_URI + "/login";
+    private static final String DEFAULT_LOGIN_REQUEST_URI = RequestURI.USER_URI + "/oauth-login";
     private static final String HTTP_METHOD = "POST";
     private static final String CONTENT_TYPE = "application/json";
     private static final String EMAIL_KEY = "email";
     private static final String PASSWORD_KEY = "password";
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     private static final AntPathRequestMatcher DEFAULT_LOGIN_PATH_REQUEST_MATCHER =
             new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URI, HTTP_METHOD);
@@ -57,7 +52,8 @@ public class CustomOAuthLoginFilter extends AbstractAuthenticationProcessingFilt
         String email = mappedBody.get(EMAIL_KEY);
         String password = mappedBody.get(PASSWORD_KEY);
 
-        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(email, password);
+        UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(email,
+                password);
         return this.getAuthenticationManager().authenticate(authReq);
     }
 }

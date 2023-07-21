@@ -46,13 +46,11 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .headers(headers -> {
-                    headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable);
-                })
+                .headers(headers -> headers.frameOptions(
+                        HeadersConfigurer.FrameOptionsConfig::disable))
 
-                .sessionManagement(session -> {
-                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                })
+                .sessionManagement(
+                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(authorize -> {
                     // /signup에 대한건 다 허락.
@@ -66,8 +64,8 @@ public class SecurityConfig {
 
         // 우리가 만든 CustomLoginFilter를 LogoutFilter 이후에 꽂아넣어준다.
         // 원래 시큐리티 필터가 LogoutFilter 이후에 로그인 필터를 동작 시킨다.
-        http.addFilterAfter(customLoginFilter(), LogoutFilter.class);
-        http.addFilterAfter(customOAuthLoginFilter(), CustomLoginFilter.class);
+        http.addFilterAfter(customOAuthLoginFilter(), LogoutFilter.class);
+        http.addFilterAfter(customLoginFilter(), CustomOAuthLoginFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), CustomLoginFilter.class);
 
         return http.build();
