@@ -3,6 +3,7 @@ package com.umc.yourweather.controller;
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.dto.ResponseDto;
 import com.umc.yourweather.service.EmailService;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,8 @@ public class EmailController {
     @GetMapping("/send")
     public ResponseDto<Void> send(@RequestParam String email) {
         try {
-            emailService.sendMessage(email);
-            log.info("이메일 전송 완료");
+            CompletableFuture<String> completableFutureCode = emailService.sendMessage(email);
+            log.info("이메일 전송 완료. 인증코드: " + completableFutureCode.get());
             return ResponseDto.success("이메일 전송 완료.");
         } catch (Exception e) {
             return ResponseDto.fail(HttpStatus.BAD_REQUEST, e.getMessage());
