@@ -4,6 +4,7 @@ import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.Role;
 import com.umc.yourweather.domain.User;
 import com.umc.yourweather.dto.ChangePasswordDto;
+import com.umc.yourweather.dto.ResponseDto;
 import com.umc.yourweather.dto.UserResponseDto;
 import com.umc.yourweather.dto.SignupRequestDto;
 import com.umc.yourweather.repository.UserRepository;
@@ -26,10 +27,6 @@ public class UserService {
     public String signup(@Valid SignupRequestDto signupRequestDto) {
         String email = signupRequestDto.getEmail();
         String password = signupRequestDto.getPassword();
-
-        if (password == null) {
-            password = UUID.randomUUID().toString();
-        }
 
         password = passwordEncoder.encode(password);
         String nickname = signupRequestDto.getNickname();
@@ -67,12 +64,11 @@ public class UserService {
         return "비밀번호 변경 완료";
     }
 
-    public String withdraw(CustomUserDetails userDetails) {
+    public UserResponseDto withdraw(CustomUserDetails userDetails) {
         User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
             () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
 
-        user.unActivate();
-        return "회원 탈퇴 완료";
+        return new UserResponseDto(user.getNickname(), user.getEmail());
     }
 }
