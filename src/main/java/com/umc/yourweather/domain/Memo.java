@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import lombok.AccessLevel;
@@ -36,5 +37,9 @@ public class Memo {
     @JoinColumn(name = "weather_id")
     private Weather weather;
 
+    @PrePersist
+    public void setTime() {
+        time = LocalTime.now();
+    }
 
 }
