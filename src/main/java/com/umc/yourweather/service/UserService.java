@@ -68,12 +68,11 @@ public class UserService {
     }
 
     public String withdraw(CustomUserDetails userDetails) {
-  
-
-      User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
+        User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
             () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
 
-        return new UserResponseDto(user.getNickname(), user.getEmail());
+        user.unActivate();
+        return "회원 탈퇴 완료";
     }
 }
