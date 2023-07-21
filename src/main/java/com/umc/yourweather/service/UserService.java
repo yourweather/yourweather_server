@@ -64,12 +64,11 @@ public class UserService {
         return "비밀번호 변경 완료";
     }
 
-    public ResponseDto<UserResponseDto> withdraw(CustomUserDetails userDetails) {
+    public UserResponseDto withdraw(CustomUserDetails userDetails) {
         User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
             () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
 
-        UserResponseDto result = new UserResponseDto(user.getNickname(), user.getEmail());
-        return ResponseDto.success("회원 탈퇴 성공", result);
+        return new UserResponseDto(user.getNickname(), user.getEmail());
     }
 }
