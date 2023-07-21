@@ -58,7 +58,7 @@ public class SecurityConfig {
                     // /signup에 대한건 다 허락.
                     authorize.requestMatchers(RequestURI.USER_URI + "/signup").permitAll();
                     authorize.requestMatchers(RequestURI.USER_URI + "/login").permitAll();
-                    authorize.requestMatchers(RequestURI.USER_URI + "/oauth-login");
+                    authorize.requestMatchers(RequestURI.USER_URI + "/oauth-login").permitAll();
 
                     // 그 외의 모든 요청은 인증이 되어있어야함.
                     authorize.anyRequest().authenticated();
