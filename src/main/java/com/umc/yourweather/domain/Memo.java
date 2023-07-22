@@ -14,6 +14,7 @@ import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,4 +43,12 @@ public class Memo {
         time = LocalTime.now();
     }
 
+    @Builder
+    public Memo(Status status, LocalTime time, int condition, String content, Weather weather) {
+        this.status = status;
+        this.time = time;
+        this.condition = condition;
+        this.content = content;
+        this.weather = weather;
+    }
 }
