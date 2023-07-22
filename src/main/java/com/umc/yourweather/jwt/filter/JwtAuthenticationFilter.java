@@ -107,13 +107,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthentication(User user) {
-        String userPw = user.getPassword();
-
-        // 이 경우에는 타 플랫폼(네이버, 구글, 카카오)로 회원가입한 사람들이다.
-        // 이 사람들에게 비밀번호 필ㄷ는 의미가 없는 것이니, 대충 아무거나 막 랜덤한거로 해서 넣는다.
-        if (userPw == null) {
-            userPw = UUID.randomUUID().toString();
-        }
 
         UserDetails userDetails = new CustomUserDetails(user);
 
