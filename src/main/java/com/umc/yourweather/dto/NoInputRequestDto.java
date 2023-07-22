@@ -11,6 +11,6 @@ public class NoInputRequestDto {
 
     @PrePersist
     public void setTime() {
-        this.time = LocalDateTime.now();
+        this.time = LocalDate.now();
     }
 }
