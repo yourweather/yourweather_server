@@ -1,5 +1,7 @@
 package com.umc.yourweather.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.PrePersist;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import lombok.Builder;
@@ -8,7 +10,9 @@ import lombok.Data;
 @Data
 public class WeatherRequestDto {
 
+    @JsonFormat(pattern = "yyyyMMdd")
     private String datetime;
+
     private LocalDate date;
 
     public int getYear() {
