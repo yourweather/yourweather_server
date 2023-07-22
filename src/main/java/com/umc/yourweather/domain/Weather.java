@@ -18,8 +18,14 @@ public class Weather {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "weather_id")
     private Long id;
+
+    @Column(name = "yyyy")
     private int year;
+
+    @Column(name = "mm")
     private int month;
+
+    @Column(name = "dd")
     private int day;
 
     @ManyToOne(fetch = FetchType.LAZY)
