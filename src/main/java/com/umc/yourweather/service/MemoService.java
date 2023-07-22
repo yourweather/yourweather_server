@@ -16,8 +16,9 @@ public class MemoService {
     private final WeatherRepository weatherRepository;
     private final MemoRepository memoRepository;
 
-    public Memo write(MemoRequestDto memoRequestDto, CustomUserDetails userDetails) {
-        Weather weather = weatherRepository.findByYearAndMonthAndDay(memoRequestDto.getDate().getYear(),
+    public MemoResponseDto write(MemoRequestDto memoRequestDto, CustomUserDetails userDetails) {
+        Weather weather = weatherRepository.findByYearAndMonthAndDay(
+                memoRequestDto.getDate().getYear(),
                 memoRequestDto.getDate().getMonthValue(), memoRequestDto.getDate().getDayOfMonth())
             .orElseThrow(() -> new RuntimeException("해당 날자에 날씨 객체가 존재하지 않습니다."));
 
