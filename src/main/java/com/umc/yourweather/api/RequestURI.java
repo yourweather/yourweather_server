@@ -7,4 +7,6 @@ public class RequestURI {
     public static final String EMAIL_URI = CURRENT_VER + "/email";
     public static final String WEATHER_URI = CURRENT_VER + "/weather";
 
+    public static final String MEMO_URI = CURRENT_VER + "/memo";
+
 }
