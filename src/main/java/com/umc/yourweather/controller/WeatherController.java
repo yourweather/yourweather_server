@@ -3,6 +3,8 @@ package com.umc.yourweather.controller;
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.Weather;
+import com.umc.yourweather.dto.NoInputRequestDto;
+import com.umc.yourweather.dto.NoInputResponseDto;
 import com.umc.yourweather.dto.ResponseDto;
 import com.umc.yourweather.dto.WeatherRequestDto;
 import com.umc.yourweather.service.WeatherService;
@@ -24,6 +26,14 @@ public class WeatherController {
     public ResponseDto<Weather> create(@RequestBody @Valid WeatherRequestDto weatherRequestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success(weatherService.create(weatherRequestDto, userDetails));
+    }
+
+    @GetMapping("/no-inputs")
+    public ResponseDto<NoInputResponseDto> getNoInputs(
+        @RequestBody @Valid NoInputRequestDto noInputRequestDto,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseDto.success("미 입력 날짜 조회 성공",
+            weatherService.getNoInputs(noInputRequestDto, userDetails));
     }
 }
 
