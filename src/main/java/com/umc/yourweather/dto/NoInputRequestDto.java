@@ -2,13 +2,15 @@ package com.umc.yourweather.dto;
 
 import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
+import lombok.Getter;
 
+@Getter
 public class NoInputRequestDto {
 
-    LocalDateTime localDateTime;
+    LocalDateTime time;
 
     @PrePersist
-    public void setLocalDateTime() {
-        this.localDateTime = LocalDateTime.now();
+    public void setTime() {
+        this.time = LocalDateTime.now();
     }
 }
