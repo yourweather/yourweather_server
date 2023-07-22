@@ -1,14 +1,15 @@
 package com.umc.yourweather.service;
 
 import com.umc.yourweather.auth.CustomUserDetails;
+import com.umc.yourweather.domain.User;
 import com.umc.yourweather.domain.Weather;
+import com.umc.yourweather.dto.HomeResponseDto;
 import com.umc.yourweather.dto.NoInputRequestDto;
 import com.umc.yourweather.dto.NoInputResponseDto;
 import com.umc.yourweather.dto.WeatherRequestDto;
 import com.umc.yourweather.repository.WeatherRepository;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -63,5 +64,20 @@ public class WeatherService {
             }
         }
         return noInputResponseDto;
+    }
+
+    public HomeResponseDto home(CustomUserDetails userDetails) {
+        LocalDate current = LocalDate.now();
+
+        Weather weather = weatherRepository.findByYearAndMonthAndDay(current.getYear(),
+                current.getMonthValue(), current.getDayOfMonth())
+            .orElseThrow(() -> new RuntimeException("해당 날짜에 해당하는 날씨 객체가 없습니다."));
+
+        User user = userDetails.getUser();
+        return HomeResponseDto.builder()
+            .nickname(user.getNickname())
+            .status(weather.getMemos().get(weather.getMemos().size()).getStatus())
+            .condition(weather.getMemos().get(weather.getMemos().size()).getCondition())
+            .build();
     }
 }
