@@ -4,6 +4,7 @@ import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.Memo;
 import com.umc.yourweather.domain.Weather;
 import com.umc.yourweather.dto.MemoRequestDto;
+import com.umc.yourweather.dto.MemoResponseDto;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.WeatherRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,10 @@ public class MemoService {
 
         weather.addMemos(memo);
         memoRepository.save(memo);
-        return memo;
+        return MemoResponseDto.builder()
+            .status(memo.getStatus())
+            .content(memo.getContent())
+            .condition(memo.getCondition())
+            .build();
     }
 }
