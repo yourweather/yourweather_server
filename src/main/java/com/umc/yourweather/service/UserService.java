@@ -4,13 +4,14 @@ import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.Role;
 import com.umc.yourweather.domain.User;
 import com.umc.yourweather.dto.ChangePasswordDto;
-import com.umc.yourweather.dto.ResponseDto;
 import com.umc.yourweather.dto.UserResponseDto;
 import com.umc.yourweather.dto.SignupRequestDto;
+import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.repository.UserRepository;
 import jakarta.validation.Valid;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +23,16 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenManager jwtTokenManager;
+
+    @Value("${jwt.access.header}")
+    private String accessTokenHeader;
+
+    @Value("${jwt.refresh.header}")
+    private String refreshTokenHeader;
 
     @Transactional
-    public String signup(@Valid SignupRequestDto signupRequestDto) {
+    public User signup(@Valid SignupRequestDto signupRequestDto) {
         String email = signupRequestDto.getEmail();
         String password = signupRequestDto.getPassword();
 
@@ -45,8 +53,18 @@ public class UserService {
             .role(Role.ROLE_USER)
             .isActivate(true)
             .build();
-        userRepository.save(user);
-        return "회원 가입 완료";
+        return userRepository.save(user);
+    }
+
+    // user signup 만을 위해
+    public HttpHeaders getTokenHeaders(User user) {
+        HttpHeaders headers = new HttpHeaders();
+        String accessToken = jwtTokenManager.createAccessToken(user);
+        String refreshToken = jwtTokenManager.createRefreshToken();
+        headers.add(accessTokenHeader, accessToken);
+        headers.add(refreshTokenHeader, refreshToken);
+
+        return headers;
     }
 
     public UserResponseDto mypage(CustomUserDetails userDetails) {
