@@ -35,5 +35,6 @@ public class WeatherRequestDto {
     @Builder
     public WeatherRequestDto(String datetime) {
         this.datetime = datetime;
+        setDate(datetime);
     }
 }
