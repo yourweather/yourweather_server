@@ -1,5 +1,7 @@
 package com.umc.yourweather.controller;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.umc.yourweather.dto.WeatherRequestDto;
 import com.umc.yourweather.service.WeatherService;
 import org.junit.jupiter.api.Assertions;
@@ -12,20 +14,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class WeatherControllerTest {
 
     @Test
-    @DisplayName("yyyymmdd 형태의 날짜를 분류")
+    @DisplayName("yyyyMMdd을 LocalDate으로 파싱")
     void createWeather() {
         // given
         WeatherRequestDto weatherRequestDto = new WeatherRequestDto("20230719");
 
-//        // when
+        // when
         int year = weatherRequestDto.getYear();
         int month = weatherRequestDto.getMonth();
         int day = weatherRequestDto.getDay();
 
-//        // then
-        Assertions.assertEquals(year, 2023);
-        Assertions.assertEquals(month, 07);
-        Assertions.assertEquals(day, 19);
+        // then
+        assertEquals(year, 2023);
+        assertEquals(month, 7);
+        assertEquals(day, 19);
     }
 
 }
