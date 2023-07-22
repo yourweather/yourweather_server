@@ -36,4 +36,8 @@ public class Weather {
         this.day = day;
         this.user = user;
     }
+
+    public void addMemos(Memo memo) {
+        memos.add(memo);
+    }
 }
