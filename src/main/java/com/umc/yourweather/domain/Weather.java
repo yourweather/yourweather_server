@@ -37,7 +37,7 @@ public class Weather {
         this.user = user;
     }
 
-    public void addMemos(Memo memo) {
+    public void addMemo(Memo memo) {
         memos.add(memo);
     }
 }
