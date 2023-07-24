@@ -1,6 +1,5 @@
 package com.umc.yourweather;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -25,13 +24,14 @@ public class SwaggerConfig {
                 .build()
                 .apiInfo(apiInfo())
                 .enable(true);
-    }
 
-    public ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("Yourweather SpringBoot Rest API Documentation")
-                .description("4th UMC Project team yourweather")
-                .version("0.1")
-                .build();경
+
+        public ApiInfo apiInfo () {
+            return new ApiInfoBuilder()
+                    .title("Yourweather SpringBoot Rest API")
+                    .description("4rd UMC PROJECT: YOURWEATHER")
+                    .version("0.1")
+                    .build();
+        }
     }
 }
