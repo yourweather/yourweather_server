@@ -1,7 +1,6 @@
 package com.umc.yourweather.service;
 
 import com.umc.yourweather.auth.CustomUserDetails;
-import com.umc.yourweather.domain.User;
 import com.umc.yourweather.domain.Weather;
 import com.umc.yourweather.dto.WeatherRequestDto;
 import com.umc.yourweather.repository.WeatherRepository;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,11 +30,14 @@ public class WeatherService {
 
         return "날씨 생성 완료";
     }
-    public List<Weather> getWeathersByDate(LocalDate date) {
-        return weatherRepository.findByDate(date);
+    public String getWeathersByDate(WeatherResponse weatherResponse, LocalDate date) {
+        weatherRepository.findByDate(date);
+        return "일별 날씨 조회 완료";
     }
 
-    public List<Weather> getWeathersByMonth(int month, int year) {
-        return weatherRepository.findByMonth(month, year);
+    public String getWeathersByMonth(WeatherResponse weatherResponse, int month, int year) {
+        weatherRepository.findByMonth(month, year);
+
+        return "일별 날씨 조회 완료";
     }
 }

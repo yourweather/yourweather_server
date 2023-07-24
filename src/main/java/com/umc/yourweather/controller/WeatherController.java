@@ -7,7 +7,6 @@ import com.umc.yourweather.dto.ResponseDto;
 import com.umc.yourweather.dto.WeatherRequestDto;
 import com.umc.yourweather.service.WeatherService;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,9 +35,9 @@ public class WeatherController {
 //    }ㄹ
 
     @GetMapping("/find/byDate")
-    public List<Weather> getWeathersByDate(@RequestParam("date") String date) {
+    public ResponseDto<Weather> getWeathersByDate(@RequestParam("date") String date) {
         LocalDate localDate = LocalDate.parse(date);
-        return weatherService.getWeathersByDate(localDate);
+        return ResponseDto.success(weatherService.getWeathersByDate(localDate))
     }
 
     @GetMapping("/find/byMonth")
