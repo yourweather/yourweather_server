@@ -57,15 +57,18 @@ public class WeatherService {
             dateIterator.plusDays(1);
         }
 
-        List<Weather> dates = weatherRepository.findWeatherByDateTimeBetween(currentDate,
+        List<Weather> dates = weatherRepository.findWeatherByDateBetween(currentDate,
             oneWeekAgo);
 
         for (int i = 0; i < dates.size(); i++) {
-            if (!dateList.contains(LocalDate.of(dates.get(i).getYear(), dates.get(i).getMonth(),
-                dates.get(i).getDay()))) {
+            LocalDate localDate = dates.get(i).getDate();
+            int year = localDate.getYear();
+            int month = localDate.getMonthValue();
+            int day = localDate.getDayOfMonth();
+
+            if (!dateList.contains(LocalDate.of(year, month, day))) {
                 noInputResponseDto.addDate(
-                    LocalDate.of(dates.get(i).getYear(), dates.get(i).getMonth(),
-                        dates.get(i).getDay()));
+                    LocalDate.of(year, month, day));
             }
         }
         return noInputResponseDto;
