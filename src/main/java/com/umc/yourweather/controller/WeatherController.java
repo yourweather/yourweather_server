@@ -37,11 +37,13 @@ public class WeatherController {
     @GetMapping("/find/byDate")
     public ResponseDto<Weather> getWeathersByDate(@RequestParam("date") String date) {
         LocalDate localDate = LocalDate.parse(date);
-        return ResponseDto.success(weatherService.getWeathersByDate(localDate))
+
+        return ResponseDto.success(weatherService.getWeathersByDate(localDate));
     }
 
     @GetMapping("/find/byMonth")
-    public List<Weather> getWeathersByMonth(@RequestParam("month") int month, @RequestParam("year") int year) {
-        return weatherService.getWeathersByMonth(month, year);
+    public  ResponseDto<Weather> getWeathersByMonth(@RequestParam("month") int month, @RequestParam("year") int year) {
+
+        return ResponseDto.success(weatherService.getWeathersByMonth(month, year));
     }
 }

@@ -30,12 +30,13 @@ public class WeatherService {
 
         return "날씨 생성 완료";
     }
-    public String getWeathersByDate(WeatherResponse weatherResponse, LocalDate date) {
+    public String getWeathersByDate(LocalDate date) {
         weatherRepository.findByDate(date);
+
         return "일별 날씨 조회 완료";
     }
 
-    public String getWeathersByMonth(WeatherResponse weatherResponse, int month, int year) {
+    public String getWeathersByMonth(int month, int year) {
         weatherRepository.findByMonth(month, year);
 
         return "일별 날씨 조회 완료";
