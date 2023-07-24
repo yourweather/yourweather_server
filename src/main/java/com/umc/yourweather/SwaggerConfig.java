@@ -15,21 +15,23 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
     @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.OAS_30)
-                .useDefaultResponseMessages(true) // Swagger 에서 제공해주는 기본 응답 코드를 표시할 것이면 true
-                .apiInfo(apiInfo())
+    public Docket swagger() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .ignoredParameterTypes(java.sql.Date.class)
+                .forCodeGeneration(true)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("umc.yourweather")) // Controller가 들어있는 패키지. 이 경로의 하위에 있는 api만 표시됨.
-                .paths(PathSelectors.any()) // 위 패키지 안의 api 중 지정된 path만 보여줌. (any()로 설정 시 모든 api가 보여짐)
-                .build();
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build()
+                .apiInfo(apiInfo())
+                .enable(true);
     }
 
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Yourweather SpringBoot Rest API Documentation")
-                .description("API Documentation for yourweather 4th UMC")
+                .description("4th UMC Project team yourweather")
                 .version("0.1")
-                .build();
+                .build();경
     }
 }
