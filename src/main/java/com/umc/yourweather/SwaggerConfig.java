@@ -25,13 +25,13 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .enable(true);
 
+    }
 
-        public ApiInfo apiInfo () {
-            return new ApiInfoBuilder()
-                    .title("Yourweather SpringBoot Rest API")
-                    .description("4rd UMC PROJECT: YOURWEATHER")
-                    .version("0.1")
-                    .build();
-        }
+    public ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("Yourweather SpringBoot Rest API")
+                .description("4rd UMC PROJECT: YOURWEATHER")
+                .version("0.1")
+                .build();
     }
 }
