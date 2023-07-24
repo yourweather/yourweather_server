@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 public class NoInputRequestDto {
 
-    LocalDate time;
+    LocalDate date;
 
     @PrePersist
-    public void setTime() {
-        this.time = LocalDate.now();
+    public void setDate() {
+        this.date = LocalDate.now();
     }
 }
