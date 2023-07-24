@@ -1,6 +1,7 @@
 package com.umc.yourweather.domain;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -18,9 +19,7 @@ public class Weather {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "weather_id")
     private Long id;
-    private int year;
-    private int month;
-    private int day;
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -30,10 +29,8 @@ public class Weather {
     List<Memo> memos = new ArrayList<>();
 
     @Builder
-    public Weather(int year, int month, int day, User user) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
+    public Weather(LocalDate date, User user) {
+        this.date = date;
         this.user = user;
     }
 
