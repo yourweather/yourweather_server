@@ -44,12 +44,13 @@ public class WeatherService {
         NoInputResponseDto noInputResponseDto = new NoInputResponseDto();
 
         // 현재의 날짜 GET
-        LocalDate currentDate = noInputRequestDto.getTime();
+        LocalDate currentDate = noInputRequestDto.getDate();
 
         // 1주 전의 날짜 GET
         LocalDate oneWeekAgo = currentDate.minusWeeks(1);
 
         List<LocalDate> dateList = new ArrayList<>();
+
         LocalDate dateIterator = oneWeekAgo;
 
         while (!dateIterator.isAfter(currentDate)) {
@@ -57,10 +58,15 @@ public class WeatherService {
             dateIterator.plusDays(1);
         }
 
-        for (LocalDate date : dateList) {
-            if (!weatherRepository.findByYearAndMonthAndDay(date.getYear(), date.getMonthValue(),
-                date.getDayOfMonth()).isPresent()) {
-                noInputResponseDto.addDate(date);
+        List<Weather> dates = weatherRepository.findWeatherByDateTimeBetween(currentDate,
+            oneWeekAgo);
+
+        for (int i = 0; i < dates.size(); i++) {
+            if (!dateList.contains(LocalDate.of(dates.get(i).getYear(), dates.get(i).getMonth(),
+                dates.get(i).getDay()))) {
+                noInputResponseDto.addDate(
+                    LocalDate.of(dates.get(i).getYear(), dates.get(i).getMonth(),
+                        dates.get(i).getDay()));
             }
         }
         return noInputResponseDto;
