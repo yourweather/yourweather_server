@@ -7,6 +7,7 @@ import com.umc.yourweather.dto.MemoRequestDto;
 import com.umc.yourweather.dto.MemoResponseDto;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.WeatherRepository;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,10 @@ public class MemoService {
     private final MemoRepository memoRepository;
 
     public MemoResponseDto write(MemoRequestDto memoRequestDto, CustomUserDetails userDetails) {
-        Weather weather = weatherRepository.findByYearAndMonthAndDay(
-                memoRequestDto.getDate().getYear(),
-                memoRequestDto.getDate().getMonthValue(), memoRequestDto.getDate().getDayOfMonth())
+        LocalDate date = memoRequestDto.getDate();
+        Weather weather = weatherRepository.findByDate(LocalDate.of(
+                date.getYear(),
+                date.getMonthValue(), date.getDayOfMonth()))
             .orElseThrow(() -> new RuntimeException("해당 날자에 날씨 객체가 존재하지 않습니다."));
 
         // MemoRequestDto에 넘어온 정보를 토대로 Memo 객체 생성
