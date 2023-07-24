@@ -1,6 +1,8 @@
 package com.umc.yourweather.domain;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -35,5 +37,9 @@ public class Weather {
         this.month = month;
         this.day = day;
         this.user = user;
+    }
+
+    public LocalDate getDate(){
+        return LocalDate.of(year, month, day);
     }
 }
