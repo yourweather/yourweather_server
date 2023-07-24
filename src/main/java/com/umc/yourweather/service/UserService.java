@@ -37,9 +37,11 @@ public class UserService {
         String platform = signupRequestDto.getPlatform();
 
         // 이메일 중복 검증 로직
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("이미 해당 이메일로 가입된 유저가 존재합니다.");
-        }
+        userRepository.findByEmail(email).ifPresent(
+            user -> {
+                throw new RuntimeException("이미 해당 이메일로 가입된 유저가 존재합니다.");
+            }
+        );
 
         User user = User.builder()
             .email(email)
