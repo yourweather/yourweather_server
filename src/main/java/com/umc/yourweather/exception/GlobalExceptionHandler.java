@@ -1,6 +1,6 @@
 package com.umc.yourweather.exception;
 
-import com.umc.yourweather.dto.ResponseDto;
+import com.umc.yourweather.response.ResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

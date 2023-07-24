@@ -3,10 +3,10 @@ package com.umc.yourweather.controller;
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.User;
-import com.umc.yourweather.dto.ChangePasswordDto;
-import com.umc.yourweather.dto.UserResponseDto;
-import com.umc.yourweather.dto.ResponseDto;
-import com.umc.yourweather.dto.SignupRequestDto;
+import com.umc.yourweather.request.changePasswordRequestDto;
+import com.umc.yourweather.response.UserResponseDto;
+import com.umc.yourweather.response.ResponseDto;
+import com.umc.yourweather.request.SignupRequestDto;
 import com.umc.yourweather.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +40,9 @@ public class UserController {
 
     @PostMapping("/password")
     public ResponseDto<UserResponseDto> password(
-        @RequestBody @Valid ChangePasswordDto changePasswordDto,
+        @RequestBody @Valid changePasswordRequestDto changePasswordRequestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return ResponseDto.success(userService.changePassword(changePasswordDto, userDetails));
+        return ResponseDto.success(userService.changePassword(changePasswordRequestDto, userDetails));
     }
 
     @PutMapping("/withdraw")

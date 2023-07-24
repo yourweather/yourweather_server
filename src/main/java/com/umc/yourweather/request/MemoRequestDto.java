@@ -1,4 +1,4 @@
-package com.umc.yourweather.dto;
+package com.umc.yourweather.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.umc.yourweather.domain.Status;

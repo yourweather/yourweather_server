@@ -2,12 +2,9 @@ package com.umc.yourweather.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.umc.yourweather.dto.WeatherRequestDto;
-import com.umc.yourweather.service.WeatherService;
-import org.junit.jupiter.api.Assertions;
+import com.umc.yourweather.request.WeatherRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest

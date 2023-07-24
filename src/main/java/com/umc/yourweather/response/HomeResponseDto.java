@@ -1,4 +1,4 @@
-package com.umc.yourweather.dto;
+package com.umc.yourweather.response;
 
 import com.umc.yourweather.domain.Status;
 import lombok.Builder;

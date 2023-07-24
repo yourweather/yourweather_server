@@ -2,10 +2,9 @@ package com.umc.yourweather.controller;
 
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
-import com.umc.yourweather.domain.Memo;
-import com.umc.yourweather.dto.MemoRequestDto;
-import com.umc.yourweather.dto.MemoResponseDto;
-import com.umc.yourweather.dto.ResponseDto;
+import com.umc.yourweather.request.MemoRequestDto;
+import com.umc.yourweather.response.MemoResponseDto;
+import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.service.MemoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

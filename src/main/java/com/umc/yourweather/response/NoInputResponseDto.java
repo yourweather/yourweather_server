@@ -1,4 +1,4 @@
-package com.umc.yourweather.dto;
+package com.umc.yourweather.response;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

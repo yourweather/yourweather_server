@@ -1,4 +1,4 @@
-package com.umc.yourweather.dto;
+package com.umc.yourweather.request;
 
 import jakarta.persistence.PrePersist;
 import java.time.LocalDate;
