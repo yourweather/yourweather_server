@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.umc.yourweather.domain.Weather;
 import com.umc.yourweather.repository.WeatherRepository;
+import java.time.LocalDate;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,19 +26,19 @@ class WeatherServiceTest {
     public void findWeather() {
         // given
         Weather weather = Weather.builder()
-            .year(2023)
-            .month(7)
-            .day(23)
+            .date(LocalDate.of(2023, 7, 23))
             .build();
 
         weatherRepository.save(weather);
 
         // when
-        Weather findWeather = weatherRepository.findByYearAndMonthAndDay(2023, 7, 23)
-            .orElseThrow(() -> new RuntimeException("Not Found Weather"));
+        Weather findWeather = weatherRepository.findByDate(LocalDate.of(2023, 7, 23))
+            .orElseThrow(() -> new NoSuchElementException("Not Found Weather"));
+
+        LocalDate localDate = findWeather.getDate();
         // then
-        Assertions.assertEquals(findWeather.getYear(), 2023);
-        Assertions.assertEquals(findWeather.getMonth(), 7);
-        Assertions.assertEquals(findWeather.getDay(), 23);
+        Assertions.assertEquals(localDate.getYear(), 2023);
+        Assertions.assertEquals(localDate.getMonthValue(), 7);
+        Assertions.assertEquals(localDate.getDayOfMonth(), 23);
     }
 }
