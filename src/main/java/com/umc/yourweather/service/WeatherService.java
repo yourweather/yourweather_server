@@ -27,9 +27,8 @@ public class WeatherService {
     public String create(WeatherRequestDto weatherRequestDto, CustomUserDetails userDetails) {
         Weather weather = Weather.builder()
             .user(userDetails.getUser())
-            .year(weatherRequestDto.getYear())
-            .month(weatherRequestDto.getMonth())
-            .day(weatherRequestDto.getDay())
+            .date(LocalDate.of(weatherRequestDto.getYear(), weatherRequestDto.getMonth(),
+                weatherRequestDto.getDay()))
             .build();
 
         weatherRepository.save(weather);
