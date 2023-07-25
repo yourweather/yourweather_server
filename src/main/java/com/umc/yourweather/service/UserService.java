@@ -3,7 +3,7 @@ package com.umc.yourweather.service;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.Role;
 import com.umc.yourweather.domain.User;
-import com.umc.yourweather.request.changePasswordRequestDto;
+import com.umc.yourweather.request.ChangePasswordRequestDto;
 import com.umc.yourweather.response.UserResponseDto;
 import com.umc.yourweather.request.SignupRequestDto;
 import com.umc.yourweather.exception.UserNotFoundException;
@@ -61,7 +61,7 @@ public class UserService {
         return new UserResponseDto(user.getNickname(), user.getEmail());
     }
 
-    public String changePassword(changePasswordRequestDto changePasswordRequestDto,
+    public String changePassword(ChangePasswordRequestDto changePasswordRequestDto,
         CustomUserDetails userDetails) {
         User user = userRepository.findByEmail(userDetails.getUser().getEmail())
             .orElseThrow(() -> new UserNotFoundException("등록된 사용자가 없습니다."));
