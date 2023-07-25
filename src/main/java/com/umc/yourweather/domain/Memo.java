@@ -43,10 +43,6 @@ public class Memo {
         time = LocalTime.now();
     }
 
-    public void setWeather(Weather weather) {
-        this.weather = weather;
-    }
-
     @Builder
     public Memo(Status status, LocalTime time, int condition, String content, Weather weather) {
         this.status = status;

@@ -33,8 +33,4 @@ public class Weather {
         this.date = date;
         this.user = user;
     }
-
-    public void addMemo(Memo memo) {
-        memos.add(memo);
-    }
 }

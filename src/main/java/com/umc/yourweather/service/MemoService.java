@@ -34,7 +34,6 @@ public class MemoService {
             .condition(memoRequestDto.getTemperature())
             .build();
 
-        weather.addMemo(memo);
         memoRepository.save(memo);
         return MemoResponseDto.builder()
             .status(memo.getStatus())
