@@ -19,8 +19,7 @@ public class MemoRequestDto {
     @NotBlank
     private String content;
 
-    @NotBlank
-    private int condition;
+    private int temperature;
 
     @PrePersist
     public void setTime() {
