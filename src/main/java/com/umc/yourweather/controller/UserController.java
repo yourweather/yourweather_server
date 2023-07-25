@@ -3,7 +3,7 @@ package com.umc.yourweather.controller;
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.User;
-import com.umc.yourweather.request.changePasswordRequestDto;
+import com.umc.yourweather.request.ChangePasswordRequestDto;
 import com.umc.yourweather.response.UserResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.request.SignupRequestDto;
@@ -40,7 +40,7 @@ public class UserController {
 
     @PostMapping("/password")
     public ResponseDto<UserResponseDto> password(
-        @RequestBody @Valid changePasswordRequestDto changePasswordRequestDto,
+        @RequestBody @Valid ChangePasswordRequestDto changePasswordRequestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success(userService.changePassword(changePasswordRequestDto, userDetails));
     }
