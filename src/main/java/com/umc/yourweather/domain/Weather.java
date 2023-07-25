@@ -21,6 +21,15 @@ public class Weather {
     private Long id;
     private LocalDate date;
 
+    @Column(name = "yyyy")
+    private int year;
+
+    @Column(name = "mm")
+    private int month;
+
+    @Column(name = "dd")
+    private int day;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     User user;

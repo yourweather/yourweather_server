@@ -29,9 +29,13 @@ public class Memo {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "weather_status")
     private Status status; //날씨 상태 enums
-    private LocalTime time;
-    private int condition;
+
+
+    @Column(name = "creation_datetime")
+    private LocalDateTime dateTime;
+    private int temperature;
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

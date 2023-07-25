@@ -1,5 +1,6 @@
 package com.umc.yourweather.jwt.filter;
 
+import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.User;
 import com.umc.yourweather.jwt.JwtTokenManager;
@@ -26,8 +27,13 @@ import java.util.*;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     // login 요청이 들어오면 필터에서 토큰 검증 건너뜀.
-    private static final String[] NO_CHECK_URI_ARRAY = {"/api/v1/users/login", "/api/v1/users/signup"};
-    private static final List<String> NO_CHECK_URIS = new ArrayList<>(Arrays.asList(NO_CHECK_URI_ARRAY));
+    private static final String[] NO_CHECK_URI_ARRAY = {
+            RequestURI.USER_URI + "/login",
+            RequestURI.USER_URI + "/signup",
+            RequestURI.USER_URI + "/oauth-login"
+    };
+    private static final List<String> NO_CHECK_URIS = new ArrayList<>(
+            Arrays.asList(NO_CHECK_URI_ARRAY));
 
     private final JwtTokenManager jwtTokenManager;
     private final UserRepository userRepository;
@@ -101,13 +107,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthentication(User user) {
-        String userPw = user.getPassword();
-
-        // 이 경우에는 타 플랫폼(네이버, 구글, 카카오)로 회원가입한 사람들이다.
-        // 이 사람들에게 비밀번호 필ㄷ는 의미가 없는 것이니, 대충 아무거나 막 랜덤한거로 해서 넣는다.
-        if (userPw == null) {
-            userPw = UUID.randomUUID().toString();
-        }
 
         UserDetails userDetails = new CustomUserDetails(user);
 
