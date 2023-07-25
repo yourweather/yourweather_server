@@ -1,11 +1,10 @@
-package com.umc.yourweather.dto;
+package com.umc.yourweather.request;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
-public class ChangePasswordDto {
+public class ChangePasswordRequestDto {
 
     @NotBlank
     String password;

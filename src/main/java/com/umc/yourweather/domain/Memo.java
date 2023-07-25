@@ -10,8 +10,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,9 +32,9 @@ public class Memo {
     @Column(name = "weather_status")
     private Status status; //날씨 상태 enums
 
+
     @Column(name = "creation_datetime")
     private LocalDateTime dateTime;
-
     private int temperature;
     private String content;
 
@@ -39,5 +42,17 @@ public class Memo {
     @JoinColumn(name = "weather_id")
     private Weather weather;
 
+    @PrePersist
+    public void setTime() {
+        time = LocalTime.now();
+    }
 
+    @Builder
+    public Memo(Status status, LocalTime time, int condition, String content, Weather weather) {
+        this.status = status;
+        this.time = time;
+        this.condition = condition;
+        this.content = content;
+        this.weather = weather;
+    }
 }

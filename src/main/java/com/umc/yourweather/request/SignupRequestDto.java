@@ -1,4 +1,4 @@
-package com.umc.yourweather.dto;
+package com.umc.yourweather.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
