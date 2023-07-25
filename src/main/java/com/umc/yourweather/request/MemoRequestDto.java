@@ -13,13 +13,7 @@ import lombok.Getter;
 @Getter
 public class MemoRequestDto {
 
-    @JsonFormat(pattern = "yyyyMMdd")
-    String datetime;
-
-    private LocalDate date;
-    private LocalTime time;
-
-    @NotBlank
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @NotBlank
