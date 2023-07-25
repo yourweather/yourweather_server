@@ -19,7 +19,8 @@ public class MemoService {
     private final MemoRepository memoRepository;
 
     public MemoResponseDto write(MemoRequestDto memoRequestDto, CustomUserDetails userDetails) {
-        LocalDate date = memoRequestDto.getDate();
+        LocalDate date = LocalDate.of(memoRequestDto.getYear(), memoRequestDto.getMonth(),
+            memoRequestDto.getDay());
         Weather weather = weatherRepository.findByDate(LocalDate.of(
                 date.getYear(),
                 date.getMonthValue(), date.getDayOfMonth()))
@@ -30,7 +31,7 @@ public class MemoService {
             .weather(weather)
             .status(memoRequestDto.getStatus())
             .content(memoRequestDto.getContent())
-            .condition(memoRequestDto.getCondition())
+            .condition(memoRequestDto.getTemperature())
             .build();
 
         weather.addMemo(memo);
