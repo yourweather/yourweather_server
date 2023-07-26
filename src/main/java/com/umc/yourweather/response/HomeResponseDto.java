@@ -10,13 +10,13 @@ public class HomeResponseDto {
     // 홈 화면은 미정, 후에 픽스되는 대로 필드를 추가할 예정
     private String nickname;
     private Status status;
-    private int condition;
+    private int temperature;
 
     @Builder
-    public HomeResponseDto(String nickname, Status status, int condition) {
+    public HomeResponseDto(String nickname, Status status, int temperature) {
         this.nickname = nickname;
         this.status = status;
-        this.condition = condition;
+        this.temperature = temperature;
     }
 }
 

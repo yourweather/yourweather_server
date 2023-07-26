@@ -38,7 +38,7 @@ public class MemoService {
         return MemoResponseDto.builder()
             .status(memo.getStatus())
             .content(memo.getContent())
-            .condition(memo.getTemperature())
+            .temperature(memo.getTemperature())
             .build();
     }
 }

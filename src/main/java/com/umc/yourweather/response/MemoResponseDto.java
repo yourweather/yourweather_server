@@ -9,12 +9,12 @@ public class MemoResponseDto {
 
     private Status status;
     private String content;
-    private int condition;
+    private int temperature;
 
     @Builder
-    public MemoResponseDto(Status status, String content, int condition) {
+    public MemoResponseDto(Status status, String content, int temperature) {
         this.status = status;
         this.content = content;
-        this.condition = condition;
+        this.temperature = temperature;
     }
 }

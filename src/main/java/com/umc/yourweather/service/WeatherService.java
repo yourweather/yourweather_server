@@ -92,7 +92,7 @@ public class WeatherService {
         return HomeResponseDto.builder()
             .nickname(user.getNickname())
             .status(lastMemo.getStatus())
-            .condition(lastMemo.getTemperature())
+            .temperature(lastMemo.getTemperature())
             .build();
 
     }
