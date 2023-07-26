@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,15 +31,14 @@ public class WeatherService {
 
         return "날씨 생성 완료";
     }
-    public String getWeathersByDate(LocalDate date) {
-        weatherRepository.findByDate(date);
+    public List<Weather> getWeathersByDate(LocalDate date) {
+        return weatherRepository.findByDate(date);
 
-        return "일별 날씨 조회 완료";
     }
 
-    public String getWeathersByMonth(int month, int year) {
-        weatherRepository.findByMonth(month, year);
+    public List<Weather> getWeathersByMonth(int month, int year) {
+        return weatherRepository.findByMonth(month, year);
 
-        return "일별 날씨 조회 완료";
     }
+
 }
