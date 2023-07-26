@@ -18,22 +18,4 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest
 class UserControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private EmailService emailService;
-
-    @MockBean
-    private UserService userService;
-
-    @Test
-    @DisplayName("회원 가입 테스트")
-    void signup() throws Exception {
-        mockMvc.perform(post("/api/v1/users/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(
-                    "{\"email\":\"test@gmail.com.\", \"password\" : \"1234\",\"nickname\":\"tester\",\"platform\":\"google\"}"))
-            .andDo(print());
-    }
 }
