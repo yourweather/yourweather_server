@@ -31,14 +31,14 @@ public class MemoService {
             .weather(weather)
             .status(memoRequestDto.getStatus())
             .content(memoRequestDto.getContent())
-            .condition(memoRequestDto.getTemperature())
+            .temperature(memoRequestDto.getTemperature())
             .build();
 
         memoRepository.save(memo);
         return MemoResponseDto.builder()
             .status(memo.getStatus())
             .content(memo.getContent())
-            .condition(memo.getCondition())
+            .condition(memo.getTemperature())
             .build();
     }
 }
