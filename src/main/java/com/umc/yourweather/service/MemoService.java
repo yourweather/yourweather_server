@@ -2,6 +2,7 @@ package com.umc.yourweather.service;
 
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.entity.Memo;
+import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.request.MemoRequestDto;
@@ -22,11 +23,13 @@ public class MemoService {
         LocalDate date = LocalDate.of(memoRequestDto.getYear(), memoRequestDto.getMonth(),
                 memoRequestDto.getDay());
 
+        User user = userDetails.getUser();
+
         // weather 찾아보고 만약 없으면 새로 등록해줌.
-        Weather weather = weatherRepository.findByDate(date)
+        Weather weather = weatherRepository.findByDateAndUser(date, user)
                 .orElseGet(() -> {
                     Weather newWeather = Weather.builder()
-                            .user(userDetails.getUser())
+                            .user(user)
                             .date(date)
                             .build();
 
