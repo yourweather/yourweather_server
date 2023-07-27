@@ -1,8 +1,9 @@
 package com.umc.yourweather.repository;
 
 import com.umc.yourweather.domain.Memo;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.time.LocalDateTime;
+import java.util.List;
 
-public interface MemoRepository extends JpaRepository<Memo, Long> {
-
+public interface MemoRepository {
+    List<Memo> findByCreatedDateBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
 }
