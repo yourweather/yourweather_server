@@ -29,4 +29,17 @@ public class ReportController {
 
         return ResponseDto.success("금주 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
     }
+
+
+    @GetMapping("/last-week")
+    public ResponseDto<StatisticResponseDto> getLastWeek(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime lastWeek = now.minusWeeks(1);
+
+        Statistic statistic = reportService.getStatisticForWeek(customUserDetails.getUser(),
+                lastWeek);
+
+        return ResponseDto.success("이전 주 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
+    }
 }
