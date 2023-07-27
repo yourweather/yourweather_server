@@ -1,5 +1,6 @@
 package com.umc.yourweather.repository;
 
+import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
 import java.time.LocalDate;
 import java.util.List;
@@ -10,5 +11,5 @@ public interface WeatherRepository extends JpaRepository<Weather, Long> {
 
     List<Weather> findWeatherByDateBetween(LocalDate startDate, LocalDate endDate);
 
-    Optional<Weather> findByDate(LocalDate localDate);
+    Optional<Weather> findByDateAndUser(LocalDate localDate, User user);
 }
