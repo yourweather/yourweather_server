@@ -1,5 +1,6 @@
 package com.umc.yourweather.service;
 
+import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.repository.WeatherRepository;
 import java.time.LocalDate;
@@ -27,10 +28,13 @@ class WeatherServiceTest {
             .date(LocalDate.of(2023, 7, 23))
             .build();
 
+        User user = User.builder()
+                .build();
+
         weatherRepository.save(weather);
 
         // when
-        Weather findWeather = weatherRepository.findByDate(LocalDate.of(2023, 7, 23))
+        Weather findWeather = weatherRepository.findByDateAndUser(LocalDate.of(2023, 7, 23), user)
             .orElseThrow(() -> new NoSuchElementException("Not Found Weather"));
 
         LocalDate localDate = findWeather.getDate();
