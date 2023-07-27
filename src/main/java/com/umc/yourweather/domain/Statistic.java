@@ -2,10 +2,12 @@ package com.umc.yourweather.domain;
 
 import com.umc.yourweather.domain.enums.Status;
 import lombok.Getter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Slf4j
+@ToString
 public class Statistic {
 
     private int sunny;
