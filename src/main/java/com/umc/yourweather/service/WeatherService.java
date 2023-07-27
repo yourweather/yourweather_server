@@ -78,11 +78,10 @@ public class WeatherService {
 
     public HomeResponseDto home(CustomUserDetails userDetails) {
         LocalDate current = LocalDate.now();
-
-        Weather weather = weatherRepository.findByDate(current)
-            .orElseThrow(() -> new NoSuchElementException("해당 날짜에 해당하는 날씨 객체가 없습니다."));
-
         User user = userDetails.getUser();
+
+        Weather weather = weatherRepository.findByDateAndUser(current, user)
+            .orElseThrow(() -> new NoSuchElementException("해당 날짜에 해당하는 날씨 객체가 없습니다."));
         List<Memo> memos = weather.getMemos();
         if (memos.isEmpty()) {
             throw new NoSuchElementException("해당 날짜의 날씨에 대한 메모가 없습니다.");
