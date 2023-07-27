@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public class Memo {
 
 
     @Column(name = "creation_datetime")
-    private LocalTime localTime;
+    private LocalDateTime createdDate;
     private int temperature;
     private String content;
 
@@ -43,13 +43,13 @@ public class Memo {
 
     @PrePersist
     public void setTime() {
-        localTime = LocalTime.now();
+        createdDate = LocalDateTime.now();
     }
 
     @Builder
-    public Memo(Status status, LocalTime localTime, int temperature, String content, Weather weather) {
+    public Memo(Status status, LocalDateTime createdDate, int temperature, String content, Weather weather) {
         this.status = status;
-        this.localTime = localTime;
+        this.createdDate = createdDate;
         this.temperature = temperature;
         this.content = content;
         this.weather = weather;
