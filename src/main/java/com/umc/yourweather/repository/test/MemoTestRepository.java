@@ -1,6 +1,7 @@
 package com.umc.yourweather.repository.test;
 
 import com.umc.yourweather.domain.entity.Memo;
+import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.enums.Status;
 import com.umc.yourweather.repository.MemoRepository;
 import java.time.LocalDateTime;
@@ -26,7 +27,7 @@ public class MemoTestRepository implements MemoRepository {
     }
 
     @Override
-    public List<Memo> findByCreatedDateBetween(LocalDateTime startDateTime,
+    public List<Memo> findByUserAndCreatedDateBetween(User user, LocalDateTime startDateTime,
             LocalDateTime endDateTime) {
         return memoListOrderByDateTime;
     }
