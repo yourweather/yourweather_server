@@ -19,4 +19,9 @@ public class MemoRepositoryImpl implements MemoRepository {
             LocalDateTime endDateTime) {
         return memoJpaRepository.findByCreatedDateBetween(startDateTime, endDateTime);
     }
+
+    @Override
+    public Memo save(Memo memo) {
+        return memoJpaRepository.save(memo);
+    }
 }

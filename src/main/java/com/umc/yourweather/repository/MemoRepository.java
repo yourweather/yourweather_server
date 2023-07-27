@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface MemoRepository {
     List<Memo> findByCreatedDateBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
+    Memo save(Memo memo);
 }
