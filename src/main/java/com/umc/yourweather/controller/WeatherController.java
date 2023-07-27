@@ -2,7 +2,7 @@ package com.umc.yourweather.controller;
 
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
-import com.umc.yourweather.domain.Weather;
+import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.response.HomeResponseDto;
 import com.umc.yourweather.request.NoInputRequestDto;
 import com.umc.yourweather.response.NoInputResponseDto;

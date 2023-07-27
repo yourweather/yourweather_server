@@ -1,5 +1,6 @@
-package com.umc.yourweather.domain;
+package com.umc.yourweather.domain.entity;
 
+import com.umc.yourweather.domain.enums.Role;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

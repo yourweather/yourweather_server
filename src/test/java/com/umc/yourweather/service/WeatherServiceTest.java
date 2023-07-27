@@ -1,8 +1,6 @@
 package com.umc.yourweather.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.umc.yourweather.domain.Weather;
+import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.repository.WeatherRepository;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;

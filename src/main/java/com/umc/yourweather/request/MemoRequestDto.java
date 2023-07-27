@@ -1,10 +1,9 @@
 package com.umc.yourweather.request;
 
-import com.umc.yourweather.domain.Status;
+import com.umc.yourweather.domain.enums.Status;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter

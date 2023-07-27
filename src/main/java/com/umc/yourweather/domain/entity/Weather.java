@@ -1,4 +1,4 @@
-package com.umc.yourweather.domain;
+package com.umc.yourweather.domain.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;

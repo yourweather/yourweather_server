@@ -1,9 +1,9 @@
 package com.umc.yourweather.service;
 
 import com.umc.yourweather.auth.CustomUserDetails;
-import com.umc.yourweather.domain.Memo;
-import com.umc.yourweather.domain.User;
-import com.umc.yourweather.domain.Weather;
+import com.umc.yourweather.domain.entity.Memo;
+import com.umc.yourweather.domain.entity.User;
+import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.response.HomeResponseDto;
 import com.umc.yourweather.request.NoInputRequestDto;
 import com.umc.yourweather.response.NoInputResponseDto;
