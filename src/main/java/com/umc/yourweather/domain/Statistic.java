@@ -1,5 +1,6 @@
 package com.umc.yourweather.domain;
 
+import com.umc.yourweather.domain.enums.Status;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

@@ -1,6 +1,6 @@
 package com.umc.yourweather.repository;
 
-import com.umc.yourweather.domain.Memo;
+import com.umc.yourweather.domain.entity.Memo;
 import java.time.LocalDateTime;
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.umc.yourweather.repository;
 
-import com.umc.yourweather.domain.User;
+import com.umc.yourweather.domain.entity.User;
 
 import java.util.Optional;
 

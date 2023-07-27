@@ -1,6 +1,6 @@
 package com.umc.yourweather.response;
 
-import com.umc.yourweather.domain.Status;
+import com.umc.yourweather.domain.enums.Status;
 import lombok.Builder;
 import lombok.Getter;
 
