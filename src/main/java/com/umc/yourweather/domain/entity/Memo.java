@@ -42,11 +42,6 @@ public class Memo {
     @JoinColumn(name = "weather_id")
     private Weather weather;
 
-    @PrePersist
-    public void setTime() {
-        createdDate = LocalDateTime.now();
-    }
-
     @Builder
     public Memo(Status status, LocalDateTime createdDate, int temperature, String content, Weather weather) {
         this.status = status;
