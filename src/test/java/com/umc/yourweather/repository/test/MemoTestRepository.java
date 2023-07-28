@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class MemoTestRepository implements MemoRepository {
     private final List<Memo> memoListOrderByDateTime = new ArrayList<>();
-    private int num;
+    private final int num;
 
     private void addMemo(LocalDateTime dateTime, int num) {
         List<Status> values = Arrays.asList(Status.values());
@@ -22,7 +22,7 @@ public class MemoTestRepository implements MemoRepository {
             Memo memo = Memo.builder()
                     .status(values.get(random.nextInt(values.size())))
                     .temperature(30)
-                    .createdDate(dateTime.plusDays(i))
+                    .createdDateTime(dateTime.plusDays(i))
                     .build();
 
             memoListOrderByDateTime.add(memo);
@@ -37,6 +37,12 @@ public class MemoTestRepository implements MemoRepository {
 
     @Override
     public List<Memo> findByUserAndCreatedDateBetween(User user, LocalDateTime startDateTime,
+            LocalDateTime endDateTime) {
+        return memoListOrderByDateTime;
+    }
+
+    @Override
+    public List<Memo> findSpecificMemoList(User user, Status status, LocalDateTime startDateTime,
             LocalDateTime endDateTime) {
         return memoListOrderByDateTime;
     }
