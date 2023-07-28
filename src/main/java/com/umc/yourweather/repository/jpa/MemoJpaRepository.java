@@ -16,23 +16,23 @@ public interface MemoJpaRepository extends JpaRepository<Memo, Long> {
             + "JOIN FETCH w.user u "
             + "WHERE "
             + "u = :user AND "
-            + "m.createdDate >= :startDateTime AND "
-            + "m.createdDate <= :endDateTime "
-            + "ORDER BY m.createdDate asc")
+            + "m.createdDateTime >= :startDateTime AND "
+            + "m.createdDateTime <= :endDateTime "
+            + "ORDER BY m.createdDateTime asc")
     List<Memo> findByUserAndCreatedDateBetween(
             @Param("user") User user,
             @Param("startDateTime") LocalDateTime startDateTime,
             @Param("endDateTime") LocalDateTime endDateTime);
 
-    @Query("SELECT m FROM m "
+    @Query("SELECT m FROM Memo m "
             + "JOIN FETCH m.weather w "
             + "JOIN FETCH w.user u "
             + "WHERE "
             + "u = :user AND "
-            + "m.status = :status AND"
-            + "m.createdDate >= :startDateTime AND "
-            + "m.createdDate <= :endDateTime "
-            + "ORDER BY m.createdDate asc")
+            + "m.status = :status AND "
+            + "m.createdDateTime >= :startDateTime AND "
+            + "m.createdDateTime <= :endDateTime "
+            + "ORDER BY m.createdDateTime asc")
     List<Memo> findSpecificMemoList(
             @Param("user") User user,
             @Param("status") Status status,
