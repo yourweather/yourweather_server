@@ -9,6 +9,7 @@ import com.umc.yourweather.request.MemoRequestDto;
 import com.umc.yourweather.response.MemoResponseDto;
 import com.umc.yourweather.repository.WeatherRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,15 @@ public class MemoService {
     private final MemoRepository memoRepository;
 
     public MemoResponseDto write(MemoRequestDto memoRequestDto, CustomUserDetails userDetails) {
-        LocalDate date = LocalDate.of(memoRequestDto.getYear(), memoRequestDto.getMonth(),
-                memoRequestDto.getDay());
+        LocalDateTime dateTime = LocalDateTime.of(
+                memoRequestDto.getYear(),
+                memoRequestDto.getMonth(),
+                memoRequestDto.getDay(),
+                memoRequestDto.getHour(),
+                memoRequestDto.getMinute(),
+                memoRequestDto.getSecond());
+
+        LocalDate date = dateTime.toLocalDate();
 
         User user = userDetails.getUser();
 
@@ -42,6 +50,7 @@ public class MemoService {
                 .status(memoRequestDto.getStatus())
                 .content(memoRequestDto.getContent())
                 .temperature(memoRequestDto.getTemperature())
+                .createdDateTime(dateTime)
                 .build();
 
         memoRepository.save(memo);
