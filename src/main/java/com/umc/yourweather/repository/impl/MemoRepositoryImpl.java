@@ -2,6 +2,7 @@ package com.umc.yourweather.repository.impl;
 
 import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
+import com.umc.yourweather.domain.enums.Status;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.jpa.MemoJpaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,6 +28,12 @@ public class MemoRepositoryImpl implements MemoRepository {
         }
 
         throw new EntityNotFoundException(String.format("%s의 통계 데이터 조회 실패: 해당 기간 동안의 기록이 없습니다.", user.getEmail()));
+    }
+
+    @Override
+    public List<Memo> findSpecificMemoList(User user, Status status, LocalDateTime startDateTime,
+            LocalDateTime endDateTime) {
+        return memoJpaRepository.findSpecificMemoList(user, status, startDateTime, endDateTime);
     }
 
     @Override
