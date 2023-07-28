@@ -1,11 +1,16 @@
 package com.umc.yourweather.domain;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.test.MemoTestRepository;
 import com.umc.yourweather.response.StatisticResponseDto;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+
 
 class StatisticCreatorTest {
 
@@ -16,9 +21,12 @@ class StatisticCreatorTest {
     public void test1() {
         // given
         StatisticCreator statisticCreator = new StatisticCreator(memoRepository);
+        User user = User.builder()
+                .email("sbs8239@gmail.com")
+                .build();
 
         // when
-        Statistic weeklyStatistic = statisticCreator.createWeeklyStatistic(LocalDateTime.now());
+        Statistic weeklyStatistic = statisticCreator.createWeeklyStatistic(user, LocalDateTime.now());
 
         // then
         System.out.println(weeklyStatistic.toString());
@@ -29,13 +37,23 @@ class StatisticCreatorTest {
     public void test2() {
         // given
         StatisticCreator statisticCreator = new StatisticCreator(memoRepository);
+        User user = User.builder()
+                .email("sbs8239@gmail.com")
+                .build();
 
         // when
-        Statistic weeklyStatistic = statisticCreator.createWeeklyStatistic(LocalDateTime.now());
+        Statistic weeklyStatistic = statisticCreator.createWeeklyStatistic(user, LocalDateTime.now());
         StatisticResponseDto statisticResponseDto = new StatisticResponseDto(weeklyStatistic);
+        int sum = Math.round(statisticResponseDto.getSunny() +
+                statisticResponseDto.getCloudy() +
+                statisticResponseDto.getRainy() +
+                statisticResponseDto.getLightning());
 
         // then
         System.out.println(weeklyStatistic);
         System.out.println(statisticResponseDto.toString());
+
+        assertEquals(weeklyStatistic.getSum(), 7);
+        assertEquals(sum, 100);
     }
 }
