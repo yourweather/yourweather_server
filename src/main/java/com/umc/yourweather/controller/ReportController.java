@@ -51,4 +51,15 @@ public class ReportController {
 
         return ResponseDto.success("이번 달 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
     }
+
+    @GetMapping("/last-month")
+    public ResponseDto<StatisticResponseDto> getLastMonth(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime previousMonthDay = now.minusMonths(1);
+
+        Statistic statistic = reportService.getStatisticForMonth(
+                customUserDetails.getUser(), previousMonthDay);
+
+        return ResponseDto.success("지난 달 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
+    }
 }
