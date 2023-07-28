@@ -9,10 +9,12 @@ import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class MemoRepositoryImpl implements MemoRepository {
 
     private final MemoJpaRepository memoJpaRepository;
@@ -23,17 +25,24 @@ public class MemoRepositoryImpl implements MemoRepository {
         List<Memo> memoList = memoJpaRepository.findByUserAndCreatedDateBetween(
                 user, startDateTime, endDateTime);
 
-        if(memoList.size() > 0) {
-            return memoList;
+        if(memoList.size() == 0) {
+            log.error(String.format("%s의 통계 데이터 조회 실패: 해당 기간 동안의 기록이 없습니다.", user.getEmail()));
         }
 
-        throw new EntityNotFoundException(String.format("%s의 통계 데이터 조회 실패: 해당 기간 동안의 기록이 없습니다.", user.getEmail()));
+        return memoList;
     }
 
     @Override
     public List<Memo> findSpecificMemoList(User user, Status status, LocalDateTime startDateTime,
             LocalDateTime endDateTime) {
-        return memoJpaRepository.findSpecificMemoList(user, status, startDateTime, endDateTime);
+        List<Memo> memoList = memoJpaRepository.findSpecificMemoList(user, status,
+                startDateTime, endDateTime);
+
+        if (memoList.size() == 0) {
+            log.error(String.format("%s의 월간 특정 날씨 일자 조회 실패: status나 기간을 제대로 입력했는지 확인해주세요.", user.getEmail()));
+        }
+
+        return memoList;
     }
 
     @Override
