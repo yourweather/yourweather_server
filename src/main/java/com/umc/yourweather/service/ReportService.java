@@ -32,7 +32,7 @@ public class ReportService {
         return statisticCreator.createMonthlyStatistic(user, dateTime);
     }
 
-    public List<MemoReportResponseDto> getSpecificMemoList(User user, Status status, int month, LocalDateTime startDateTime) {
+    public List<MemoReportResponseDto> getSpecificMemoList(User user, Status status, LocalDateTime startDateTime) {
         LocalDateTime endDateTime = startDateTime.withDayOfMonth(
                 startDateTime.toLocalDate().lengthOfMonth());
 
