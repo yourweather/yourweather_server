@@ -89,7 +89,7 @@ public class ReportController {
                 0,
                 0);
 
-        List<MemoReportResponseDto> memoList = reportService.getSpecificMemoList(user, status, month, dateTime);
+        List<MemoReportResponseDto> memoList = reportService.getSpecificMemoList(user, status, dateTime);
         Statistic statistic = reportService.getStatisticForMonth(user, dateTime);
         StatisticResponseDto statisticResDto = new StatisticResponseDto(statistic);
 
