@@ -33,7 +33,7 @@ public class Memo {
 
 
     @Column(name = "creation_datetime")
-    private LocalDateTime createdDate;
+    private LocalDateTime createdDateTime;
     private int temperature;
     private String content;
 
@@ -42,9 +42,9 @@ public class Memo {
     private Weather weather;
 
     @Builder
-    public Memo(Status status, LocalDateTime createdDate, int temperature, String content, Weather weather) {
+    public Memo(Status status, LocalDateTime createdDateTime, int temperature, String content, Weather weather) {
         this.status = status;
-        this.createdDate = createdDate;
+        this.createdDateTime = createdDateTime;
         this.temperature = temperature;
         this.content = content;
         this.weather = weather;
