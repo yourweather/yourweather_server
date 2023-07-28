@@ -44,7 +44,7 @@ class StatisticCreatorTest {
         System.out.println(statisticResponseDto.toString());
 
         assertEquals(weeklyStatistic.getSum(), 7);
-        assertEquals(sum, 100);
+        assertEquals(100, sum);
     }
 
     @Test
@@ -70,6 +70,6 @@ class StatisticCreatorTest {
         System.out.println(statisticResponseDto.toString());
 
         assertEquals(weeklyStatistic.getSum(), 31);
-        assertEquals(sum, 100);
+        assertEquals(100, sum);
     }
 }
