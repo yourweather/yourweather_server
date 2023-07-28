@@ -4,6 +4,7 @@ import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.Memo;
 import com.umc.yourweather.domain.User;
 import com.umc.yourweather.domain.Weather;
+import com.umc.yourweather.exception.MemoNotFoundException;
 import com.umc.yourweather.exception.WeatherNotFoundException;
 import com.umc.yourweather.response.HomeResponseDto;
 import com.umc.yourweather.request.NoInputRequestDto;
@@ -14,7 +15,6 @@ import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,12 +81,12 @@ public class WeatherService {
         LocalDate current = LocalDate.now();
 
         Weather weather = weatherRepository.findByDate(current)
-            .orElseThrow(() -> new WeatherNotFoundException("해당 날짜에 해당하는 날씨 객체가 없습니다."));
+            .orElseThrow(() -> new WeatherNotFoundException("해당 날짜에 해당하는 날씨 객체가 존재하지 않습니다."));
 
         User user = userDetails.getUser();
         List<Memo> memos = weather.getMemos();
         if (memos.isEmpty()) {
-            throw new WeatherNotFoundException("해당 날짜의 날씨에 대한 메모가 없습니다.");
+            throw new MemoNotFoundException("해당 날짜의 날씨에 대한 메모가 없습니다.");
         }
 
         Memo lastMemo = memos.get(memos.size() - 1);
@@ -99,6 +99,10 @@ public class WeatherService {
     }
 
     public Weather delete(Long weatherId, CustomUserDetails userDetails) {
+        Weather weather = weatherRepository.findById(weatherId)
+            .orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
 
+        weatherRepository.delete(weather);
+        return weather;
     }
 }
