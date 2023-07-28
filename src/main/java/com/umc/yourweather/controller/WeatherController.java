@@ -42,5 +42,11 @@ public class WeatherController {
         return ResponseDto.success("미 입력 날짜 조회 성공",
             weatherService.getNoInputs(noInputRequestDto, userDetails));
     }
+
+    @DeleteMapping("/{weatherId}")
+    public ResponseDto<Weather> delete(@PathVariable Long weatherId,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseDto.success("날씨 삭제 성공", weatherService.delete(weatherId, userDetails));
+    }
 }
 
