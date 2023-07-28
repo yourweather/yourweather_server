@@ -42,4 +42,13 @@ public class ReportController {
 
         return ResponseDto.success("이전 주 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
     }
+
+    @GetMapping("/this-month")
+    public ResponseDto<StatisticResponseDto> getThisMonth(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        LocalDateTime now = LocalDateTime.now();
+
+        Statistic statistic = reportService.getStatisticForMonth(customUserDetails.getUser(), now);
+
+        return ResponseDto.success("이번 달 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
+    }
 }
