@@ -9,14 +9,10 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class StatisticCreator {
+
     private final MemoRepository memoRepository;
 
-    public Statistic createWeeklyStatistic(User user, LocalDateTime dateTime) {
-        int dayOfWeek = dateTime.getDayOfWeek().getValue();
-
-        LocalDateTime startDateTime = dateTime.minusDays(dayOfWeek - 1);
-        LocalDateTime endDateTime = dateTime.plusDays(7 - dayOfWeek);
-
+    private Statistic getStatistic(User user, LocalDateTime startDateTime, LocalDateTime endDateTime) {
         List<Memo> memoList = memoRepository.findByUserAndCreatedDateBetween(user, startDateTime,
                 endDateTime);
 
@@ -25,5 +21,14 @@ public class StatisticCreator {
         memoList.forEach(memo -> statistic.plusPoint(memo.getStatus()));
 
         return statistic;
+    }
+
+    public Statistic createWeeklyStatistic(User user, LocalDateTime dateTime) {
+        int dayOfWeek = dateTime.getDayOfWeek().getValue();
+
+        LocalDateTime startDateTime = dateTime.minusDays(dayOfWeek - 1);
+        LocalDateTime endDateTime = dateTime.plusDays(7 - dayOfWeek);
+
+        return getStatistic(user, startDateTime, endDateTime);
     }
 }
