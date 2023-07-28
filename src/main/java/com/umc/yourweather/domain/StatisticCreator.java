@@ -31,4 +31,13 @@ public class StatisticCreator {
 
         return getStatistic(user, startDateTime, endDateTime);
     }
+
+
+    public Statistic createMonthlyStatistic(User user, LocalDateTime dateTime) {
+        LocalDateTime startDateTime = dateTime.withDayOfMonth(1);
+        LocalDateTime endDateTime = dateTime.withDayOfMonth(
+                dateTime.toLocalDate().lengthOfMonth());
+
+        return getStatistic(user, startDateTime, endDateTime);
+    }
 }
