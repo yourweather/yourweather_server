@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 class StatisticCreatorTest {
 
-    MemoRepository memoRepository = new MemoTestRepository();
+    MemoRepository memoRepository = new MemoTestRepository(7);
 
     @Test
     @DisplayName("통계 생성 테스트")

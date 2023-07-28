@@ -12,18 +12,27 @@ import java.util.Random;
 
 public class MemoTestRepository implements MemoRepository {
     private final List<Memo> memoListOrderByDateTime = new ArrayList<>();
+    private int num;
 
-    public MemoTestRepository() {
+    private void addMemo(LocalDateTime dateTime, int num) {
         List<Status> values = Arrays.asList(Status.values());
         Random random = new Random();
-        for(int i = 0; i < 7; i++) {
+
+        for(int i = 0; i < num; i++) {
             Memo memo = Memo.builder()
                     .status(values.get(random.nextInt(values.size())))
                     .temperature(30)
+                    .createdDate(dateTime.plusDays(i))
                     .build();
 
             memoListOrderByDateTime.add(memo);
         }
+    }
+
+    public MemoTestRepository(int num) {
+        this.num = num;
+        LocalDateTime dateTime = LocalDateTime.now();
+        addMemo(dateTime, this.num);
     }
 
     @Override
