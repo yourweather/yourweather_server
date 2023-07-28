@@ -19,4 +19,10 @@ public class ReportService {
 
         return statisticCreator.createWeeklyStatistic(user, dateTime);
     }
+
+    public Statistic getStatisticForMonth(User user, LocalDateTime dateTime) {
+        StatisticCreator statisticCreator = new StatisticCreator(memoRepository);
+
+        return statisticCreator.createMonthlyStatistic(user, dateTime);
+    }
 }
