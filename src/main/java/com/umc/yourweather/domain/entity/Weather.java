@@ -26,7 +26,7 @@ public class Weather {
     @JoinColumn(name = "user_id")
     User user;
 
-    @OneToMany(mappedBy = "weather", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "weather", orphanRemoval = true)
     List<Memo> memos = new ArrayList<>();
 
     @Builder
