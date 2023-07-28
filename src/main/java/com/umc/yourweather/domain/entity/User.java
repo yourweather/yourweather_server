@@ -35,7 +35,7 @@ public class User {
 
     private boolean isActivate;
 
-    @OneToMany(mappedBy = "user", cascade=CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     List<Weather> weathers = new ArrayList<>();
 
     @Builder
