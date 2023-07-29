@@ -10,6 +10,7 @@ import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.request.WeatherRequestDto;
 import com.umc.yourweather.service.WeatherService;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -43,10 +44,13 @@ public class WeatherController {
             weatherService.getMissedInputs(missedInputRequestDto, userDetails));
     }
 
-    @DeleteMapping("/{weatherId}")
-    public ResponseDto<Weather> delete(@PathVariable Long weatherId,
+    @DeleteMapping("/{year}-{month}-{day}")
+    public ResponseDto<Weather> delete(@PathVariable int year,
+        @PathVariable int month,
+        @PathVariable int day,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return ResponseDto.success("날씨 삭제 성공", weatherService.delete(weatherId, userDetails));
+        LocalDate localDate = LocalDate.of(year,month,day);
+        return ResponseDto.success("날씨 삭제 성공", weatherService.delete(localDate, userDetails));
     }
 }
 
