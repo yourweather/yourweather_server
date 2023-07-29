@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoInputResponseDto {
+public class MissedInputResponseDto {
 
     List<LocalDate> localDates = new ArrayList<>();
 
