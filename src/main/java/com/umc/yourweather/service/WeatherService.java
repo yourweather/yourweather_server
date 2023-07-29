@@ -7,8 +7,8 @@ import com.umc.yourweather.domain.Weather;
 import com.umc.yourweather.exception.MemoNotFoundException;
 import com.umc.yourweather.exception.WeatherNotFoundException;
 import com.umc.yourweather.response.HomeResponseDto;
-import com.umc.yourweather.request.NoInputRequestDto;
-import com.umc.yourweather.response.NoInputResponseDto;
+import com.umc.yourweather.request.MissedInputRequestDto;
+import com.umc.yourweather.response.MissedInputResponseDto;
 import com.umc.yourweather.request.WeatherRequestDto;
 import com.umc.yourweather.repository.WeatherRepository;
 import jakarta.validation.Valid;
@@ -39,14 +39,14 @@ public class WeatherService {
         return "날씨 생성 완료";
     }
 
-    public NoInputResponseDto getNoInputs(@Valid NoInputRequestDto noInputRequestDto,
+    public MissedInputResponseDto getMissedInputs(@Valid MissedInputRequestDto missedInputRequestDto,
         CustomUserDetails userDetails) {
 
         // 응답 변수 추가
-        NoInputResponseDto noInputResponseDto = new NoInputResponseDto();
+        MissedInputResponseDto missedInputResponseDto = new MissedInputResponseDto();
 
         // 현재의 날짜 GET
-        LocalDate currentDate = noInputRequestDto.getDate();
+        LocalDate currentDate = missedInputRequestDto.getDate();
 
         // 1주 전의 날짜 GET
         LocalDate oneWeekAgo = currentDate.minusWeeks(1);
@@ -70,11 +70,11 @@ public class WeatherService {
             int day = localDate.getDayOfMonth();
 
             if (!dateList.contains(LocalDate.of(year, month, day))) {
-                noInputResponseDto.addDate(
+                missedInputResponseDto.addDate(
                     LocalDate.of(year, month, day));
             }
         }
-        return noInputResponseDto;
+        return missedInputResponseDto;
     }
 
     public HomeResponseDto home(CustomUserDetails userDetails) {

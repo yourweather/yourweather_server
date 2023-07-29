@@ -4,8 +4,8 @@ import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.Weather;
 import com.umc.yourweather.response.HomeResponseDto;
-import com.umc.yourweather.request.NoInputRequestDto;
-import com.umc.yourweather.response.NoInputResponseDto;
+import com.umc.yourweather.request.MissedInputRequestDto;
+import com.umc.yourweather.response.MissedInputResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.request.WeatherRequestDto;
 import com.umc.yourweather.service.WeatherService;
@@ -36,11 +36,11 @@ public class WeatherController {
     }
 
     @GetMapping("/no-inputs")
-    public ResponseDto<NoInputResponseDto> getNoInputs(
-        @RequestBody @Valid NoInputRequestDto noInputRequestDto,
+    public ResponseDto<MissedInputResponseDto> getNoInputs(
+        @RequestBody @Valid MissedInputRequestDto missedInputRequestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("미 입력 날짜 조회 성공",
-            weatherService.getNoInputs(noInputRequestDto, userDetails));
+            weatherService.getMissedInputs(missedInputRequestDto, userDetails));
     }
 
     @DeleteMapping("/{weatherId}")
