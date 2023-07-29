@@ -8,6 +8,4 @@ public class RequestURI {
     public static final String WEATHER_URI = CURRENT_VER + "/weather";
     public static final String MEMO_URI = CURRENT_VER + "/memo";
     public static final String REPORT_URI = CURRENT_VER + "/report";
-
-    public static final String REPORT_URI = CURRENT_VER + "/report";
 }

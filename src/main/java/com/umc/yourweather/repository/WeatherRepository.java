@@ -12,4 +12,5 @@ public interface WeatherRepository extends JpaRepository<Weather, Long> {
     List<Weather> findWeatherByDateBetween(LocalDate startDate, LocalDate endDate);
 
     Optional<Weather> findByDateAndUser(LocalDate localDate, User user);
+    Optional<Weather> findByDate(LocalDate localDate);
 }
