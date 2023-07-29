@@ -1,20 +1,19 @@
 package com.umc.yourweather.service;
 
 import com.umc.yourweather.auth.CustomUserDetails;
-import com.umc.yourweather.domain.Memo;
-import com.umc.yourweather.domain.User;
-import com.umc.yourweather.domain.Weather;
-import com.umc.yourweather.exception.MemoNotFoundException;
-import com.umc.yourweather.exception.WeatherNotFoundException;
+import com.umc.yourweather.domain.entity.Memo;
+import com.umc.yourweather.domain.entity.User;
+import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.response.HomeResponseDto;
-import com.umc.yourweather.request.MissedInputRequestDto;
-import com.umc.yourweather.response.MissedInputResponseDto;
+import com.umc.yourweather.request.NoInputRequestDto;
+import com.umc.yourweather.response.NoInputResponseDto;
 import com.umc.yourweather.request.WeatherRequestDto;
 import com.umc.yourweather.repository.WeatherRepository;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,14 +38,14 @@ public class WeatherService {
         return "날씨 생성 완료";
     }
 
-    public MissedInputResponseDto getMissedInputs(@Valid MissedInputRequestDto missedInputRequestDto,
+    public NoInputResponseDto getNoInputs(@Valid NoInputRequestDto noInputRequestDto,
         CustomUserDetails userDetails) {
 
         // 응답 변수 추가
-        MissedInputResponseDto missedInputResponseDto = new MissedInputResponseDto();
+        NoInputResponseDto noInputResponseDto = new NoInputResponseDto();
 
         // 현재의 날짜 GET
-        LocalDate currentDate = missedInputRequestDto.getDate();
+        LocalDate currentDate = noInputRequestDto.getDate();
 
         // 1주 전의 날짜 GET
         LocalDate oneWeekAgo = currentDate.minusWeeks(1);
@@ -70,23 +69,22 @@ public class WeatherService {
             int day = localDate.getDayOfMonth();
 
             if (!dateList.contains(LocalDate.of(year, month, day))) {
-                missedInputResponseDto.addDate(
+                noInputResponseDto.addDate(
                     LocalDate.of(year, month, day));
             }
         }
-        return missedInputResponseDto;
+        return noInputResponseDto;
     }
 
     public HomeResponseDto home(CustomUserDetails userDetails) {
         LocalDate current = LocalDate.now();
-
-        Weather weather = weatherRepository.findByDate(current)
-            .orElseThrow(() -> new WeatherNotFoundException("해당 날짜에 해당하는 날씨 객체가 존재하지 않습니다."));
-
         User user = userDetails.getUser();
+
+        Weather weather = weatherRepository.findByDateAndUser(current, user)
+            .orElseThrow(() -> new NoSuchElementException("해당 날짜에 해당하는 날씨 객체가 없습니다."));
         List<Memo> memos = weather.getMemos();
         if (memos.isEmpty()) {
-            throw new MemoNotFoundException("해당 날짜의 날씨에 대한 메모가 없습니다.");
+            throw new NoSuchElementException("해당 날짜의 날씨에 대한 메모가 없습니다.");
         }
 
         Memo lastMemo = memos.get(memos.size() - 1);
@@ -96,13 +94,5 @@ public class WeatherService {
             .temperature(lastMemo.getTemperature())
             .build();
 
-    }
-
-    public Weather delete(LocalDate localDate, CustomUserDetails userDetails) {
-        Weather weather = weatherRepository.findByDate(localDate) // User 파라미터를 추가해야 함
-            .orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
-
-        weatherRepository.delete(weather);
-        return weather;
     }
 }
