@@ -51,4 +51,11 @@ public class Memo {
         this.content = content;
         this.weather = weather;
     }
+
+    public void update(Status status, LocalDateTime localDateTime, int temperature, String content) {
+        this.status = status;
+        this.createdTime = localDateTime;
+        this.temperature = temperature;
+        this.content = content;
+    }
 }

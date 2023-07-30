@@ -6,6 +6,7 @@ import com.umc.yourweather.domain.User;
 import com.umc.yourweather.domain.Weather;
 import com.umc.yourweather.exception.WeatherNotFoundException;
 import com.umc.yourweather.request.MemoRequestDto;
+import com.umc.yourweather.request.MemoUpdateRequestDto;
 import com.umc.yourweather.response.MemoResponseDto;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.WeatherRepository;
@@ -48,7 +49,16 @@ public class MemoService {
                 .build();
     }
 
-    @Transactional //<-@@
+    @Transactional
+    public Long update(Long id, MemoUpdateRequestDto requestDto) {
+        Memo memo = memoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 메모가 없습니다. id =" + id));
+        memo.update(requestDto.getStatus(), requestDto.getCreatedTime(), requestDto.getTemperature(), requestDto.getContent());
+
+        return id;
+    }
+
+    @Transactional
     public void delete(Long id) {
         Memo memo = memoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 메모가 없습니다. id=" + id));
