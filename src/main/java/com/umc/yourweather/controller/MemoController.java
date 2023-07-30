@@ -9,10 +9,7 @@ import com.umc.yourweather.service.MemoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,5 +22,11 @@ public class MemoController {
     public ResponseDto<MemoResponseDto> write(@RequestBody @Valid MemoRequestDto memoRequestDto
         , @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("메모 저장 완료", memoService.write(memoRequestDto, userDetails));
+    }
+
+    @DeleteMapping("/api/v1/posts/{id}") // <-@@
+    public Long delete(@PathVariable Long id) {
+        memoService.delete(id);
+        return id;
     }
 }
