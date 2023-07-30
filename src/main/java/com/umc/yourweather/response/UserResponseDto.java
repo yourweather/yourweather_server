@@ -1,4 +1,4 @@
-package com.umc.yourweather.dto;
+package com.umc.yourweather.response;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
