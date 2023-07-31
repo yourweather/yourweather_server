@@ -76,6 +76,7 @@ public class UserService {
         return new UserResponseDto(user.getNickname(), user.getEmail());
     }
 
+    @Transactional
     public String changePassword(ChangePasswordRequestDto changePasswordRequestDto,
         CustomUserDetails userDetails) {
         User user = userRepository.findByEmail(userDetails.getUser().getEmail())
