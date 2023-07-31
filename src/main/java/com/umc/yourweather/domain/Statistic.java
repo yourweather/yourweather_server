@@ -1,19 +1,30 @@
 package com.umc.yourweather.domain;
 
 import com.umc.yourweather.domain.enums.Status;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Slf4j
 @ToString
+@NoArgsConstructor
 public class Statistic {
 
     private int sunny;
     private int cloudy;
     private int rainy;
     private int lightning;
+
+    @Builder
+    public Statistic(int sunny, int cloudy, int rainy, int lightning) {
+        this.sunny = sunny;
+        this.cloudy = cloudy;
+        this.rainy = rainy;
+        this.lightning = lightning;
+    }
 
     public void plusPoint(Status status) {
         switch(status){
@@ -27,5 +38,14 @@ public class Statistic {
 
     public int getSum() {
         return sunny + cloudy + rainy + lightning;
+    }
+
+    public Statistic getCompare(Statistic toCompare) {
+        return Statistic.builder()
+                .sunny(this.sunny - toCompare.getSunny())
+                .cloudy(this.cloudy - toCompare.getCloudy())
+                .rainy(this.rainy - toCompare.getRainy())
+                .lightning(this.lightning - toCompare.getLightning())
+                .build();
     }
 }
