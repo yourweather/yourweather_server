@@ -61,4 +61,17 @@ public class ReportService {
 
         return thisWeekDto.compareWith(toCompareWeekStatisticDto);
     }
+
+    public StatisticResponseDto getComparedMonthlyStatistic(User user, int month) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime toCompareMonth = now.minusMonths(month);
+
+        Statistic thisWeek = getStatisticForMonth(user, now);
+        Statistic toCompareWeekStatistic = getStatisticForMonth(user, toCompareMonth);
+
+        StatisticResponseDto thisMonthDto = new StatisticResponseDto(thisWeek);
+        StatisticResponseDto toCompareMonthStatisticDto = new StatisticResponseDto(toCompareWeekStatistic);
+
+        return thisMonthDto.compareWith(toCompareMonthStatisticDto);
+    }
 }
