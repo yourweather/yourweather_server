@@ -46,9 +46,18 @@ class WeatherServiceTest {
     }
 
     @Test
-    @DisplayName("WeatherRepository 조회")
+    @DisplayName("Weather 삭제")
     public void findWeather() {
         // given
+        User user = User.builder()
+            .email("test@test.com")
+            .password("password")
+            .nickname("nickname")
+            .platform("platform")
+            .role(Role.ROLE_USER)
+            .isActivate(true)
+            .build();
+
         Weather weather = Weather.builder()
             .date(LocalDate.of(2023, 7, 23))
             .build();
@@ -56,13 +65,9 @@ class WeatherServiceTest {
         weatherRepository.save(weather);
 
         // when
-        Weather findWeather = weatherRepository.findByDate(LocalDate.of(2023, 7, 23))
-            .orElseThrow(() -> new NoSuchElementException("Not Found Weather"));
+        weatherService.delete(LocalDate.of(2023,7,23), new CustomUserDetails(user));
 
-        LocalDate localDate = findWeather.getDate();
         // then
-        Assertions.assertEquals(localDate.getYear(), 2023);
-        Assertions.assertEquals(localDate.getMonthValue(), 7);
-        Assertions.assertEquals(localDate.getDayOfMonth(), 23);
+        assertEquals(0L, weatherRepository.count());
     }
 }
