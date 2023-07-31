@@ -18,13 +18,6 @@ public class Statistic {
     private int rainy;
     private int lightning;
 
-    @Builder
-    public Statistic(int sunny, int cloudy, int rainy, int lightning) {
-        this.sunny = sunny;
-        this.cloudy = cloudy;
-        this.rainy = rainy;
-        this.lightning = lightning;
-    }
 
     public void plusPoint(Status status) {
         switch(status){
