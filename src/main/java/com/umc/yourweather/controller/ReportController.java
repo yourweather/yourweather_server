@@ -100,4 +100,22 @@ public class ReportController {
 
         return ResponseDto.success("월간 특정 날씨 일자 조회 성공.", result);
     }
+
+    @GetMapping("/weekly-comparison")
+    public ResponseDto<StatisticResponseDto> getComparisonForWeek(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam int week) {
+
+        User user = customUserDetails.getUser();
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime toCompareWeek = now.minusWeeks(week);
+
+        Statistic thisWeek = reportService.getStatisticForWeek(user, now);
+        Statistic toCompareWeekStatistic = reportService.getStatisticForWeek(user, toCompareWeek);
+
+        Statistic comparedStatistic = thisWeek.getCompare(toCompareWeekStatistic);
+
+        return ResponseDto.success("주간 비교 성공", new StatisticResponseDto(comparedStatistic));
+    }
+
 }
