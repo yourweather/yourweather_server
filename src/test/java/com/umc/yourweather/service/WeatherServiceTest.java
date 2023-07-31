@@ -8,6 +8,7 @@ import com.umc.yourweather.domain.User;
 import com.umc.yourweather.domain.Weather;
 import com.umc.yourweather.exception.WeatherNotFoundException;
 import com.umc.yourweather.repository.WeatherRepository;
+import com.umc.yourweather.response.MissedInputResponseDto;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Assertions;
@@ -27,7 +28,7 @@ class WeatherServiceTest {
 
     @Test
     @DisplayName("메모가 없을 때의 Home 조회 추")
-    void home(){
+    void home() {
         // given
         User user = User.builder()
             .email("test@test.com")
@@ -42,7 +43,8 @@ class WeatherServiceTest {
 
         // then
         // if there is no weather object
-        Assertions.assertThrows(WeatherNotFoundException.class, () -> weatherService.home(userDetails));
+        Assertions.assertThrows(WeatherNotFoundException.class,
+            () -> weatherService.home(userDetails));
     }
 
     @Test
@@ -65,9 +67,31 @@ class WeatherServiceTest {
         weatherRepository.save(weather);
 
         // when
-        weatherService.delete(LocalDate.of(2023,7,23), new CustomUserDetails(user));
+        weatherService.delete(LocalDate.of(2023, 7, 23), new CustomUserDetails(user));
 
         // then
         assertEquals(0L, weatherRepository.count());
+    }
+
+    @Test
+    @DisplayName("미입력 날짜 조회")
+    void missedInputs() {
+        // given
+        User user = User.builder()
+            .email("test@test.com")
+            .password("password")
+            .nickname("nickname")
+            .platform("platform")
+            .role(Role.ROLE_USER)
+            .isActivate(true)
+            .build();
+
+        CustomUserDetails userDetails = new CustomUserDetails(user);
+
+        // when
+        MissedInputResponseDto response = weatherService.getMissedInputs(userDetails);
+
+        // then
+        assertEquals(7, response.getLocalDates().size());
     }
 }
