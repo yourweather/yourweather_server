@@ -104,7 +104,7 @@ public class ReportController {
     @GetMapping("/weekly-comparison")
     public ResponseDto<StatisticResponseDto> getComparisonForWeek(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @RequestParam int week) {
+            @RequestParam(defaultValue = "1") int week) {
 
         User user = customUserDetails.getUser();
 
@@ -116,7 +116,7 @@ public class ReportController {
     @GetMapping("/monthly-comparison")
     public ResponseDto<StatisticResponseDto> getComparisonForMonth(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @RequestParam int month) {
+            @RequestParam(defaultValue = "1") int month) {
 
         User user = customUserDetails.getUser();
 
