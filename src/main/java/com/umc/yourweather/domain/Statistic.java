@@ -39,13 +39,4 @@ public class Statistic {
     public int getSum() {
         return sunny + cloudy + rainy + lightning;
     }
-
-    public Statistic getCompare(Statistic toCompare) {
-        return Statistic.builder()
-                .sunny(this.sunny - toCompare.getSunny())
-                .cloudy(this.cloudy - toCompare.getCloudy())
-                .rainy(this.rainy - toCompare.getRainy())
-                .lightning(this.lightning - toCompare.getLightning())
-                .build();
-    }
 }
