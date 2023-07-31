@@ -39,28 +39,27 @@ public class WeatherService {
         return "날씨 생성 완료";
     }
 
-    public MissedInputResponseDto getMissedInputs(@Valid MissedInputRequestDto missedInputRequestDto,
+    public MissedInputResponseDto getMissedInputs(
         CustomUserDetails userDetails) {
 
         // 응답 변수 추가
         MissedInputResponseDto missedInputResponseDto = new MissedInputResponseDto();
 
         // 현재의 날짜 GET
-        LocalDate currentDate = missedInputRequestDto.getDate();
+        LocalDate current = LocalDate.now();
 
         // 1주 전의 날짜 GET
-        LocalDate oneWeekAgo = currentDate.minusWeeks(1);
-
+        LocalDate oneWeekAgo = current.minusWeeks(1);
         List<LocalDate> dateList = new ArrayList<>();
 
         LocalDate dateIterator = oneWeekAgo;
 
-        while (!dateIterator.isAfter(currentDate)) {
+        while (!dateIterator.isAfter(current)) {
             dateList.add(dateIterator);
             dateIterator.plusDays(1);
         }
 
-        List<Weather> dates = weatherRepository.findWeatherByDateBetween(currentDate,
+        List<Weather> dates = weatherRepository.findWeatherByDateBetween(current,
             oneWeekAgo);
 
         for (int i = 0; i < dates.size(); i++) {
