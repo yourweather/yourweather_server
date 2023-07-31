@@ -64,6 +64,5 @@ public class User {
 
     public void unActivate() {
         this.isActivate = false;
-
     }
 }
