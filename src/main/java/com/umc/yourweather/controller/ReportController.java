@@ -110,7 +110,7 @@ public class ReportController {
 
         StatisticResponseDto result = reportService.getComparedWeeklyStatistic(user, week);
 
-        return ResponseDto.success("주간 비교 성공", result);
+        return ResponseDto.success("주간 대비 지표 계산 완료", result);
     }
 
     @GetMapping("/monthly-comparison")
@@ -122,6 +122,6 @@ public class ReportController {
 
         StatisticResponseDto result = reportService.getComparedMonthlyStatistic(user, month);
 
-        return ResponseDto.success("주간 비교 성공", result);
+        return ResponseDto.success("월간 대비 지표 계산 완료", result);
     }
 }
