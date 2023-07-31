@@ -48,7 +48,7 @@ public class ReportController {
 
         Statistic statistic = reportService.getStatisticForMonth(customUserDetails.getUser(), dateTime);
 
-        return ResponseDto.success("이번 달 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
+        return ResponseDto.success(ago + "달 전 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
     }
 
     @GetMapping("/list")
@@ -89,7 +89,7 @@ public class ReportController {
 
         StatisticResponseDto result = reportService.getComparedWeeklyStatistic(user, ago);
 
-        return ResponseDto.success("주간 대비 지표 계산 완료", result);
+        return ResponseDto.success("이번 주와 " + ago + "주 전 대비 지표 계산 완료", result);
     }
 
     @GetMapping("/monthly-comparison")
@@ -101,6 +101,6 @@ public class ReportController {
 
         StatisticResponseDto result = reportService.getComparedMonthlyStatistic(user, ago);
 
-        return ResponseDto.success("월간 대비 지표 계산 완료", result);
+        return ResponseDto.success("이번 달과 " + ago + "달 전 대비 지표 계산 완료", result);
     }
 }
