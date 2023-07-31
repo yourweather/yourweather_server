@@ -83,11 +83,11 @@ public class ReportController {
     @GetMapping("/weekly-comparison")
     public ResponseDto<StatisticResponseDto> getComparisonForWeek(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @RequestParam(defaultValue = "1") int week) {
+            @RequestParam(defaultValue = "1") int ago) {
 
         User user = customUserDetails.getUser();
 
-        StatisticResponseDto result = reportService.getComparedWeeklyStatistic(user, week);
+        StatisticResponseDto result = reportService.getComparedWeeklyStatistic(user, ago);
 
         return ResponseDto.success("주간 대비 지표 계산 완료", result);
     }
@@ -95,11 +95,11 @@ public class ReportController {
     @GetMapping("/monthly-comparison")
     public ResponseDto<StatisticResponseDto> getComparisonForMonth(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @RequestParam(defaultValue = "1") int month) {
+            @RequestParam(defaultValue = "1") int ago) {
 
         User user = customUserDetails.getUser();
 
-        StatisticResponseDto result = reportService.getComparedMonthlyStatistic(user, month);
+        StatisticResponseDto result = reportService.getComparedMonthlyStatistic(user, ago);
 
         return ResponseDto.success("월간 대비 지표 계산 완료", result);
     }
