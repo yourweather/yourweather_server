@@ -2,7 +2,7 @@ package com.umc.yourweather.jwt.filter;
 
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
-import com.umc.yourweather.domain.User;
+import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.repository.UserRepository;
 import jakarta.servlet.FilterChain;

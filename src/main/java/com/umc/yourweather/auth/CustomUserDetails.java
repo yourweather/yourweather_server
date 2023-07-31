@@ -1,6 +1,6 @@
 package com.umc.yourweather.auth;
 
-import com.umc.yourweather.domain.User;
+import com.umc.yourweather.domain.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

@@ -1,5 +1,6 @@
-package com.umc.yourweather.domain;
+package com.umc.yourweather.domain.entity;
 
+import com.umc.yourweather.domain.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,9 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,7 +33,7 @@ public class Memo {
 
 
     @Column(name = "creation_datetime")
-    private LocalDateTime createdTime;
+    private LocalDateTime createdDateTime;
     private int temperature;
     private String content;
 
@@ -43,10 +42,9 @@ public class Memo {
     private Weather weather;
 
     @Builder
-    public Memo(Status status, LocalDateTime localDateTime, int temperature, String content,
-        Weather weather) {
+    public Memo(Status status, LocalDateTime createdDateTime, int temperature, String content, Weather weather) {
         this.status = status;
-        this.createdTime = localDateTime;
+        this.createdDateTime = createdDateTime;
         this.temperature = temperature;
         this.content = content;
         this.weather = weather;
