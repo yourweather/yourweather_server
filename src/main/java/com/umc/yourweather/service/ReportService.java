@@ -9,6 +9,7 @@ import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.response.MemoReportResponseDto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,10 @@ public class ReportService {
     }
 
     public List<MemoReportResponseDto> getSpecificMemoList(User user, Status status, LocalDateTime startDateTime) {
-        LocalDateTime endDateTime = startDateTime.withDayOfMonth(
-                startDateTime.toLocalDate().lengthOfMonth());
+        LocalDate endDate = startDateTime.withDayOfMonth(
+                startDateTime.toLocalDate().lengthOfMonth()).toLocalDate();
+        LocalTime endTime = LocalTime.of(23, 59, 59);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
 
         List<Memo> memoList = memoRepository.findSpecificMemoList(user, status, startDateTime, endDateTime);
 
