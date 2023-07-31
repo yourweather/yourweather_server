@@ -39,41 +39,37 @@ public class WeatherService {
         return "날씨 생성 완료";
     }
 
-    public MissedInputResponseDto getMissedInputs(@Valid MissedInputRequestDto missedInputRequestDto,
+    @Transactional
+    public MissedInputResponseDto getMissedInputs(
         CustomUserDetails userDetails) {
 
         // 응답 변수 추가
         MissedInputResponseDto missedInputResponseDto = new MissedInputResponseDto();
 
         // 현재의 날짜 GET
-        LocalDate currentDate = missedInputRequestDto.getDate();
+        LocalDate current = LocalDate.now();
 
         // 1주 전의 날짜 GET
-        LocalDate oneWeekAgo = currentDate.minusWeeks(1);
-
-        List<LocalDate> dateList = new ArrayList<>();
+        LocalDate oneWeekAgo = current.minusWeeks(1);
+        List<LocalDate> dates = new ArrayList<>();
 
         LocalDate dateIterator = oneWeekAgo;
 
-        while (!dateIterator.isAfter(currentDate)) {
-            dateList.add(dateIterator);
-            dateIterator.plusDays(1);
+        while (!dateIterator.isAfter(current)) {
+            dates.add(dateIterator);
+            dateIterator = dateIterator.plusDays(1);
         }
 
-        List<Weather> dates = weatherRepository.findWeatherByDateBetween(currentDate,
+        List<Weather> weathers = weatherRepository.findWeatherByDateBetween(current,
             oneWeekAgo);
 
-        for (int i = 0; i < dates.size(); i++) {
-            LocalDate localDate = dates.get(i).getDate();
-            int year = localDate.getYear();
-            int month = localDate.getMonthValue();
-            int day = localDate.getDayOfMonth();
-
-            if (!dateList.contains(LocalDate.of(year, month, day))) {
-                missedInputResponseDto.addDate(
-                    LocalDate.of(year, month, day));
-            }
+        for (Weather weather : weathers) {
+            LocalDate localDate = weather.getDate();
+            dates.remove(localDate);
         }
+
+        missedInputResponseDto.setLocalDates(dates);
+
         return missedInputResponseDto;
     }
 
@@ -99,6 +95,7 @@ public class WeatherService {
 
     }
 
+    @Transactional
     public Weather delete(LocalDate localDate, CustomUserDetails userDetails) {
         Weather weather = weatherRepository.findByDate(localDate) // User 파라미터를 추가해야 함
             .orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
