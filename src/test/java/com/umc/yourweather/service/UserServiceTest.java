@@ -7,6 +7,7 @@ import com.umc.yourweather.domain.User;
 import com.umc.yourweather.repository.UserRepository;
 import com.umc.yourweather.request.SignupRequestDto;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,18 @@ class UserServiceTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @BeforeEach
+    void setup() {
+        userRepository.save(User.builder()
+            .email("test@test.com")
+            .password("password")
+            .nickname("nickname")
+            .platform("platform")
+            .role(Role.ROLE_USER)
+            .isActivate(true)
+            .build());
+    }
 
     @Test
     @DisplayName("User 저장")
