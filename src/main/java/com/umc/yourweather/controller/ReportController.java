@@ -107,15 +107,10 @@ public class ReportController {
             @RequestParam int week) {
 
         User user = customUserDetails.getUser();
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime toCompareWeek = now.minusWeeks(week);
 
-        Statistic thisWeek = reportService.getStatisticForWeek(user, now);
-        Statistic toCompareWeekStatistic = reportService.getStatisticForWeek(user, toCompareWeek);
+        StatisticResponseDto result = reportService.getComparedWeeklyStatistic(user, week);
 
-        Statistic comparedStatistic = thisWeek.getCompare(toCompareWeekStatistic);
-
-        return ResponseDto.success("주간 비교 성공", new StatisticResponseDto(comparedStatistic));
+        return ResponseDto.success("주간 비교 성공", result);
     }
 
 }
