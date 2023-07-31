@@ -1,6 +1,6 @@
 package com.umc.yourweather.repository.impl;
 
-import com.umc.yourweather.domain.User;
+import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.repository.UserRepository;
 import com.umc.yourweather.repository.jpa.UserJpaRepository;
 import lombok.RequiredArgsConstructor;

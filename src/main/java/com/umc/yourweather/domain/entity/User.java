@@ -1,5 +1,6 @@
-package com.umc.yourweather.domain;
+package com.umc.yourweather.domain.entity;
 
+import com.umc.yourweather.domain.enums.Role;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class User {
 
     private boolean isActivate;
 
-    @OneToMany(mappedBy = "user", cascade=CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     List<Weather> weathers = new ArrayList<>();
 
     @Builder

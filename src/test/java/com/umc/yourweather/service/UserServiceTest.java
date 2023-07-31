@@ -3,8 +3,8 @@ package com.umc.yourweather.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.umc.yourweather.auth.CustomUserDetails;
-import com.umc.yourweather.domain.Role;
-import com.umc.yourweather.domain.User;
+import com.umc.yourweather.domain.enums.Role;
+import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.repository.UserRepository;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
 import com.umc.yourweather.request.SignupRequestDto;
