@@ -26,7 +26,7 @@ class WeatherServiceTest {
     WeatherRepository weatherRepository;
 
     @Test
-    @DisplayName("메모가 없을 때의 Home 조회 추가")
+    @DisplayName("메모가 없을 때의 Home 조회 추")
     void home(){
         // given
         User user = User.builder()
