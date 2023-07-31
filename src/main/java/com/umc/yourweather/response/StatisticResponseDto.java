@@ -2,6 +2,8 @@ package com.umc.yourweather.response;
 
 import com.umc.yourweather.domain.Statistic;
 import com.umc.yourweather.domain.enums.Status;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @ToString
 @Slf4j
+@AllArgsConstructor
+@Builder
 public class StatisticResponseDto {
 
     // 단위는 percentage(%).
@@ -36,5 +40,14 @@ public class StatisticResponseDto {
         }
 
         return returnValue;
+    }
+
+    public StatisticResponseDto compareWith(StatisticResponseDto statistic) {
+        return StatisticResponseDto.builder()
+                .sunny(this.sunny - statistic.getSunny())
+                .cloudy(this.cloudy - statistic.getCloudy())
+                .rainy(this.rainy - statistic.getRainy())
+                .lightning(this.lightning - statistic.getLightning())
+                .build();
     }
 }
