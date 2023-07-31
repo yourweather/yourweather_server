@@ -86,11 +86,14 @@ public class UserService {
         return "비밀번호 변경 완료";
     }
 
+    @Transactional
     public UserResponseDto withdraw(CustomUserDetails userDetails) {
         User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
             () -> new UserNotFoundException("등록된 사용자가 없습니다.")
         );
 
+        // Unactivate
+        user.unActivate();
         return new UserResponseDto(user.getNickname(), user.getEmail());
     }
 }
