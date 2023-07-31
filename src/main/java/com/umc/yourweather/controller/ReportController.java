@@ -27,49 +27,28 @@ public class ReportController {
 
     private final ReportService reportService;
 
-    @GetMapping("/this-week")
-    public ResponseDto<StatisticResponseDto> getThisWeek(
-            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    @GetMapping("/weekly-statistic")
+    public ResponseDto<StatisticResponseDto> getWeeklyStatistic(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam(defaultValue = "0") int ago) {
         LocalDateTime now = LocalDateTime.now();
+        LocalDateTime dateTime = now.minusWeeks(ago);
 
-        Statistic statistic = reportService.getStatisticForWeek(customUserDetails.getUser(), now);
+        Statistic statistic = reportService.getStatisticForWeek(customUserDetails.getUser(), dateTime);
 
-        return ResponseDto.success("금주 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
+        return ResponseDto.success(ago + "주 전 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
     }
 
-
-    @GetMapping("/last-week")
-    public ResponseDto<StatisticResponseDto> getLastWeek(
-            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime lastWeek = now.minusWeeks(1);
-
-        Statistic statistic = reportService.getStatisticForWeek(customUserDetails.getUser(),
-                lastWeek);
-
-        return ResponseDto.success("이전 주 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
-    }
-
-    @GetMapping("/this-month")
+    @GetMapping("/monthly-statistic")
     public ResponseDto<StatisticResponseDto> getThisMonth(
-            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam(defaultValue = "0") int ago) {
         LocalDateTime now = LocalDateTime.now();
+        LocalDateTime dateTime = now.minusMonths(ago);
 
-        Statistic statistic = reportService.getStatisticForMonth(customUserDetails.getUser(), now);
+        Statistic statistic = reportService.getStatisticForMonth(customUserDetails.getUser(), dateTime);
 
-        return ResponseDto.success("이번 달 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
-    }
-
-    @GetMapping("/last-month")
-    public ResponseDto<StatisticResponseDto> getLastMonth(
-            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime previousMonthDay = now.minusMonths(1);
-
-        Statistic statistic = reportService.getStatisticForMonth(
-                customUserDetails.getUser(), previousMonthDay);
-
-        return ResponseDto.success("지난 달 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
+        return ResponseDto.success(ago + "달 전 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
     }
 
     @GetMapping("/list")
@@ -99,5 +78,29 @@ public class ReportController {
                 .build();
 
         return ResponseDto.success("월간 특정 날씨 일자 조회 성공.", result);
+    }
+
+    @GetMapping("/weekly-comparison")
+    public ResponseDto<StatisticResponseDto> getComparisonForWeek(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam(defaultValue = "1") int ago) {
+
+        User user = customUserDetails.getUser();
+
+        StatisticResponseDto result = reportService.getComparedWeeklyStatistic(user, ago);
+
+        return ResponseDto.success("이번 주와 " + ago + "주 전 대비 지표 계산 완료", result);
+    }
+
+    @GetMapping("/monthly-comparison")
+    public ResponseDto<StatisticResponseDto> getComparisonForMonth(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam(defaultValue = "1") int ago) {
+
+        User user = customUserDetails.getUser();
+
+        StatisticResponseDto result = reportService.getComparedMonthlyStatistic(user, ago);
+
+        return ResponseDto.success("이번 달과 " + ago + "달 전 대비 지표 계산 완료", result);
     }
 }
