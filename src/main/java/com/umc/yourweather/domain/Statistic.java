@@ -1,7 +1,6 @@
 package com.umc.yourweather.domain;
 
 import com.umc.yourweather.domain.enums.Status;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -17,7 +16,6 @@ public class Statistic {
     private int cloudy;
     private int rainy;
     private int lightning;
-
 
     public void plusPoint(Status status) {
         switch(status){
