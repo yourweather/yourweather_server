@@ -98,6 +98,7 @@ public class WeatherService {
 
     }
 
+    @Transactional
     public Weather delete(LocalDate localDate, CustomUserDetails userDetails) {
         Weather weather = weatherRepository.findByDate(localDate) // User 파라미터를 추가해야 함
             .orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
