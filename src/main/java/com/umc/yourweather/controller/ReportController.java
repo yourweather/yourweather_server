@@ -113,4 +113,15 @@ public class ReportController {
         return ResponseDto.success("주간 비교 성공", result);
     }
 
+    @GetMapping("/monthly-comparison")
+    public ResponseDto<StatisticResponseDto> getComparisonForMonth(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam int month) {
+
+        User user = customUserDetails.getUser();
+
+        StatisticResponseDto result = reportService.getComparedMonthlyStatistic(user, month);
+
+        return ResponseDto.success("주간 비교 성공", result);
+    }
 }
