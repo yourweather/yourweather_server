@@ -39,6 +39,7 @@ public class WeatherService {
         return "날씨 생성 완료";
     }
 
+    @Transactional
     public MissedInputResponseDto getMissedInputs(
         CustomUserDetails userDetails) {
 
@@ -50,29 +51,25 @@ public class WeatherService {
 
         // 1주 전의 날짜 GET
         LocalDate oneWeekAgo = current.minusWeeks(1);
-        List<LocalDate> dateList = new ArrayList<>();
+        List<LocalDate> dates = new ArrayList<>();
 
         LocalDate dateIterator = oneWeekAgo;
 
         while (!dateIterator.isAfter(current)) {
-            dateList.add(dateIterator);
-            dateIterator.plusDays(1);
+            dates.add(dateIterator);
+            dateIterator = dateIterator.plusDays(1);
         }
 
-        List<Weather> dates = weatherRepository.findWeatherByDateBetween(current,
+        List<Weather> weathers = weatherRepository.findWeatherByDateBetween(current,
             oneWeekAgo);
 
-        for (int i = 0; i < dates.size(); i++) {
-            LocalDate localDate = dates.get(i).getDate();
-            int year = localDate.getYear();
-            int month = localDate.getMonthValue();
-            int day = localDate.getDayOfMonth();
-
-            if (!dateList.contains(LocalDate.of(year, month, day))) {
-                missedInputResponseDto.addDate(
-                    LocalDate.of(year, month, day));
-            }
+        for (Weather weather : weathers) {
+            LocalDate localDate = weather.getDate();
+            dates.remove(localDate);
         }
+
+        missedInputResponseDto.setLocalDates(dates);
+
         return missedInputResponseDto;
     }
 
