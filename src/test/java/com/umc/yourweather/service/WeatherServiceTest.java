@@ -10,7 +10,6 @@ import com.umc.yourweather.exception.WeatherNotFoundException;
 import com.umc.yourweather.repository.WeatherRepository;
 import com.umc.yourweather.response.MissedInputResponseDto;
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,7 @@ class WeatherServiceTest {
     WeatherRepository weatherRepository;
 
     @Test
-    @DisplayName("메모가 없을 때의 Home 조회 추")
+    @DisplayName("메모가 없을 때의 Home 조회")
     void home() {
         // given
         User user = User.builder()

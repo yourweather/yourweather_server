@@ -1,6 +1,5 @@
 package com.umc.yourweather.service;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.umc.yourweather.auth.CustomUserDetails;
@@ -10,7 +9,6 @@ import com.umc.yourweather.repository.UserRepository;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
 import com.umc.yourweather.request.SignupRequestDto;
 import com.umc.yourweather.response.UserResponseDto;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
