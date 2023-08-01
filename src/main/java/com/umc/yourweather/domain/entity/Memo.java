@@ -52,7 +52,7 @@ public class Memo {
 
     public void update(Status status, LocalDateTime localDateTime, int temperature, String content) {
         this.status = status;
-        this.createdTime = localDateTime;
+        this.createdDateTime = localDateTime;
         this.temperature = temperature;
         this.content = content;
     }
