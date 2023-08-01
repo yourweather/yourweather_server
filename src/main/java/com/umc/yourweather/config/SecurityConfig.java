@@ -87,7 +87,8 @@ public class SecurityConfig {
 
     @Bean
     public CustomLoginFilter customLoginFilter() {
-        CustomLoginFilter customLoginFilter = new CustomLoginFilter(objectMapper);
+        CustomLoginFilter customLoginFilter = new CustomLoginFilter(objectMapper,
+                authenticationManager());
 
         customLoginFilter.setAuthenticationManager(authenticationManager());
         customLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler);
@@ -98,7 +99,8 @@ public class SecurityConfig {
 
     @Bean
     public CustomOAuthLoginFilter customOAuthLoginFilter() {
-        CustomOAuthLoginFilter customOAuthLoginFilter = new CustomOAuthLoginFilter(objectMapper);
+        CustomOAuthLoginFilter customOAuthLoginFilter = new CustomOAuthLoginFilter(objectMapper,
+                authenticationManager());
 
         customOAuthLoginFilter.setAuthenticationManager(authenticationManager());
         customOAuthLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler);

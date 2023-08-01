@@ -2,7 +2,7 @@ package com.umc.yourweather.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.umc.yourweather.domain.User;
+import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package com.umc.yourweather.domain;
+package com.umc.yourweather.domain.enums;
 
 public enum Role {
     ROLE_USER, ROLE_ADMIN;

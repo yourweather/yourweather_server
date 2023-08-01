@@ -1,7 +1,6 @@
-package com.umc.yourweather.domain;
+package com.umc.yourweather.domain.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,26 +19,19 @@ public class Weather {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "weather_id")
     private Long id;
-    private int year;
-    private int month;
-    private int day;
+    private LocalDate date;
+    // 대표날씨 필드, 그 날씨의 온도
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     User user;
 
-    @OneToMany(mappedBy = "weather")
+    @OneToMany(mappedBy = "weather", orphanRemoval = true)
     List<Memo> memos = new ArrayList<>();
 
     @Builder
-    public Weather(int year, int month, int day, User user) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
+    public Weather(LocalDate date, User user) {
+        this.date = date;
         this.user = user;
-    }
-
-    public LocalDate getDate(){
-        return LocalDate.of(year, month, day);
     }
 }

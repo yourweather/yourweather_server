@@ -1,7 +1,7 @@
 package com.umc.yourweather.controller;
 
 import com.umc.yourweather.api.RequestURI;
-import com.umc.yourweather.dto.ResponseDto;
+import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.service.EmailService;
 import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;

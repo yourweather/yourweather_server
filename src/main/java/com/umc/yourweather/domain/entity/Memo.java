@@ -1,5 +1,6 @@
-package com.umc.yourweather.domain;
+package com.umc.yourweather.domain.entity;
 
+import com.umc.yourweather.domain.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,14 +28,25 @@ public class Memo {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "weather_status")
     private Status status; //날씨 상태 enums
-    private LocalDateTime time;
-    private int condition;
+
+
+    @Column(name = "creation_datetime")
+    private LocalDateTime createdDateTime;
+    private int temperature;
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "weather_id")
     private Weather weather;
 
-
+    @Builder
+    public Memo(Status status, LocalDateTime createdDateTime, int temperature, String content, Weather weather) {
+        this.status = status;
+        this.createdDateTime = createdDateTime;
+        this.temperature = temperature;
+        this.content = content;
+        this.weather = weather;
+    }
 }

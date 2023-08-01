@@ -1,13 +1,14 @@
-package com.umc.yourweather.dto;
+package com.umc.yourweather.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
+@ToString
 public class ResponseDto<T> {
 
     private final boolean success;
