@@ -2,7 +2,7 @@ package com.umc.yourweather.controller;
 
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
-import com.umc.yourweather.domain.Weather;
+import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.response.HomeResponseDto;
 import com.umc.yourweather.request.MissedInputRequestDto;
 import com.umc.yourweather.response.MissedInputResponseDto;
@@ -55,10 +55,9 @@ public class WeatherController {
 
     @GetMapping("/no-inputs")
     public ResponseDto<MissedInputResponseDto> getNoInputs(
-        @RequestBody @Valid MissedInputRequestDto missedInputRequestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("미 입력 날짜 조회 성공",
-            weatherService.getMissedInputs(missedInputRequestDto, userDetails));
+            weatherService.getMissedInputs(userDetails));
     }
 
     @DeleteMapping("/{year}-{month}-{day}")
@@ -66,7 +65,7 @@ public class WeatherController {
         @PathVariable int month,
         @PathVariable int day,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        LocalDate localDate = LocalDate.of(year,month,day);
+        LocalDate localDate = LocalDate.of(year, month, day);
         return ResponseDto.success("날씨 삭제 성공", weatherService.delete(localDate, userDetails));
     }
 }

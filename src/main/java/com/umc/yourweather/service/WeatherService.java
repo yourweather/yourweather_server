@@ -1,9 +1,9 @@
 package com.umc.yourweather.service;
 
 import com.umc.yourweather.auth.CustomUserDetails;
-import com.umc.yourweather.domain.Memo;
-import com.umc.yourweather.domain.User;
-import com.umc.yourweather.domain.Weather;
+import com.umc.yourweather.domain.entity.Memo;
+import com.umc.yourweather.domain.entity.User;
+import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.exception.MemoNotFoundException;
 import com.umc.yourweather.exception.WeatherNotFoundException;
 import com.umc.yourweather.response.HomeResponseDto;
@@ -97,20 +97,6 @@ public class WeatherService {
             .build();
 
     }
-
-    public String getWeathersByDate(LocalDate date) {
-        weatherRepository.findByDate(date);
-
-        return "일별 날씨 조회 완료";
-    }
-
-
-//    public List<Weather> getWeathersByMonth(LocalDate date) {
-//        List<Weather> = weatherRepository.findByMonthly
-//                .findByDate(date);
-//
-//        return "일별 날씨 조회 완료";
-//    }
 
     public Weather delete(LocalDate localDate, CustomUserDetails userDetails) {
         Weather weather = weatherRepository.findByDate(localDate) // User 파라미터를 추가해야 함

@@ -1,8 +1,7 @@
 package com.umc.yourweather.auth;
 
-import com.umc.yourweather.domain.User;
+import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

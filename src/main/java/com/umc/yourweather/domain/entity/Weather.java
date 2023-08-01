@@ -1,4 +1,4 @@
-package com.umc.yourweather.domain;
+package com.umc.yourweather.domain.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -20,21 +20,13 @@ public class Weather {
     @Column(name = "weather_id")
     private Long id;
     private LocalDate date;
-
-    @Column(name = "yyyy")
-    private int year;
-
-    @Column(name = "mm")
-    private int month;
-
-    @Column(name = "dd")
-    private int day;
+    // 대표날씨 필드, 그 날씨의 온도
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     User user;
 
-    @OneToMany(mappedBy = "weather", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "weather", orphanRemoval = true)
     List<Memo> memos = new ArrayList<>();
 
     @Builder
