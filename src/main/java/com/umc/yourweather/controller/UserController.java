@@ -8,6 +8,7 @@ import com.umc.yourweather.response.UserResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.request.SignupRequestDto;
 import com.umc.yourweather.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
+    @Operation(summary = "회원 가입 api", description = "회원 가입을 합니다. 반환받은 응답 헤더에 토큰이 있습니다.")
     public ResponseEntity<ResponseDto<String>> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         User user = userService.signup(signupRequestDto);
         HttpHeaders tokenHeader = userService.getTokenHeaders(user);
@@ -40,12 +42,14 @@ public class UserController {
     }
 
     @GetMapping("/mypage")
+    @Operation(summary = "회원 가입 api", description = "회원 가입을 합니다. 반환받은 응답 헤더에 토큰이 있습니다.")
     public ResponseDto<UserResponseDto> mypage(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("마이 페이지 조회 완료", userService.mypage(userDetails));
     }
 
     @PostMapping("/password")
+    @Operation(summary = "회원 가입 api", description = "회원 가입을 합니다. 반환받은 응답 헤더에 토큰이 있습니다.")
     public ResponseDto<UserResponseDto> password(
         @RequestBody @Valid ChangePasswordRequestDto changePasswordRequestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -53,6 +57,7 @@ public class UserController {
     }
 
     @PutMapping("/withdraw")
+    @Operation(summary = "회원 가입 api", description = "회원 가입을 합니다. 반환받은 응답 헤더에 토큰이 있습니다.")
     public ResponseDto<UserResponseDto> withdraw(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("회원 탈퇴 성공", userService.withdraw(userDetails));
