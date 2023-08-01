@@ -11,6 +11,8 @@ import com.umc.yourweather.request.WeatherRequestDto;
 import com.umc.yourweather.service.WeatherService;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,6 +37,21 @@ public class WeatherController {
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success(weatherService.create(weatherRequestDto, userDetails));
     }
+
+    @GetMapping("/find/byDate")
+    public ResponseDto<Weather> getWeathersByDate(@RequestParam("date") String date) {
+        LocalDate localDate = LocalDate.parse(date);
+
+        return ResponseDto.success(weatherService.getWeathersByDate(localDate));
+    }
+
+//    @GetMapping("/find/byMonth")
+//    public  ResponseDto<Weather> getWeathersByMonth(@RequestParam("datetime") LocalDateTime datetime){
+//
+//        return ResponseDto.success(weatherService.getWeathersByMonth(datetime));
+//    }
+//}
+
 
     @GetMapping("/no-inputs")
     public ResponseDto<MissedInputResponseDto> getNoInputs(

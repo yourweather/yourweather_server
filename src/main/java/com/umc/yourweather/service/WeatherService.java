@@ -98,6 +98,20 @@ public class WeatherService {
 
     }
 
+    public String getWeathersByDate(LocalDate date) {
+        weatherRepository.findByDate(date);
+
+        return "일별 날씨 조회 완료";
+    }
+
+
+//    public List<Weather> getWeathersByMonth(LocalDate date) {
+//        List<Weather> = weatherRepository.findByMonthly
+//                .findByDate(date);
+//
+//        return "일별 날씨 조회 완료";
+//    }
+
     public Weather delete(LocalDate localDate, CustomUserDetails userDetails) {
         Weather weather = weatherRepository.findByDate(localDate) // User 파라미터를 추가해야 함
             .orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
