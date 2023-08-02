@@ -6,6 +6,7 @@ import com.umc.yourweather.request.MemoRequestDto;
 import com.umc.yourweather.response.MemoResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.service.MemoService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags = {"Memo API"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(RequestURI.MEMO_URI)
