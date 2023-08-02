@@ -7,11 +7,12 @@ import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.exception.MemoNotFoundException;
 import com.umc.yourweather.exception.WeatherNotFoundException;
 import com.umc.yourweather.response.HomeResponseDto;
-import com.umc.yourweather.request.MissedInputRequestDto;
+//import com.umc.yourweather.request.MissedInputRequestDto;
 import com.umc.yourweather.response.MissedInputResponseDto;
-import com.umc.yourweather.request.WeatherRequestDto;
+//import com.umc.yourweather.request.WeatherRequestDto;
 import com.umc.yourweather.repository.WeatherRepository;
-import jakarta.validation.Valid;
+import com.umc.yourweather.response.WeatherResponseDto;
+//import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,18 +27,18 @@ public class WeatherService {
 
     private final WeatherRepository weatherRepository;
 
-    @Transactional
-    public String create(WeatherRequestDto weatherRequestDto, CustomUserDetails userDetails) {
-        Weather weather = Weather.builder()
-            .user(userDetails.getUser())
-            .date(LocalDate.of(weatherRequestDto.getYear(), weatherRequestDto.getMonth(),
-                weatherRequestDto.getDay()))
-            .build();
-
-        weatherRepository.save(weather);
-
-        return "날씨 생성 완료";
-    }
+//    @Transactional
+//    public String create(WeatherRequestDto weatherRequestDto, CustomUserDetails userDetails) {
+//        Weather weather = Weather.builder()
+//            .user(userDetails.getUser())
+//            .date(LocalDate.of(weatherRequestDto.getYear(), weatherRequestDto.getMonth(),
+//                weatherRequestDto.getDay()))
+//            .build();
+//
+//        weatherRepository.save(weather);
+//
+//        return "날씨 생성 완료";
+//    }
 
     @Transactional
     public MissedInputResponseDto getMissedInputs(
@@ -96,11 +97,13 @@ public class WeatherService {
     }
 
     @Transactional
-    public Weather delete(LocalDate localDate, CustomUserDetails userDetails) {
-        Weather weather = weatherRepository.findByDate(localDate) // User 파라미터를 추가해야 함
+    public WeatherResponseDto delete(LocalDate localDate, CustomUserDetails userDetails) {
+        Weather weather = weatherRepository.findByDateAndUser(localDate, userDetails.getUser()) // User 파라미터를 추가해야 함
             .orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
 
+        WeatherResponseDto result = new WeatherResponseDto(weather);
         weatherRepository.delete(weather);
-        return weather;
+
+        return result;
     }
 }
