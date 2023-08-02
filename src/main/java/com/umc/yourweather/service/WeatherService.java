@@ -54,15 +54,15 @@ public class WeatherService {
         LocalDate oneWeekAgo = current.minusWeeks(1);
         List<LocalDate> dates = new ArrayList<>();
 
-        LocalDate dateIterator = oneWeekAgo;
+        LocalDate dateIterator = oneWeekAgo.plusDays(1);
 
         while (!dateIterator.isAfter(current)) {
             dates.add(dateIterator);
             dateIterator = dateIterator.plusDays(1);
         }
 
-        List<Weather> weathers = weatherRepository.findWeatherByDateBetween(current,
-            oneWeekAgo);
+        List<Weather> weathers = weatherRepository.findWeatherByDateBetween(oneWeekAgo,
+            current);
 
         for (Weather weather : weathers) {
             LocalDate localDate = weather.getDate();
