@@ -47,7 +47,7 @@ public class WeatherController {
     }
 
     @DeleteMapping("/{year}-{month}-{day}")
-    @Operation(summary = "Weather 삭제 api", description = "전달 받은 날짜에 해당하는 Weather 객체를 삭제합니다.")
+    @Operation(summary = "Weather 삭제 api", description = "Weather 삭제 API 입니다. 전달 받은 날짜에 해당하는 Weather 객체를 삭제합니다.")
     public ResponseDto<Weather> delete(@PathVariable int year,
         @PathVariable int month,
         @PathVariable int day,
