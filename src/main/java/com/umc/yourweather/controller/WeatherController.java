@@ -2,11 +2,11 @@ package com.umc.yourweather.controller;
 
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
-import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.response.HomeResponseDto;
 import com.umc.yourweather.response.MissedInputResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 //import com.umc.yourweather.request.WeatherRequestDto;
+import com.umc.yourweather.response.WeatherResponseDto;
 import com.umc.yourweather.service.WeatherService;
 import io.swagger.v3.oas.annotations.Operation;
 //import jakarta.validation.Valid;
@@ -47,7 +47,7 @@ public class WeatherController {
 
     @DeleteMapping("/{year}-{month}-{day}")
     @Operation(summary = "Weather 삭제 api", description = "Weather 삭제 API 입니다. 전달 받은 날짜에 해당하는 Weather 객체를 삭제합니다.")
-    public ResponseDto<Weather> delete(@PathVariable int year,
+    public ResponseDto<WeatherResponseDto> delete(@PathVariable int year,
         @PathVariable int month,
         @PathVariable int day,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
