@@ -82,7 +82,8 @@ public class UserService {
         User user = userRepository.findByEmail(userDetails.getUser().getEmail())
             .orElseThrow(() -> new UserNotFoundException("등록된 사용자가 없습니다."));
 
-        user.changePassword(changePasswordRequestDto.getPassword());
+        String password = changePasswordRequestDto.getPassword();
+        user.changePassword(passwordEncoder.encode(password));
         return "비밀번호 변경 완료";
     }
 
