@@ -10,7 +10,7 @@ public class ChangePasswordRequestDto {
     @NotBlank
     String password;
 
-    public ChangePasswordRequestDto(String password) {
-        this.password = password;
-    }
+//    public ChangePasswordRequestDto(String password) {
+//        this.password = password;
+//    }
 }
