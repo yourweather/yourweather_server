@@ -10,6 +10,7 @@ import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.request.WeatherRequestDto;
 import com.umc.yourweather.service.WeatherService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class WeatherController {
     private final WeatherService weatherService;
 
     @GetMapping("/home")
+    @ApiOperation(value = "홈 조회 api", notes = "홈 화면 데이터를 조회하는 API 입니다.")
     public ResponseDto<HomeResponseDto> home(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("홈 데이터 조회 성공", weatherService.home(userDetails));
