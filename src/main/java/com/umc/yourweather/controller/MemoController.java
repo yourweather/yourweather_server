@@ -6,7 +6,6 @@ import com.umc.yourweather.request.MemoRequestDto;
 import com.umc.yourweather.response.MemoResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.service.MemoService;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
