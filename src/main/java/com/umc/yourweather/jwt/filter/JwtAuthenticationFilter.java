@@ -46,7 +46,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("URI: " + request.getRequestURI());
         if (NO_CHECK_URIS.contains(request.getRequestURI())
                 || request.getRequestURI().contains("/swagger-ui")
                 || request.getRequestURI().contains("/v3")) {
