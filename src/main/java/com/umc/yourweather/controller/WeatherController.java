@@ -4,7 +4,6 @@ import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.response.HomeResponseDto;
-import com.umc.yourweather.request.MissedInputRequestDto;
 import com.umc.yourweather.response.MissedInputResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.request.WeatherRequestDto;
@@ -41,7 +40,8 @@ public class WeatherController {
     }
 
     @GetMapping("/no-inputs")
-    public ResponseDto<MissedInputResponseDto> getNoInputs(
+    @ApiOperation(value = "미 입력 조회 api", notes = "최근 일주일 간 미 입력 날짜를 조회하는 API 입니다.")
+    public ResponseDto<MissedInputResponseDto> getMissedInputs(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("미 입력 날짜 조회 성공",
             weatherService.getMissedInputs(userDetails));
