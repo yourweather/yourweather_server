@@ -9,6 +9,7 @@ import com.umc.yourweather.response.MissedInputResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.request.WeatherRequestDto;
 import com.umc.yourweather.service.WeatherService;
+import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Api(tags = {"Weather API"})
 @RestController
 @RequiredArgsConstructor
 @Slf4j
