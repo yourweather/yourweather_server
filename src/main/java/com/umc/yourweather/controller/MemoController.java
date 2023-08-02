@@ -6,6 +6,7 @@ import com.umc.yourweather.request.MemoRequestDto;
 import com.umc.yourweather.response.MemoResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.service.MemoService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +23,7 @@ public class MemoController {
     private final MemoService memoService;
 
     @PostMapping("/write")
+    @Operation(summary = "메모 작성 api", description = "메모 작성을 위한 API입니다. 전달받은 요청 데이터들을 참조하여 메모를 저장합니다.")
     public ResponseDto<MemoResponseDto> write(@RequestBody @Valid MemoRequestDto memoRequestDto
         , @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("메모 저장 완료", memoService.write(memoRequestDto, userDetails));

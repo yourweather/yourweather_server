@@ -32,6 +32,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'com.auth0:java-jwt:4.2.1'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -51,26 +54,4 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-
-ext {
-	snippetsDir = file('build/generated-snippets')
-}
-
-test {
-	outputs.dir snippetsDir
-}
-
-asciidoctor {
-	inputs.dir snippetsDir
-	configurations 'asciidoctorExt'
-	dependsOn test
-}
-
-bootJar {
-	dependsOn asciidoctor
-	from ("${asciidoctor.outputDir}/html5") {
-		into 'static/docs'
-	}
 }
