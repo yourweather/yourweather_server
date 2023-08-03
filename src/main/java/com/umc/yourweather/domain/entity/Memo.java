@@ -49,4 +49,10 @@ public class Memo {
         this.content = content;
         this.weather = weather;
     }
+
+    public void update(Status status, int temperature, String content) {
+        this.status = status;
+        this.temperature = temperature;
+        this.content = content;
+    }
 }

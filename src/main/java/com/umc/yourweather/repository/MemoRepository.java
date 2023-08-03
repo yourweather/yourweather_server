@@ -5,6 +5,7 @@ import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.enums.Status;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface MemoRepository {
 
@@ -15,4 +16,8 @@ public interface MemoRepository {
             LocalDateTime endDateTime);
 
     Memo save(Memo memo);
+
+    Optional<Memo> findById(Long memoId);
+
+    void delete(Memo memo);
 }
