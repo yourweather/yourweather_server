@@ -16,4 +16,6 @@ public interface MemoRepository {
             LocalDateTime endDateTime);
 
     Memo save(Memo memo);
+
+    List<Memo> findById(Long id);
 }

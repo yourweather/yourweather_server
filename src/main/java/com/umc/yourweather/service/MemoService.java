@@ -13,6 +13,8 @@ import com.umc.yourweather.repository.WeatherRepository;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,25 +22,41 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class MemoService {
-
     private final WeatherRepository weatherRepository;
     private final MemoRepository memoRepository;
 
     public MemoResponseDto write(MemoRequestDto memoRequestDto, CustomUserDetails userDetails) {
-        LocalDate date = LocalDate.of(memoRequestDto.getYear(), memoRequestDto.getMonth(),
-            memoRequestDto.getDay());
-        Weather weather = weatherRepository.findByDate(LocalDate.of(
-                date.getYear(),
-                date.getMonthValue(), date.getDayOfMonth()))
-            .orElseThrow(() -> new RuntimeException("해당 날자에 날씨 객체가 존재하지 않습니다."));
+        LocalDateTime dateTime = LocalDateTime.of(
+                memoRequestDto.getYear(),
+                memoRequestDto.getMonth(),
+                memoRequestDto.getDay(),
+                memoRequestDto.getHour(),
+                memoRequestDto.getMinute(),
+                memoRequestDto.getSecond());
+
+        LocalDate date = dateTime.toLocalDate();
+
+        User user = userDetails.getUser();
+
+        // weather 찾아보고 만약 없으면 새로 등록해줌.
+        Weather weather = weatherRepository.findByDateAndUser(date, user)
+                .orElseGet(() -> {
+                    Weather newWeather = Weather.builder()
+                            .user(user)
+                            .date(date)
+                            .build();
+
+                    return weatherRepository.save(newWeather);
+                });
 
         // MemoRequestDto에 넘어온 정보를 토대로 Memo 객체 생성
         Memo memo = Memo.builder()
-            .weather(weather)
-            .status(memoRequestDto.getStatus())
-            .content(memoRequestDto.getContent())
-            .temperature(memoRequestDto.getTemperature())
-            .build();
+                .weather(weather)
+                .status(memoRequestDto.getStatus())
+                .content(memoRequestDto.getContent())
+                .temperature(memoRequestDto.getTemperature())
+                .createdDateTime(dateTime)
+                .build();
 
         memoRepository.save(memo);
         return MemoResponseDto.builder()
