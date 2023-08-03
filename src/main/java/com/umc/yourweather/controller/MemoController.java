@@ -32,9 +32,9 @@ public class MemoController {
 
 
     @Operation(summary = "메모 수정 api", description = "메모 수정을 위한 API입니다.")
-    @PutMapping("/memo/{id}")
-    public Long update(@PathVariable Long id, @RequestBody MemoUpdateRequestDto requestDto) {
-        return memoService.update(id, requestDto);
+    @PutMapping("update/{memoId}")
+    public ResponseDto<Long> update(@PathVariable Long memoId, @RequestBody MemoUpdateRequestDto requestDto) {
+        return ResponseDto.success("메모 수정 완료", memoService.update(memoId,requestDto));
     }
 
     @DeleteMapping("/memo/{id}") //

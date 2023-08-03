@@ -5,11 +5,12 @@ import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.enums.Status;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.jpa.MemoJpaRepository;
-import jakarta.persistence.EntityNotFoundException;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -47,5 +48,9 @@ public class MemoRepositoryImpl implements MemoRepository{
 
     public Memo save(Memo memo) {
         return memoJpaRepository.save(memo);
+    }
+
+    public Optional<Memo> findById(Long id) {
+        return memoJpaRepository.findById(id);
     }
 }

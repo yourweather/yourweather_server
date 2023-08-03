@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,12 +68,12 @@ public class MemoService {
     }
 
     @Transactional
-    public Long update(Long id, MemoUpdateRequestDto requestDto) {
-//        Memo memo = memoRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 메모가 없습니다. id =" + id));
-//        memo.update(requestDto.getStatus(), requestDto.getCreatedTime(), requestDto.getTemperature(), requestDto.getContent());
+    public Long update(Long memoId, MemoUpdateRequestDto requestDto) {
+        Memo memo = memoRepository.findById(memoId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 메모가 없습니다. id =" + memoId));
+        memo.update(requestDto.getStatus(), requestDto.getTemperature(), requestDto.getContent());
 
-        return id;
+        return memoId;
     }
 
     @Transactional

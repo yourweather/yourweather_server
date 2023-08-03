@@ -17,5 +17,5 @@ public interface MemoRepository {
 
     Memo save(Memo memo);
 
-    List<Memo> findById(Long id);
+    Optional<Memo> findById(Long memoId);
 }
