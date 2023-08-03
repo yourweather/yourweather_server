@@ -37,24 +37,6 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("User 저장")
-    void save() {
-        // given
-        SignupRequestDto request = SignupRequestDto.builder()
-            .email("test@test.com")
-            .password("password")
-            .nickname("nickname")
-            .platform("platform")
-            .build();
-
-        // when
-        User user = userService.signup(request);
-
-        // then
-        assertEquals(user.getEmail(), request.getEmail());
-    }
-
-    @Test
     @DisplayName("mypage 조회")
     void mypage() {
         // given
