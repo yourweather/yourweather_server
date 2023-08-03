@@ -30,15 +30,14 @@ public class MemoController {
         return ResponseDto.success("메모 저장 완료", memoService.write(memoRequestDto, userDetails));
     }
 
-
-
     @Operation(summary = "메모 수정 api", description = "메모 수정을 위한 API입니다.")
     @PutMapping("update/{memoId}")
     public ResponseDto<MemoUpdateResponseDto> update(@PathVariable Long memoId, @RequestBody MemoUpdateRequestDto requestDto) {
         return ResponseDto.success("메모 수정 완료", memoService.update(memoId,requestDto));
     }
 
-    @DeleteMapping("delete/{memoId}") //
+    @Operation(summary = "메모 삭제 api", description = "메모 삭제을 위한 API입니다.")
+    @DeleteMapping("delete/{memoId}")
     public ResponseDto<Void> delete(@PathVariable Long memoId) {
         memoService.delete(memoId);
         return ResponseDto.success("메모 삭제 완료");
