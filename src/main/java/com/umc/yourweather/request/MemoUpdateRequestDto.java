@@ -12,14 +12,12 @@ import java.time.LocalDateTime;
 public class MemoUpdateRequestDto {
 
     private Status status; //날씨 상태 enums
-    private LocalDateTime createdTime;
     private int temperature;
     private String content;
 
     @Builder
-    public MemoUpdateRequestDto(Status status, LocalDateTime localDateTime, int temperature, String content) {
+    public MemoUpdateRequestDto(Status status, int temperature, String content) {
         this.status = status;
-        this.createdTime = localDateTime;
         this.temperature = temperature;
         this.content = content;
     }
