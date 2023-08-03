@@ -5,10 +5,7 @@ import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.enums.Status;
 import com.umc.yourweather.repository.MemoRepository;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class MemoTestRepository implements MemoRepository {
     private final List<Memo> memoListOrderByDateTime = new ArrayList<>();
@@ -49,6 +46,11 @@ public class MemoTestRepository implements MemoRepository {
 
     @Override
     public Memo save(Memo memo) {
+        return null;
+    }
+
+    @Override
+    public Optional<Memo> findById(Long memoId) {
         return null;
     }
 }

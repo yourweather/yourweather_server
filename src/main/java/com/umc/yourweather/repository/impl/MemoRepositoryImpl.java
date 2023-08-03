@@ -5,9 +5,12 @@ import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.enums.Status;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.jpa.MemoJpaRepository;
-import jakarta.persistence.EntityNotFoundException;
+
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -15,11 +18,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class MemoRepositoryImpl implements MemoRepository {
+public class MemoRepositoryImpl implements MemoRepository{
 
     private final MemoJpaRepository memoJpaRepository;
 
-    @Override
     public List<Memo> findByUserAndCreatedDateBetween(User user, LocalDateTime startDateTime,
             LocalDateTime endDateTime) {
         List<Memo> memoList = memoJpaRepository.findByUserAndCreatedDateBetween(
@@ -32,7 +34,6 @@ public class MemoRepositoryImpl implements MemoRepository {
         return memoList;
     }
 
-    @Override
     public List<Memo> findSpecificMemoList(User user, Status status, LocalDateTime startDateTime,
             LocalDateTime endDateTime) {
         List<Memo> memoList = memoJpaRepository.findSpecificMemoList(user, status,
@@ -45,8 +46,15 @@ public class MemoRepositoryImpl implements MemoRepository {
         return memoList;
     }
 
-    @Override
     public Memo save(Memo memo) {
         return memoJpaRepository.save(memo);
+    }
+
+    public Optional<Memo> findById(Long id) {
+        return memoJpaRepository.findById(id);
+    }
+
+    public void delete(Memo memo) {
+        memoJpaRepository.delete(memo);
     }
 }
