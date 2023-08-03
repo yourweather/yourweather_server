@@ -2,8 +2,10 @@ package com.umc.yourweather.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class WeatherRequestDto {
 
     int year;
