@@ -38,9 +38,9 @@ public class MemoController {
         return ResponseDto.success("메모 수정 완료", memoService.update(memoId,requestDto));
     }
 
-    @DeleteMapping("/memo/{id}") //
-    public Long delete(@PathVariable Long id) {
-        memoService.delete(id);
-        return id;
+    @DeleteMapping("delete/{memoId}") //
+    public ResponseDto<Void> delete(@PathVariable Long memoId) {
+        memoService.delete(memoId);
+        return ResponseDto.success("메모 삭제 완료");
     }
 }

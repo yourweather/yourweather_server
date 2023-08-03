@@ -53,4 +53,8 @@ public class MemoRepositoryImpl implements MemoRepository{
     public Optional<Memo> findById(Long id) {
         return memoJpaRepository.findById(id);
     }
+
+    public void delete(Memo memo) {
+        memoJpaRepository.delete(memo);
+    }
 }

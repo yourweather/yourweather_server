@@ -18,4 +18,6 @@ public interface MemoRepository {
     Memo save(Memo memo);
 
     Optional<Memo> findById(Long memoId);
+
+    void delete(Memo memo);
 }

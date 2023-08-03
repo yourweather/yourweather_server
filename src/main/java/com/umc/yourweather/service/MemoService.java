@@ -80,10 +80,11 @@ public class MemoService {
     }
 
     @Transactional
-    public void delete(Long id) {
-//        Memo memo = memoRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 메모가 없습니다. id=" + id));
-//        memoRepository.delete(memo); //JpaRepository에서 제공하고 있는 delete 메소드 사용
+    public void delete(Long memoId) {
+        Memo memo = memoRepository.findById(memoId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 메모가 없습니다. id =" + memoId));
+
+        memoRepository.delete(memo);
     }
 }
 
