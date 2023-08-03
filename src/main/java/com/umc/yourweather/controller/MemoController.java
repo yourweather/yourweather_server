@@ -5,6 +5,7 @@ import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.request.MemoRequestDto;
 import com.umc.yourweather.request.MemoUpdateRequestDto;
 import com.umc.yourweather.response.MemoResponseDto;
+import com.umc.yourweather.response.MemoUpdateResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.service.MemoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +34,7 @@ public class MemoController {
 
     @Operation(summary = "메모 수정 api", description = "메모 수정을 위한 API입니다.")
     @PutMapping("update/{memoId}")
-    public ResponseDto<Long> update(@PathVariable Long memoId, @RequestBody MemoUpdateRequestDto requestDto) {
+    public ResponseDto<MemoUpdateResponseDto> update(@PathVariable Long memoId, @RequestBody MemoUpdateRequestDto requestDto) {
         return ResponseDto.success("메모 수정 완료", memoService.update(memoId,requestDto));
     }
 

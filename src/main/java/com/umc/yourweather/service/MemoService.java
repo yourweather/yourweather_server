@@ -8,13 +8,12 @@ import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.request.MemoRequestDto;
 import com.umc.yourweather.request.MemoUpdateRequestDto;
 import com.umc.yourweather.response.MemoResponseDto;
-import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.WeatherRepository;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.umc.yourweather.response.MemoUpdateResponseDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -68,12 +67,16 @@ public class MemoService {
     }
 
     @Transactional
-    public Long update(Long memoId, MemoUpdateRequestDto requestDto) {
+    public MemoUpdateResponseDto update(Long memoId, MemoUpdateRequestDto requestDto) {
         Memo memo = memoRepository.findById(memoId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 메모가 없습니다. id =" + memoId));
         memo.update(requestDto.getStatus(), requestDto.getTemperature(), requestDto.getContent());
 
-        return memoId;
+        return MemoUpdateResponseDto.builder()
+                .status(memo.getStatus())
+                .content(memo.getContent())
+                .temperature(memo.getTemperature())
+                .build();
     }
 
     @Transactional
