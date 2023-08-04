@@ -9,6 +9,7 @@ application.yml
 log
 .gradle
 build
+Dockerfile
 
 ### STS ###
 .apt_generated
