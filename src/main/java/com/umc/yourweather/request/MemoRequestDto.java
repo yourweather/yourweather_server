@@ -14,12 +14,6 @@ public class MemoRequestDto {
     @NotBlank
     private String content;
 
-    private int year;
-    private int month;
-    private int day;
-    private int hour;
-    private int minute;
-
-    private int second;
+    private String localDateTime;
     private int temperature;
 }
