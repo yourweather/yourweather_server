@@ -57,6 +57,7 @@ public class MemoService {
         return MemoResponseDto.builder()
             .status(memo.getStatus())
             .content(memo.getContent())
+            .localDateTime(memo.getCreatedDateTime().toString())
             .temperature(memo.getTemperature())
             .build();
     }
