@@ -1,5 +1,6 @@
 package com.umc.yourweather.request;
 
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,14 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WeatherRequestDto {
 
-    int year;
-    int month;
-    int day;
+    String localDate;
 
     @Builder
-    public WeatherRequestDto(int year, int month, int day) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
+    public WeatherRequestDto(String localDate) {
+        this.localDate = localDate;
     }
 }

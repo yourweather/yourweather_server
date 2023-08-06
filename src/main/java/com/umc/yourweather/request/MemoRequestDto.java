@@ -5,8 +5,10 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class MemoRequestDto {
 
     @Enumerated(EnumType.STRING)
@@ -14,12 +16,13 @@ public class MemoRequestDto {
     @NotBlank
     private String content;
 
-    private int year;
-    private int month;
-    private int day;
-    private int hour;
-    private int minute;
-
-    private int second;
+    private String localDateTime;
     private int temperature;
+
+    public MemoRequestDto(Status status, String content, String localDateTime, int temperature) {
+        this.status = status;
+        this.content = content;
+        this.localDateTime = localDateTime;
+        this.temperature = temperature;
+    }
 }

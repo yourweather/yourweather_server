@@ -9,12 +9,14 @@ public class MemoResponseDto {
 
     private Status status;
     private String content;
+    private String localDateTime;
     private int temperature;
 
     @Builder
-    public MemoResponseDto(Status status, String content, int temperature) {
+    public MemoResponseDto(Status status, String content, String localDateTime, int temperature) {
         this.status = status;
         this.content = content;
+        this.localDateTime = localDateTime;
         this.temperature = temperature;
     }
 }
