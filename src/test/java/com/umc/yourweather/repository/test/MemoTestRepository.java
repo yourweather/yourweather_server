@@ -53,4 +53,9 @@ public class MemoTestRepository implements MemoRepository {
     public Optional<Memo> findById(Long memoId) {
         return null;
     }
+
+    @Override
+    public void delete(Memo memo) {
+
+    }
 }
