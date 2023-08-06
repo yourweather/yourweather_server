@@ -1,10 +1,13 @@
 package com.umc.yourweather.config;
 
+import com.umc.yourweather.jwt.filter.CustomLoginFilter;
+import com.umc.yourweather.jwt.filter.CustomOAuthLoginFilter;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,5 +42,19 @@ public class SpringDocsConfig {
                 // API 마다 Security 인증 컴포넌트 설정
                 .addSecurityItem(addSecurityItem)
                 .info(info);
+    }
+
+    @Bean
+    OpenApiCustomizer customLoginEndpointCustomizer(
+            CustomLoginFilter loginFilter) {
+        return new LoginEndpointCustomizer<>()
+                .loginEndpointCustomizer(loginFilter, "login");
+    }
+
+    @Bean
+    OpenApiCustomizer customOAuthLoginEndpointCustomizer(
+            CustomOAuthLoginFilter loginFilter) {
+        return new LoginEndpointCustomizer<>()
+                .oauthLoginEndpointCustomizer(loginFilter, "login");
     }
 }
