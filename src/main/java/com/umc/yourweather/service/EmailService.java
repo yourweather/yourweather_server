@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class EmailService {
+
     private final JavaMailSender emailSender;
     private final EmailCodeRepository emailCodeRepository;
 
@@ -30,9 +31,9 @@ public class EmailService {
         MessageCreator messageCreator = new MessageCreator(emailSender);
         MimeMessage message = messageCreator.createMessage(to);
         log.info("message 생성: " + message.getContent());
-        try{//예외처리
+        try {//예외처리
             emailSender.send(message);
-        }catch(MailException es){
+        } catch (MailException es) {
             es.printStackTrace();
             throw new IllegalArgumentException("email 전송 실패: 받는 사람 이메일을 다시 확인해주세요");
         }
@@ -42,9 +43,8 @@ public class EmailService {
         return CompletableFuture.completedFuture(code);
     }
 
-    @Transactional
-    private void setCode(String email, String code) {
-        EmailCertify emailCertify = emailCodeRepository.findByEmail(email)
+    protected EmailCertify getEmailCertify(String email, String code) {
+        return emailCodeRepository.findByEmail(email)
                 .orElseGet(() -> {
                     EmailCertify toSave = EmailCertify.builder()
                             .code(code)
@@ -53,11 +53,16 @@ public class EmailService {
                             .build();
                     return emailCodeRepository.save(toSave);
                 });
+    }
+
+    @Transactional
+    protected EmailCertify setCode(String email, String code) {
+        EmailCertify emailCertify = getEmailCertify(email, code);
 
         emailCertify.certifyCodeRenewal(code);
 
         // orElseGet을 거친다면 불필요한 저장이 두 번 진행됨. 수정 필요
-        emailCodeRepository.save(emailCertify);
+        return emailCodeRepository.save(emailCertify);
     }
 
     @Transactional(readOnly = true)
