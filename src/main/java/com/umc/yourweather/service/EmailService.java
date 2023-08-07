@@ -1,15 +1,19 @@
 package com.umc.yourweather.service;
 
 import com.umc.yourweather.domain.MessageCreator;
+import com.umc.yourweather.domain.entity.EmailCertify;
 import com.umc.yourweather.repository.redis.EmailCodeRedisRepository;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +21,9 @@ import org.springframework.stereotype.Service;
 public class EmailService {
     private final JavaMailSender emailSender;
     private final EmailCodeRedisRepository emailCodeRedisRepository;
+
+    @Value("${spring.redis.life}")
+    private long liveSpan;
 
     @Async
     public CompletableFuture<String> sendMessage(String to) throws Exception {
@@ -35,12 +42,29 @@ public class EmailService {
         return CompletableFuture.completedFuture(code);
     }
 
+    @Transactional
     private void setCode(String email, String code) {
-        emailCodeRedisRepository.setData(email, code);
+        EmailCertify emailCertify = emailCodeRedisRepository.findByEmail(email)
+                .orElseGet(() -> {
+                    EmailCertify toSave = EmailCertify.builder()
+                            .code(code)
+                            .email(email)
+                            .liveSpan(liveSpan)
+                            .build();
+                    return emailCodeRedisRepository.save(toSave);
+                });
+
+        emailCertify.certifyCodeRenewal(code);
+        System.out.println("emailCertify = " + emailCertify);
     }
 
+    @Transactional(readOnly = true)
     public boolean certifyingData(String email, String code) {
-        String value = emailCodeRedisRepository.getData(email);
+        EmailCertify emailCertify = emailCodeRedisRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        email + " 계정의 인증 정보 조회 실패: 해당 이메일에 대한 정보가 없습니다."));
+
+        String value = emailCertify.getCode();
         return value.equals(code);
     }
 }
