@@ -13,6 +13,7 @@ public class GlobalExceptionHandler {
             UserNotFoundException.class,
             RuntimeException.class,
             WeatherNotFoundException.class,
+            IllegalStateException.class
     })
     public ResponseDto<?> handler(Exception e) {
         return ResponseDto.fail(HttpStatus.BAD_REQUEST, e.getMessage());
