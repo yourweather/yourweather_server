@@ -36,7 +36,7 @@ public class EmailCertify {
         if(code == null)
             throw new IllegalArgumentException("이메일 인증 요청 갱신 실패: 인자로 들어온 이메일 인증 코드가 null입니다.");
 
-        if(count > 5)
+        if(count + 1 > 5)
             throw new IllegalStateException("이메일 인증 요청 갱신 실패: 인증 요청 횟수가 5회를 초과했습니다.");
 
         this.code = code;
