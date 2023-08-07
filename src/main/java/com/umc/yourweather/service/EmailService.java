@@ -55,6 +55,9 @@ public class EmailService {
                 });
 
         emailCertify.certifyCodeRenewal(code);
+
+        // orElseGet을 거친다면 불필요한 저장이 두 번 진행됨. 수정 필요
+        emailCodeRepository.save(emailCertify);
     }
 
     @Transactional(readOnly = true)
