@@ -1,14 +1,12 @@
 package com.umc.yourweather.domain.entity;
 
 import lombok.Builder;
-import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
 
 @RedisHash(value = "email_certify")
-@ToString
 public class EmailCertify {
 
     @Id

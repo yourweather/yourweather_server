@@ -55,7 +55,6 @@ public class EmailService {
                 });
 
         emailCertify.certifyCodeRenewal(code);
-        System.out.println("emailCertify = " + emailCertify);
     }
 
     @Transactional(readOnly = true)
