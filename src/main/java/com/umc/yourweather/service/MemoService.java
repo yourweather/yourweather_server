@@ -51,11 +51,6 @@ public class MemoService {
 
         //처음에 last에 대한 정보가 생기고 바로 update를 호출하는게 조금 마음에 걸리긴하지만.. 일단 패스~
         weather.update(memoRequestDto.getStatus(), memoRequestDto.getTemperature());
-        Weather existWeather = Weather.builder()
-                .lastStatus(memoRequestDto.getStatus())
-                .lastTemperature(memoRequestDto.getTemperature())
-                .build();
-
 
         // MemoRequestDto에 넘어온 정보를 토대로 Memo 객체 생성
         Memo memo = Memo.builder()
