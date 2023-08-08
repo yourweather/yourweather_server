@@ -11,11 +11,14 @@ import com.umc.yourweather.response.HomeResponseDto;
 import com.umc.yourweather.response.MissedInputResponseDto;
 //import com.umc.yourweather.request.WeatherRequestDto;
 import com.umc.yourweather.repository.WeatherRepository;
+import com.umc.yourweather.response.WeatherMonthlyResponseDto;
 import com.umc.yourweather.response.WeatherResponseDto;
 //import jakarta.validation.Valid;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +33,7 @@ public class WeatherService {
 
     @Transactional
     public MissedInputResponseDto getMissedInputs(
-        CustomUserDetails userDetails) {
+            CustomUserDetails userDetails) {
 
         // 응답 변수 추가
         MissedInputResponseDto missedInputResponseDto = new MissedInputResponseDto();
@@ -50,7 +53,7 @@ public class WeatherService {
         }
 
         List<Weather> weathers = weatherRepository.findWeatherByDateBetween(oneWeekAgo,
-            current);
+                current);
 
         for (Weather weather : weathers) {
             LocalDate localDate = weather.getDate();
@@ -66,7 +69,7 @@ public class WeatherService {
         LocalDate current = LocalDate.now();
 
         Weather weather = weatherRepository.findByDate(current)
-            .orElseThrow(() -> new WeatherNotFoundException("해당 날짜에 해당하는 날씨 객체가 존재하지 않습니다."));
+                .orElseThrow(() -> new WeatherNotFoundException("해당 날짜에 해당하는 날씨 객체가 존재하지 않습니다."));
 
         User user = userDetails.getUser();
         // 션: 튜닝 가능성이 있어보입니다! 나중에 튜닝해봐용
@@ -77,21 +80,34 @@ public class WeatherService {
 
         Memo lastMemo = memos.get(memos.size() - 1);
         return HomeResponseDto.builder()
-            .nickname(user.getNickname())
-            .status(lastMemo.getStatus())
-            .temperature(lastMemo.getTemperature())
-            .build();
+                .nickname(user.getNickname())
+                .status(lastMemo.getStatus())
+                .temperature(lastMemo.getTemperature())
+                .build();
 
     }
 
     @Transactional
     public WeatherResponseDto delete(LocalDate localDate, CustomUserDetails userDetails) {
         Weather weather = weatherRepository.findByDateAndUser(localDate, userDetails.getUser()) // User 파라미터를 추가해야 함
-            .orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
+                .orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
 
         WeatherResponseDto result = new WeatherResponseDto(weather);
         weatherRepository.delete(weather);
 
+        return result;
+    }
+
+    @Transactional
+    public WeatherMonthlyResponseDto getMonthlyList(int year, int month, CustomUserDetails userDetails) {
+
+        LocalDate startDateTime = LocalDate.of(year, month, 1);
+        LocalDate endDateTime = LocalDate.of(year, month, 31);
+
+        List<Weather> weatherList = weatherRepository.findByMonthAndUser(userDetails.getUser(), startDateTime, endDateTime); // User 파라미터를 추가해야 함
+        //.orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
+
+        WeatherMonthlyResponseDto result = new WeatherMonthlyResponseDto(weatherList);
         return result;
     }
 }
