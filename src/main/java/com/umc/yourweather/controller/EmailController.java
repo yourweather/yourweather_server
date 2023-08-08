@@ -23,7 +23,7 @@ public class EmailController {
     private final EmailService emailService;
 
     @GetMapping("/send")
-    @Operation(summary = "이메일 전송", description = "인증을 위한 이메일을 전송합니다. 인증코드를 유저로부터 입력받아 /certify 요청을 보내면 유효한 코드인지 알 수 있습니다.")
+    @Operation(summary = "이메일 전송", description = "인증을 위한 이메일을 전송합니다. 인증코드를 유저로부터 입력받아 /certify 요청을 보내면 유효한 코드인지 알 수 있습니다. 이메일 전송이 5번 초과되면 더 이상 시도할 수 없습니다. 5분을 기다려 캐시가 삭제되거나 혹은 다른 이메일 주소로 시도해야합니다.")
     @Parameter(name = "email", description = "메일을 보낼 사용자 이메일입니다.", in = ParameterIn.QUERY)
     public ResponseDto<Void> send(@RequestParam String email) {
         try {
