@@ -1,13 +1,10 @@
 package com.umc.yourweather.response;
 
-import com.umc.yourweather.domain.Status;
-import lombok.AllArgsConstructor;
+import com.umc.yourweather.domain.enums.Status;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 @Getter
 public class WeatherMonthlyResponseDto {
 
