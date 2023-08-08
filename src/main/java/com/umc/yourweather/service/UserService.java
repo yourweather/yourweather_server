@@ -4,6 +4,7 @@ import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.enums.Role;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
+import com.umc.yourweather.response.SignupResponseDto;
 import com.umc.yourweather.response.UserResponseDto;
 import com.umc.yourweather.request.SignupRequestDto;
 import com.umc.yourweather.exception.UserNotFoundException;
@@ -12,7 +13,6 @@ import com.umc.yourweather.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +33,7 @@ public class UserService {
     private String refreshTokenHeader;
 
     @Transactional
-    public User signup(@Valid SignupRequestDto signupRequestDto) {
+    public SignupResponseDto signup(@Valid SignupRequestDto signupRequestDto) {
         String email = signupRequestDto.getEmail();
         String password = signupRequestDto.getPassword();
 
@@ -56,18 +56,19 @@ public class UserService {
             .role(Role.ROLE_USER)
             .isActivate(true)
             .build();
-        return userRepository.save(user);
+
+        // 회원 가입으로 DB에 데이터를 넣는 책임과 token을 제공하는 dto를 만드는 책임은 분리를 하는게 더 좋아보임
+        return getSignupResponse(userRepository.save(user));
     }
 
-    // user signup 만을 위해
-    public HttpHeaders getTokenHeaders(User user) {
-        HttpHeaders headers = new HttpHeaders();
+    protected SignupResponseDto getSignupResponse(User user) {
         String accessToken = jwtTokenManager.createAccessToken(user);
         String refreshToken = jwtTokenManager.createRefreshToken();
-        headers.add(accessTokenHeader, accessToken);
-        headers.add(refreshTokenHeader, refreshToken);
 
-        return headers;
+        return SignupResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 
     public UserResponseDto mypage(CustomUserDetails userDetails) {
