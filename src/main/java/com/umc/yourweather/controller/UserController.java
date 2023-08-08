@@ -2,8 +2,8 @@ package com.umc.yourweather.controller;
 
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
-import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
+import com.umc.yourweather.response.SignupResponseDto;
 import com.umc.yourweather.response.UserResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.request.SignupRequestDto;
@@ -12,8 +12,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,13 +30,10 @@ public class UserController {
 
     @PostMapping("/signup")
     @Operation(summary = "회원 가입 api", description = "회원 가입을 합니다. 반환받은 응답 헤더에 토큰이 있습니다.")
-    public ResponseEntity<ResponseDto<String>> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
-        User user = userService.signup(signupRequestDto);
-        HttpHeaders tokenHeader = userService.getTokenHeaders(user);
+    public ResponseDto<SignupResponseDto> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
+        SignupResponseDto response = userService.signup(signupRequestDto);
 
-        return ResponseEntity.ok()
-                .headers(tokenHeader)
-                .body(ResponseDto.success("회원 가입 성공"));
+        return ResponseDto.success("회원 가입 성공", response);
     }
 
     @GetMapping("/mypage")
