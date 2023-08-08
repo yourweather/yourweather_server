@@ -26,14 +26,14 @@ public class MemoController {
     @PostMapping("/write")
     @Operation(summary = "메모 작성 api", description = "메모 작성을 위한 API입니다. 전달받은 요청 데이터들을 참조하여 메모를 저장합니다.")
     public ResponseDto<MemoResponseDto> write(@RequestBody @Valid MemoRequestDto memoRequestDto
-        , @AuthenticationPrincipal CustomUserDetails userDetails) {
+            , @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("메모 저장 완료", memoService.write(memoRequestDto, userDetails));
     }
 
     @Operation(summary = "메모 수정 api", description = "메모 수정을 위한 API입니다.")
     @PutMapping("update/{memoId}")
     public ResponseDto<MemoUpdateResponseDto> update(@PathVariable Long memoId, @RequestBody MemoUpdateRequestDto requestDto) {
-        return ResponseDto.success("메모 수정 완료", memoService.update(memoId,requestDto));
+        return ResponseDto.success("메모 수정 완료", memoService.update(memoId, requestDto));
     }
 
     @Operation(summary = "메모 삭제 api", description = "메모 삭제을 위한 API입니다.")
