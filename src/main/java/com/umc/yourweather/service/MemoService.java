@@ -27,6 +27,7 @@ public class MemoService {
     private final WeatherRepository weatherRepository;
     private final MemoRepository memoRepository;
 
+    @Transactional
     public MemoResponseDto write(MemoRequestDto memoRequestDto, CustomUserDetails userDetails) {
         LocalDateTime dateTime = LocalDateTime.parse(memoRequestDto.getLocalDateTime());
 
