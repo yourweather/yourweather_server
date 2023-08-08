@@ -42,4 +42,9 @@ public class Weather {
         this.lastStatus = lastStatus;
         this.lastTemperature = lastTemperature;
     }
+
+    public void update(Status lastStatus, int lastTemperature) {
+        this.lastStatus = lastStatus;
+        this.lastTemperature = lastTemperature;
+    }
 }
