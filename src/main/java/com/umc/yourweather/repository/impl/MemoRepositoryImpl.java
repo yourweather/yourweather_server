@@ -18,16 +18,16 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class MemoRepositoryImpl implements MemoRepository{
+public class MemoRepositoryImpl implements MemoRepository {
 
     private final MemoJpaRepository memoJpaRepository;
 
     public List<Memo> findByUserAndCreatedDateBetween(User user, LocalDateTime startDateTime,
-            LocalDateTime endDateTime) {
+                                                      LocalDateTime endDateTime) {
         List<Memo> memoList = memoJpaRepository.findByUserAndCreatedDateBetween(
                 user, startDateTime, endDateTime);
 
-        if(memoList.size() == 0) {
+        if (memoList.size() == 0) {
             log.error(String.format("%s의 통계 데이터 조회 실패: 해당 기간 동안의 기록이 없습니다.", user.getEmail()));
         }
 
@@ -35,7 +35,7 @@ public class MemoRepositoryImpl implements MemoRepository{
     }
 
     public List<Memo> findSpecificMemoList(User user, Status status, LocalDateTime startDateTime,
-            LocalDateTime endDateTime) {
+                                           LocalDateTime endDateTime) {
         List<Memo> memoList = memoJpaRepository.findSpecificMemoList(user, status,
                 startDateTime, endDateTime);
 
