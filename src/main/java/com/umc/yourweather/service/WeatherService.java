@@ -27,18 +27,6 @@ public class WeatherService {
 
     private final WeatherRepository weatherRepository;
 
-//    @Transactional
-//    public String create(WeatherRequestDto weatherRequestDto, CustomUserDetails userDetails) {
-//        Weather weather = Weather.builder()
-//            .user(userDetails.getUser())
-//            .date(LocalDate.of(weatherRequestDto.getYear(), weatherRequestDto.getMonth(),
-//                weatherRequestDto.getDay()))
-//            .build();
-//
-//        weatherRepository.save(weather);
-//
-//        return "날씨 생성 완료";
-//    }
 
     @Transactional
     public MissedInputResponseDto getMissedInputs(
