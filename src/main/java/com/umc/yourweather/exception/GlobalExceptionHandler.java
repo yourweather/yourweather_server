@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({IllegalArgumentException.class, UserNotFoundException.class,
-        RuntimeException.class, WeatherNotFoundException.class})
+    @ExceptionHandler({
+            IllegalArgumentException.class,
+            UserNotFoundException.class,
+            RuntimeException.class,
+            WeatherNotFoundException.class,
+            IllegalStateException.class
+    })
     public ResponseDto<?> handler(Exception e) {
         return ResponseDto.fail(HttpStatus.BAD_REQUEST, e.getMessage());
     }
