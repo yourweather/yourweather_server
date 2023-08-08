@@ -25,6 +25,7 @@ public class Weather {
     private LocalDate date;
 
     // 대표날씨 필드, 그 날씨의 온도
+    @Enumerated(EnumType.STRING)
     private Status lastStatus;
     private int lastTemperature;
 
