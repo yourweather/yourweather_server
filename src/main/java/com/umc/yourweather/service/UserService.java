@@ -4,7 +4,7 @@ import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.enums.Role;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
-import com.umc.yourweather.response.SignupResponseDto;
+import com.umc.yourweather.response.AuthorizationResponseDto;
 import com.umc.yourweather.response.UserResponseDto;
 import com.umc.yourweather.request.SignupRequestDto;
 import com.umc.yourweather.exception.UserNotFoundException;
@@ -33,7 +33,7 @@ public class UserService {
     private String refreshTokenHeader;
 
     @Transactional
-    public SignupResponseDto signup(@Valid SignupRequestDto signupRequestDto) {
+    public AuthorizationResponseDto signup(@Valid SignupRequestDto signupRequestDto) {
         String email = signupRequestDto.getEmail();
         String password = signupRequestDto.getPassword();
 
@@ -61,11 +61,11 @@ public class UserService {
         return getSignupResponse(userRepository.save(user));
     }
 
-    protected SignupResponseDto getSignupResponse(User user) {
+    protected AuthorizationResponseDto getSignupResponse(User user) {
         String accessToken = jwtTokenManager.createAccessToken(user);
         String refreshToken = jwtTokenManager.createRefreshToken();
 
-        return SignupResponseDto.builder()
+        return AuthorizationResponseDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();

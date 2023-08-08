@@ -1,8 +1,11 @@
 package com.umc.yourweather.jwt.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.repository.UserRepository;
+import com.umc.yourweather.response.AuthorizationResponseDto;
+import com.umc.yourweather.response.ResponseDto;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +28,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtTokenManager jwtTokenManager;
     private final UserRepository userRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${jwt.access.expiration}")
     private String accessTokenExpiration;
@@ -41,8 +45,22 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         String accessToken = jwtTokenManager.createAccessToken(user);
         String refreshToken = jwtTokenManager.createRefreshToken();
 
-        jwtTokenManager.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);
         jwtTokenManager.updateRefreshToken(user, refreshToken);
+
+        AuthorizationResponseDto authorizationResponseDto = AuthorizationResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+
+        ResponseDto<AuthorizationResponseDto> responseDto = ResponseDto.success(
+                "로그인에 성공했습니다. email: " + email, authorizationResponseDto);
+
+        String result = objectMapper.writeValueAsString(responseDto);
+
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        response.getWriter().write(result);
 
         log.info("로그인에 성공했습니다. email: {}", email);
         log.info("발급된 AccessToken 만료 기간: {}", accessTokenExpiration);

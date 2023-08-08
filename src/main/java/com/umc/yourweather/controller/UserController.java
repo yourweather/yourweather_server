@@ -3,7 +3,7 @@ package com.umc.yourweather.controller;
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
-import com.umc.yourweather.response.SignupResponseDto;
+import com.umc.yourweather.response.AuthorizationResponseDto;
 import com.umc.yourweather.response.UserResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.request.SignupRequestDto;
@@ -30,8 +30,8 @@ public class UserController {
 
     @PostMapping("/signup")
     @Operation(summary = "회원 가입 api", description = "회원 가입을 합니다. 반환받은 응답 헤더에 토큰이 있습니다.")
-    public ResponseDto<SignupResponseDto> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
-        SignupResponseDto response = userService.signup(signupRequestDto);
+    public ResponseDto<AuthorizationResponseDto> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
+        AuthorizationResponseDto response = userService.signup(signupRequestDto);
 
         return ResponseDto.success("회원 가입 성공", response);
     }
