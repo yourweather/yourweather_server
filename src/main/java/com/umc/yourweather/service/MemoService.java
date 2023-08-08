@@ -7,7 +7,6 @@ import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.request.MemoRequestDto;
 import com.umc.yourweather.request.MemoUpdateRequestDto;
-import com.umc.yourweather.request.WeatherUpdateRequestDto;
 import com.umc.yourweather.response.MemoResponseDto;
 import com.umc.yourweather.repository.WeatherRepository;
 
