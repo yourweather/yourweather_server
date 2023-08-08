@@ -53,13 +53,14 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(authorize -> {
-                    // /signup에 대한건 다 허락.
-                    authorize.requestMatchers(RequestURI.USER_URI + "/signup").permitAll();
-                    authorize.requestMatchers(RequestURI.USER_URI + "/login").permitAll();
-                    authorize.requestMatchers(RequestURI.USER_URI + "/oauth-login").permitAll();
-
-                    // 그 외의 모든 요청은 인증이 되어있어야함.
-                    authorize.anyRequest().authenticated();
+//                    // /signup에 대한건 다 허락.
+//                    authorize.requestMatchers(RequestURI.USER_URI + "/signup").permitAll();
+//                    authorize.requestMatchers(RequestURI.USER_URI + "/login").permitAll();
+//                    authorize.requestMatchers(RequestURI.USER_URI + "/oauth-login").permitAll();
+//
+//                    // 그 외의 모든 요청은 인증이 되어있어야함.
+//                    authorize.anyRequest().authenticated();
+                    authorize.anyRequest().permitAll();
                 });
 
         // 우리가 만든 CustomLoginFilter를 LogoutFilter 이후에 꽂아넣어준다.

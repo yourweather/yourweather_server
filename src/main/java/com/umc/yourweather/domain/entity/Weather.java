@@ -26,16 +26,12 @@ public class Weather {
     @JoinColumn(name = "user_id")
     User user;
 
-    @OneToMany(mappedBy = "weather", orphanRemoval = true)
+    @OneToMany(mappedBy = "weather", cascade = CascadeType.REMOVE)
     List<Memo> memos = new ArrayList<>();
 
     @Builder
     public Weather(LocalDate date, User user) {
         this.date = date;
         this.user = user;
-    }
-
-    public LocalDate getDate(){
-        return LocalDate.of(year, month, day);
     }
 }

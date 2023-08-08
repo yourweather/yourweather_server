@@ -15,7 +15,7 @@ public class ResponseDto<T> {
     private final int code;
     private final String message;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+//    @JsonInclude(JsonInclude.Include.NON_NULL)
     private final T result;
 
 

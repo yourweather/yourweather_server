@@ -3,12 +3,14 @@ package com.umc.yourweather.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-//import lombok.Builder;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString
+@NoArgsConstructor
 public class SignupRequestDto {
 
     @Email
@@ -20,11 +22,11 @@ public class SignupRequestDto {
     @NotBlank
     private String platform;
 
-//    @Builder
-//    public SignupRequestDto(String email, String password, String nickname, String platform) {
-//        this.email = email;
-//        this.password = password;
-//        this.nickname = nickname;
-//        this.platform = platform;
-//    }
+    @Builder
+    public SignupRequestDto(String email, String password, String nickname, String platform) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.platform = platform;
+    }
 }

@@ -30,8 +30,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final String[] NO_CHECK_URI_ARRAY = {
             RequestURI.USER_URI + "/login",
             RequestURI.USER_URI + "/signup",
-            RequestURI.USER_URI + "/oauth-login"
+            RequestURI.USER_URI + "/oauth-login",
+            RequestURI.EMAIL_URI + "/send",
+            RequestURI.EMAIL_URI + "/certify",
+            "/swagger-ui/index.html",
+            "/favicon.ico"
     };
+
     private static final List<String> NO_CHECK_URIS = new ArrayList<>(
             Arrays.asList(NO_CHECK_URI_ARRAY));
 
@@ -43,7 +48,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-        if (NO_CHECK_URIS.contains(request.getRequestURI())) {
+        if (NO_CHECK_URIS.contains(request.getRequestURI())
+                || request.getRequestURI().contains("/swagger-ui")
+                || request.getRequestURI().contains("/v3")) {
             filterChain.doFilter(request, response);
             return;
         }
