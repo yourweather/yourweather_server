@@ -10,6 +10,10 @@ import java.util.*;
 
 public class MemoTestRepository implements MemoRepository {
     private final List<Memo> memoListOrderByDateTime = new ArrayList<>();
+    private final List<Memo> sunnyList = new ArrayList<>();
+    private final List<Memo> cloudyList = new ArrayList<>();
+    private final List<Memo> rainyList = new ArrayList<>();
+    private final List<Memo> lightningList = new ArrayList<>();
 
     private void addMemoByRandom(LocalDateTime dateTime, int num) {
         List<Status> values = Arrays.asList(Status.values());
@@ -34,6 +38,7 @@ public class MemoTestRepository implements MemoRepository {
                     .createdDateTime(dateTime)
                     .build();
 
+            sunnyList.add(memo);
             memoListOrderByDateTime.add(memo);
         }
 
@@ -44,6 +49,7 @@ public class MemoTestRepository implements MemoRepository {
                     .createdDateTime(dateTime)
                     .build();
 
+            cloudyList.add(memo);
             memoListOrderByDateTime.add(memo);
         }
 
@@ -54,6 +60,7 @@ public class MemoTestRepository implements MemoRepository {
                     .createdDateTime(dateTime)
                     .build();
 
+            rainyList.add(memo);
             memoListOrderByDateTime.add(memo);
         }
 
@@ -64,6 +71,7 @@ public class MemoTestRepository implements MemoRepository {
                     .createdDateTime(dateTime)
                     .build();
 
+            lightningList.add(memo);
             memoListOrderByDateTime.add(memo);
         }
     }
@@ -89,7 +97,14 @@ public class MemoTestRepository implements MemoRepository {
     @Override
     public List<Memo> findSpecificMemoList(User user, Status status, LocalDateTime startDateTime,
             LocalDateTime endDateTime) {
-        return memoListOrderByDateTime;
+        List<Memo> returnList = new ArrayList<>();
+        switch(status) {
+            case SUNNY -> returnList = sunnyList;
+            case CLOUDY -> returnList = cloudyList;
+            case RAINY -> returnList = rainyList;
+            case LIGHTNING -> returnList = lightningList;
+        }
+        return returnList;
     }
 
     @Override
