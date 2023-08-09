@@ -15,11 +15,11 @@ import org.junit.jupiter.api.Test;
 
 class StatisticCreatorTest {
 
-    MemoRepository memoRepository = new MemoTestRepository(7, false);
+    MemoRepository memoRepository = new MemoTestRepository(7);
 
     @BeforeEach
     public void setMemoRepository() {
-        memoRepository = new MemoTestRepository(7, false);
+        memoRepository = new MemoTestRepository(7);
     }
 
     @Test
@@ -51,7 +51,7 @@ class StatisticCreatorTest {
     @DisplayName("월간 통계 수치화 테스트")
     public void test2() {
         // given
-        memoRepository = new MemoTestRepository(31, false);
+        memoRepository = new MemoTestRepository(31);
         StatisticCreator statisticCreator = new StatisticCreator(memoRepository);
         User user = User.builder()
                 .email("sbs8239@gmail.com")
