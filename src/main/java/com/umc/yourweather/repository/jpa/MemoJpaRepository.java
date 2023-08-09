@@ -2,6 +2,7 @@ package com.umc.yourweather.repository.jpa;
 
 import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
+import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.domain.enums.Status;
 
 import java.time.LocalDate;
@@ -46,12 +47,13 @@ public interface MemoJpaRepository extends JpaRepository<Memo, Long> {
 
 
     @Query("SELECT m FROM Memo m "
-            + "JOIN FETCH m.user u "
+            + "JOIN FETCH m.weather w "
+            + "JOIN FETCH w.user u "
             + "WHERE "
             + "u = :user AND "
-            + "m.creationDatetime = :localDate"
-            + "ORDER BY m.creationDatetime asc")
-    List<MemoItemResponseDto> findByDateAndUser(
+            + "m.weather = :weather "
+            + "ORDER BY m.createdDateTime asc")
+    List<Memo> findByUserAndWeatherId(
             @Param("user") User user,
-            @Param("localDate") LocalDate localDate);
+            @Param("weather") Weather weatherId);
 }

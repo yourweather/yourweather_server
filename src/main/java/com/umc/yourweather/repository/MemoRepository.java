@@ -2,6 +2,7 @@ package com.umc.yourweather.repository;
 
 import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
+import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.domain.enums.Status;
 import com.umc.yourweather.response.MemoItemResponseDto;
 
@@ -24,5 +25,7 @@ public interface MemoRepository {
 
     void delete(Memo memo);
 
-    List<MemoItemResponseDto> findByDateAndUser(User user, LocalDate localDate);
+//    List<MemoItemResponseDto> findByDateAndUser(User user, LocalDate localDate);
+
+    List<Memo> findByUserAndWeatherId(User user, Weather weather);
 }

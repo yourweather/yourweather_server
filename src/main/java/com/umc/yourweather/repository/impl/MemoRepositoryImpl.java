@@ -2,6 +2,7 @@ package com.umc.yourweather.repository.impl;
 
 import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
+import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.domain.enums.Status;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.jpa.MemoJpaRepository;
@@ -60,7 +61,11 @@ public class MemoRepositoryImpl implements MemoRepository {
         memoJpaRepository.delete(memo);
     }
 
-    public List<MemoItemResponseDto> findByDateAndUser(User user, LocalDate localDate) {
-        return memoJpaRepository.findByDateAndUser(user,localDate);
+    public List<Memo> findByUserAndWeatherId(User user, Weather weather) {
+        return memoJpaRepository.findByUserAndWeatherId(user,weather);
     }
+
+//    public List<MemoItemResponseDto> findByDateAndUser(User user, LocalDate localDate) {
+//        return memoJpaRepository.findByDateAndUser(user,localDate);
+//    }
 }
