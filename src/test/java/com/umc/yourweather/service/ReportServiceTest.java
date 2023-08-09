@@ -205,4 +205,37 @@ class ReportServiceTest {
         assertEquals(rainyNum, rainyList.size());
         assertEquals(lightningNum, lightningList.size());
     }
+
+    @Test
+    @DisplayName("getComparedWeeklyStatistic: 저번 주")
+    public void test8() {
+        // given
+        final int sunnyNum = 10; // 23%
+        final int cloudyNum = 10; // 23%
+        final int rainyNum = 10; // 23%
+        final int lightningNum = 13; // 30%
+        Proportion proportion = new Builder()
+                .sunny(sunnyNum)
+                .cloudy(cloudyNum)
+                .rainy(rainyNum)
+                .lightning(lightningNum)
+                .build();
+        memoRepository = new MemoTestRepository(proportion);
+        reportService = new ReportService(memoRepository);
+        User user = User.builder().build();
+
+
+        // when
+        StatisticResponseDto thisWeekStatistic = reportService.getComparedWeeklyStatistic(
+                user, 0);
+        StatisticResponseDto preWeekStatistic = reportService.getComparedWeeklyStatistic(
+                user, 1);
+        StatisticResponseDto comparedStatistic = thisWeekStatistic.compareWith(preWeekStatistic);
+
+        // then
+        assertEquals(6, (int) comparedStatistic.getSunny());
+        assertEquals(0, (int) comparedStatistic.getCloudy());
+        assertEquals(0, (int) comparedStatistic.getRainy());
+        assertEquals(-6, (int) comparedStatistic.getLightning());
+    }
 }
