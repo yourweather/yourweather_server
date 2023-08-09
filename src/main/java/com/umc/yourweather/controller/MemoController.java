@@ -4,6 +4,7 @@ import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.request.MemoRequestDto;
 import com.umc.yourweather.request.MemoUpdateRequestDto;
+import com.umc.yourweather.response.MemoDailyResponseDto;
 import com.umc.yourweather.response.MemoResponseDto;
 import com.umc.yourweather.response.MemoUpdateResponseDto;
 import com.umc.yourweather.response.ResponseDto;
@@ -28,14 +29,23 @@ public class MemoController {
         return ResponseDto.success("메모 저장 완료", memoService.write(memoRequestDto, userDetails));
     }
 
+    @GetMapping("/daily/{weatherId}")
+    @Operation(summary = "하루 치 메모 반환 api", description = "하루치 메모 리스트를 반환하기 위한 API입니다. weather-controller에 있는 monthly API의 반환 값에 있는 weather_id를 이용해서 조회합니다. ")
+    public ResponseDto<MemoDailyResponseDto> daily(@PathVariable long weatherId,
+                                                   @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        return ResponseDto.success(weatherId + "번의 메모 조회 성공", memoService.getDailyList(weatherId, userDetails));
+    }
+
+
     @Operation(summary = "메모 수정 api", description = "메모 수정을 위한 API입니다.")
-    @PutMapping("update/{memoId}")
+    @PutMapping("/update/{memoId}")
     public ResponseDto<MemoUpdateResponseDto> update(@PathVariable Long memoId, @RequestBody MemoUpdateRequestDto requestDto) {
         return ResponseDto.success("메모 수정 완료", memoService.update(memoId, requestDto));
     }
 
     @Operation(summary = "메모 삭제 api", description = "메모 삭제을 위한 API입니다.")
-    @DeleteMapping("delete/{memoId}")
+    @DeleteMapping("/delete/{memoId}")
     public ResponseDto<Void> delete(@PathVariable Long memoId) {
         memoService.delete(memoId);
         return ResponseDto.success("메모 삭제 완료");

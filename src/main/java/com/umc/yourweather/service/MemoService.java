@@ -4,12 +4,12 @@ import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
+import com.umc.yourweather.exception.WeatherNotFoundException;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.WeatherRepository;
 import com.umc.yourweather.request.MemoRequestDto;
 import com.umc.yourweather.request.MemoUpdateRequestDto;
-import com.umc.yourweather.response.MemoResponseDto;
-import com.umc.yourweather.response.MemoUpdateResponseDto;
+import com.umc.yourweather.response.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -87,6 +90,26 @@ public class MemoService {
                 .orElseThrow(() -> new EntityNotFoundException("해당 메모가 없습니다. id =" + memoId));
 
         memoRepository.delete(memo);
+    }
+
+    @Transactional
+    public MemoDailyResponseDto getDailyList(Long weatherId, CustomUserDetails userDetails) {
+        Weather weather = weatherRepository.findById(weatherId)
+                .orElseThrow(() -> new WeatherNotFoundException("해당하는 Weather 객체가 없습니다."));
+
+        List<MemoItemResponseDto> memoList = memoRepository.findByUserAndWeatherId(userDetails.getUser(), weather)
+                .stream()
+                .map(MemoItemResponseDto::new)
+                .collect(Collectors.toList()); // User 파라미터를 추가해야 함
+
+        List<MemoContentResponseDto> memoContentList = memoRepository.findByUserAndWeatherId(userDetails.getUser(), weather)
+                .stream()
+                .map(MemoContentResponseDto::new)
+                .collect(Collectors.toList()); // User 파라미터를 추가해야 함
+
+
+        MemoDailyResponseDto result = new MemoDailyResponseDto(memoList, memoContentList);
+        return result;
     }
 }
 
