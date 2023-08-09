@@ -1,9 +1,45 @@
 package com.umc.yourweather.repository.impl;
 
-public class WeatherRepositoryImpl {
+import com.umc.yourweather.domain.entity.User;
+import com.umc.yourweather.domain.entity.Weather;
+import com.umc.yourweather.repository.WeatherRepository;
+import com.umc.yourweather.repository.jpa.WeatherJpaRepository;
+import com.umc.yourweather.response.WeatherItemResponseDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
 
-//    @Override
-//    public void writeWeather(Weather weather) throws Exception {
-//        boardMapper.insertBoard(board);
-//    }
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+
+@Repository
+@RequiredArgsConstructor
+@Slf4j
+public class WeatherRepositoryImpl implements WeatherRepository {
+
+    private final WeatherJpaRepository weatherJpaRepository;
+
+    public List<Weather> findWeatherByDateBetween(LocalDate startDate, LocalDate endDate) {
+        return weatherJpaRepository.findWeatherByDateBetween(startDate, endDate);
+    }
+
+    public Optional<Weather> findByDateAndUser(LocalDate localDate, User user) {
+        return weatherJpaRepository.findByDateAndUser(localDate, user);
+    }
+
+    public Optional<Weather> findByDate(LocalDate localDate) {
+        return weatherJpaRepository.findByDate(localDate);
+    }
+
+    public List<WeatherItemResponseDto> findByMonthAndUser(User user, LocalDate startDate, LocalDate endDate) {
+        return weatherJpaRepository.findByMonthAndUser(user, startDate, endDate);
+    }
+
+    @Override
+    public Weather save(Weather weather) { return weatherJpaRepository.save(weather); }
+
+    @Override
+    public void delete(Weather weather) { weatherJpaRepository.delete(weather); }
 }
