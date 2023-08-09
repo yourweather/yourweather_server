@@ -100,7 +100,7 @@ public class JwtTokenManager {
             );
         } catch (Exception e) {
             log.error("유효하지 않은 액세스 토큰입니다.");
-            return Optional.empty();
+            throw new IllegalArgumentException("유효하지 않은 액세스 토큰입니다.");
         }
     }
 
