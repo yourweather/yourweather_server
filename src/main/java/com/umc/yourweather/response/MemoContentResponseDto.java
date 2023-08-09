@@ -1,7 +1,6 @@
 package com.umc.yourweather.response;
 
 import com.umc.yourweather.domain.entity.Memo;
-import com.umc.yourweather.domain.enums.Status;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

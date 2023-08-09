@@ -1,18 +1,12 @@
 package com.umc.yourweather.repository;
 
-import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
+import com.umc.yourweather.response.WeatherItemResponseDto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
-import com.umc.yourweather.response.WeatherItemResponseDto;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface WeatherRepository {
 

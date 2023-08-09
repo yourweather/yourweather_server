@@ -14,10 +14,10 @@ import java.util.Optional;
 public interface MemoRepository {
 
     List<Memo> findByUserAndCreatedDateBetween(User user, LocalDateTime startDateTime,
-            LocalDateTime endDateTime);
+                                               LocalDateTime endDateTime);
 
     List<Memo> findSpecificMemoList(User user, Status status, LocalDateTime startDateTime,
-            LocalDateTime endDateTime);
+                                    LocalDateTime endDateTime);
 
     Memo save(Memo memo);
 

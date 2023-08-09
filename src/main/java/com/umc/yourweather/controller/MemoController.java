@@ -15,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(RequestURI.MEMO_URI)
@@ -36,7 +34,7 @@ public class MemoController {
     public ResponseDto<MemoDailyResponseDto> daily(@PathVariable long weatherId,
                                                    @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        return ResponseDto.success(weatherId+"번의 메모 조회 성공", memoService.getDailyList(weatherId, userDetails));
+        return ResponseDto.success(weatherId + "번의 메모 조회 성공", memoService.getDailyList(weatherId, userDetails));
     }
 
 
