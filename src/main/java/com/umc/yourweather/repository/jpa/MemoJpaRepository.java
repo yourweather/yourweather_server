@@ -3,10 +3,13 @@ package com.umc.yourweather.repository.jpa;
 import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.enums.Status;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.umc.yourweather.response.MemoItemResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -40,4 +43,15 @@ public interface MemoJpaRepository extends JpaRepository<Memo, Long> {
             @Param("status") Status status,
             @Param("startDateTime") LocalDateTime startDateTime,
             @Param("endDateTime") LocalDateTime endDateTime);
+
+
+    @Query("SELECT m FROM Memo m "
+            + "JOIN FETCH m.user u "
+            + "WHERE "
+            + "u = :user AND "
+            + "m.creationDatetime = :localDate"
+            + "ORDER BY m.creationDatetime asc")
+    List<MemoItemResponseDto> findByDateAndUser(
+            @Param("user") User user,
+            @Param("localDate") LocalDate localDate);
 }

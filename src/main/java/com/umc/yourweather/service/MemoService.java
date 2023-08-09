@@ -7,11 +7,14 @@ import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.request.MemoRequestDto;
 import com.umc.yourweather.request.MemoUpdateRequestDto;
+import com.umc.yourweather.response.MemoDailyResponseDto;
+import com.umc.yourweather.response.MemoItemResponseDto;
 import com.umc.yourweather.response.MemoResponseDto;
 import com.umc.yourweather.repository.WeatherRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.umc.yourweather.response.MemoUpdateResponseDto;
 import jakarta.persistence.EntityNotFoundException;
@@ -88,6 +91,16 @@ public class MemoService {
                 .orElseThrow(() -> new EntityNotFoundException("해당 메모가 없습니다. id =" + memoId));
 
         memoRepository.delete(memo);
+    }
+
+    @Transactional
+    public MemoDailyResponseDto getDailyList(LocalDate localDate, CustomUserDetails userDetails) {
+
+        List<MemoItemResponseDto> memoList = memoRepository.findByDateAndUser(userDetails.getUser(), localDate); // User 파라미터를 추가해야 함
+        //.orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
+
+        MemoDailyResponseDto result = new MemoDailyResponseDto(memoList);
+        return result;
     }
 }
 

@@ -6,10 +6,12 @@ import com.umc.yourweather.domain.enums.Status;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.jpa.MemoJpaRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.umc.yourweather.response.MemoItemResponseDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,5 +58,9 @@ public class MemoRepositoryImpl implements MemoRepository {
 
     public void delete(Memo memo) {
         memoJpaRepository.delete(memo);
+    }
+
+    public List<MemoItemResponseDto> findByDateAndUser(User user, LocalDate localDate) {
+        return memoJpaRepository.findByDateAndUser(user,localDate);
     }
 }
