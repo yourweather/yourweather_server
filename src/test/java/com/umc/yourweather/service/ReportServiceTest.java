@@ -6,15 +6,19 @@ import com.umc.yourweather.domain.Proportion;
 import com.umc.yourweather.domain.Proportion.Builder;
 import com.umc.yourweather.domain.Statistic;
 import com.umc.yourweather.domain.entity.User;
+import com.umc.yourweather.domain.enums.Status;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.test.MemoTestRepository;
+import com.umc.yourweather.response.MemoReportResponseDto;
 import com.umc.yourweather.response.StatisticResponseDto;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class ReportServiceTest {
+
     MemoRepository memoRepository = new MemoTestRepository(7);
     ReportService reportService = new ReportService(memoRepository);
 
@@ -166,4 +170,39 @@ class ReportServiceTest {
         assertEquals(10, (int) statisticResponseDto.getLightning());
     }
 
+    @Test
+    @DisplayName("getSpecificMemoList: 현재 주")
+    public void test7() {
+        // given
+        final int sunnyNum = 10;
+        final int cloudyNum = 10;
+        final int rainyNum = 10;
+        final int lightningNum = 13;
+        Proportion proportion = new Builder()
+                .sunny(sunnyNum)
+                .cloudy(cloudyNum)
+                .rainy(rainyNum)
+                .lightning(lightningNum)
+                .build();
+        memoRepository = new MemoTestRepository(proportion);
+        reportService = new ReportService(memoRepository);
+        User user = User.builder().build();
+        LocalDateTime now = LocalDateTime.now();
+
+        // when
+        List<MemoReportResponseDto> sunnyList = reportService
+                .getSpecificMemoList(user, Status.SUNNY, now);
+        List<MemoReportResponseDto> cloudyList = reportService
+                .getSpecificMemoList(user, Status.CLOUDY, now);
+        List<MemoReportResponseDto> rainyList = reportService
+                .getSpecificMemoList(user, Status.RAINY, now);
+        List<MemoReportResponseDto> lightningList = reportService
+                .getSpecificMemoList(user, Status.LIGHTNING, now);
+
+        // then
+        assertEquals(sunnyNum, sunnyList.size());
+        assertEquals(cloudyNum, cloudyList.size());
+        assertEquals(rainyNum, rainyList.size());
+        assertEquals(lightningNum, lightningList.size());
+    }
 }
