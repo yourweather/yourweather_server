@@ -226,16 +226,42 @@ class ReportServiceTest {
 
 
         // when
-        StatisticResponseDto thisWeekStatistic = reportService.getComparedWeeklyStatistic(
-                user, 0);
-        StatisticResponseDto preWeekStatistic = reportService.getComparedWeeklyStatistic(
+        StatisticResponseDto comparedStatistic = reportService.getComparedWeeklyStatistic(
                 user, 1);
-        StatisticResponseDto comparedStatistic = thisWeekStatistic.compareWith(preWeekStatistic);
 
         // then
-        assertEquals(6, (int) comparedStatistic.getSunny());
+        assertEquals(-6, (int) comparedStatistic.getSunny());
         assertEquals(0, (int) comparedStatistic.getCloudy());
         assertEquals(0, (int) comparedStatistic.getRainy());
-        assertEquals(-6, (int) comparedStatistic.getLightning());
+        assertEquals(6, (int) comparedStatistic.getLightning());
+    }
+
+    @Test
+    @DisplayName("getComparedMonthlyStatistic: 저번 주")
+    public void test9() {
+        // given
+        final int sunnyNum = 10; // 23%
+        final int cloudyNum = 10; // 23%
+        final int rainyNum = 10; // 23%
+        final int lightningNum = 13; // 30%
+        Proportion proportion = new Builder()
+                .sunny(sunnyNum)
+                .cloudy(cloudyNum)
+                .rainy(rainyNum)
+                .lightning(lightningNum)
+                .build();
+        memoRepository = new MemoTestRepository(proportion);
+        reportService = new ReportService(memoRepository);
+        User user = User.builder().build();
+
+        // when
+        StatisticResponseDto statistic = reportService.getComparedMonthlyStatistic(
+                user, 1);
+
+        // then
+        assertEquals(-6, (int) statistic.getSunny());
+        assertEquals(0, (int) statistic.getCloudy());
+        assertEquals(0, (int) statistic.getRainy());
+        assertEquals(6, (int) statistic.getLightning());
     }
 }

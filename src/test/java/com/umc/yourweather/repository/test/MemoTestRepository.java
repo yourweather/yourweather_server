@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class MemoTestRepository implements MemoRepository {
-    private final List<Memo> memoListOrderByDateTime = new ArrayList<>();
+    private final List<Memo> memoListOrderByDateTime = new ArrayList<>(); // 현재 주 현재 달 리스트
+    private final List<Memo> preMonthMemoList = new ArrayList<>();
 
     /**
      * preWeekMemoList 요소 채우는 기준 :
@@ -58,6 +59,7 @@ public class MemoTestRepository implements MemoRepository {
             sunnyList.add(memo);
             memoListOrderByDateTime.add(memo);
             preWeekMemoList.add(preWeekMemo);
+            preMonthMemoList.add(preWeekMemo);
         }
 
         for(int i = 0; i < proportion.cloudy; i++) {
@@ -76,6 +78,7 @@ public class MemoTestRepository implements MemoRepository {
             cloudyList.add(memo);
             memoListOrderByDateTime.add(memo);
             preWeekMemoList.add(preWeekMemo);
+            preMonthMemoList.add(preWeekMemo);
         }
 
         for(int i = 0; i < proportion.rainy; i++) {
@@ -94,6 +97,7 @@ public class MemoTestRepository implements MemoRepository {
             rainyList.add(memo);
             memoListOrderByDateTime.add(memo);
             preWeekMemoList.add(preWeekMemo);
+            preMonthMemoList.add(preWeekMemo);
         }
 
         for(int i = 0; i < proportion.lightning; i++) {
@@ -112,6 +116,7 @@ public class MemoTestRepository implements MemoRepository {
             lightningList.add(memo);
             memoListOrderByDateTime.add(memo);
             preWeekMemoList.add(preWeekMemo);
+            preMonthMemoList.add(preWeekMemo);
         }
     }
 
@@ -137,11 +142,15 @@ public class MemoTestRepository implements MemoRepository {
         System.out.println("startDateTime = " + startDateTime);
         System.out.println("startDate = " + startDate);
         System.out.println("startDateTime.toLocalDate()==startDate = " + (Objects.equals(startDateTime.toLocalDate(), startDate)));
+        System.out.println("startDateTime.toLocalDate()==startDateTime.withDayOfMonth(1).toLocalDate() = " + (Objects.equals(startDateTime.toLocalDate(), startDateTime.withDayOfMonth(1).toLocalDate())));
+        System.out.println("startDateTime.toLocalDate()==startDateTime.withDayOfMonth(1).minusMonths(1).toLocalDate() = " + (Objects.equals(startDateTime.toLocalDate(), startDateTime.withDayOfMonth(1).minusMonths(1).toLocalDate())));
 
         if(Objects.equals(startDateTime.toLocalDate(), startDate))
             return memoListOrderByDateTime;
-        else if (Objects.equals(startDateTime.toLocalDate(), startDateTime.withDayOfMonth(1).toLocalDate()))
+        else if (Objects.equals(startDateTime.toLocalDate(), startDate.withDayOfMonth(1)))
             return memoListOrderByDateTime;
+        else if (Objects.equals(startDateTime.toLocalDate(), startDate.withDayOfMonth(1)))
+            return preMonthMemoList;
         else
             return preWeekMemoList;
     }
