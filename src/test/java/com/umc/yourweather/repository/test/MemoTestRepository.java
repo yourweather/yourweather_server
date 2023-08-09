@@ -5,11 +5,22 @@ import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.enums.Status;
 import com.umc.yourweather.repository.MemoRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
 public class MemoTestRepository implements MemoRepository {
     private final List<Memo> memoListOrderByDateTime = new ArrayList<>();
+
+    /**
+     * preWeekMemoList 요소 채우는 기준 :
+     * 이번 주 -> 이전 주
+     * sunny 갯수 -> lightning 갯수
+     * cloudy 갯수 -> rainy 갯수
+     * rainy 갯수 -> cloudy 갯수
+     * lightning 갯수 -> sunny 갯수
+     */
+    private final List<Memo> preWeekMemoList = new ArrayList<>();
     private final List<Memo> sunnyList = new ArrayList<>();
     private final List<Memo> cloudyList = new ArrayList<>();
     private final List<Memo> rainyList = new ArrayList<>();
@@ -38,8 +49,15 @@ public class MemoTestRepository implements MemoRepository {
                     .createdDateTime(dateTime)
                     .build();
 
+            Memo preWeekMemo = Memo.builder()
+                    .status(Status.LIGHTNING)
+                    .temperature(30)
+                    .createdDateTime(dateTime)
+                    .build();
+
             sunnyList.add(memo);
             memoListOrderByDateTime.add(memo);
+            preWeekMemoList.add(preWeekMemo);
         }
 
         for(int i = 0; i < proportion.cloudy; i++) {
@@ -49,8 +67,15 @@ public class MemoTestRepository implements MemoRepository {
                     .createdDateTime(dateTime)
                     .build();
 
+            Memo preWeekMemo = Memo.builder()
+                    .status(Status.RAINY)
+                    .temperature(30)
+                    .createdDateTime(dateTime)
+                    .build();
+
             cloudyList.add(memo);
             memoListOrderByDateTime.add(memo);
+            preWeekMemoList.add(preWeekMemo);
         }
 
         for(int i = 0; i < proportion.rainy; i++) {
@@ -60,8 +85,15 @@ public class MemoTestRepository implements MemoRepository {
                     .createdDateTime(dateTime)
                     .build();
 
+            Memo preWeekMemo = Memo.builder()
+                    .status(Status.CLOUDY)
+                    .temperature(30)
+                    .createdDateTime(dateTime)
+                    .build();
+
             rainyList.add(memo);
             memoListOrderByDateTime.add(memo);
+            preWeekMemoList.add(preWeekMemo);
         }
 
         for(int i = 0; i < proportion.lightning; i++) {
@@ -71,8 +103,15 @@ public class MemoTestRepository implements MemoRepository {
                     .createdDateTime(dateTime)
                     .build();
 
+            Memo preWeekMemo = Memo.builder()
+                    .status(Status.SUNNY)
+                    .temperature(30)
+                    .createdDateTime(dateTime)
+                    .build();
+
             lightningList.add(memo);
             memoListOrderByDateTime.add(memo);
+            preWeekMemoList.add(preWeekMemo);
         }
     }
 
@@ -91,7 +130,20 @@ public class MemoTestRepository implements MemoRepository {
     @Override
     public List<Memo> findByUserAndCreatedDateBetween(User user, LocalDateTime startDateTime,
             LocalDateTime endDateTime) {
-        return memoListOrderByDateTime;
+        LocalDate now = LocalDate.now();
+        int dayOfWeek = now.getDayOfWeek().getValue();
+        LocalDate startDate = now.minusDays(dayOfWeek - 1);
+
+        System.out.println("startDateTime = " + startDateTime);
+        System.out.println("startDate = " + startDate);
+        System.out.println("startDateTime.toLocalDate()==startDate = " + (Objects.equals(startDateTime.toLocalDate(), startDate)));
+
+        if(Objects.equals(startDateTime.toLocalDate(), startDate))
+            return memoListOrderByDateTime;
+        else if (Objects.equals(startDateTime.toLocalDate(), startDateTime.withDayOfMonth(1).toLocalDate()))
+            return memoListOrderByDateTime;
+        else
+            return preWeekMemoList;
     }
 
     @Override
