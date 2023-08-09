@@ -31,15 +31,12 @@ public class MemoController {
         return ResponseDto.success("메모 저장 완료", memoService.write(memoRequestDto, userDetails));
     }
 
-    @GetMapping("/daily/{year}/{month}/{day}")
-    @Operation(summary = "하루 치 메모 반환 api", description = "메모 작성을 위한 API입니다. 전달받은 요청 데이터들을 참조하여 메모를 저장합니다.")
-    public ResponseDto<MemoDailyResponseDto> daily(@PathVariable int year,
-                                                   @PathVariable int month,
-                                                   @PathVariable int day,
+    @GetMapping("/daily/{weatherId}")
+    @Operation(summary = "하루 치 메모 반환 api", description = "하루치 메모 리스트를 반환하기 위한 API입니다. weather-controller에 있는 monthly API의 반환 값에 있는 weather_id를 이용해서 조회합니다. ")
+    public ResponseDto<MemoDailyResponseDto> daily(@PathVariable long weatherId,
                                                    @AuthenticationPrincipal CustomUserDetails userDetails) {
-        LocalDate localDate = LocalDate.of(year, month, day);
 
-        return ResponseDto.success(year+month+day+" 메모 조회 성공", memoService.getDailyList(localDate, userDetails));
+        return ResponseDto.success(weatherId+"번의 메모 조회 성공", memoService.getDailyList(weatherId, userDetails));
     }
 
 
