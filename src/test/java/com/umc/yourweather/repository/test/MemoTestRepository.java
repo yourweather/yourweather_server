@@ -10,8 +10,9 @@ import java.util.*;
 public class MemoTestRepository implements MemoRepository {
     private final List<Memo> memoListOrderByDateTime = new ArrayList<>();
     private final int num;
+    private boolean random;
 
-    private void addMemo(LocalDateTime dateTime, int num) {
+    private void addMemoByRandom(LocalDateTime dateTime, int num) {
         List<Status> values = Arrays.asList(Status.values());
         Random random = new Random();
 
@@ -26,10 +27,19 @@ public class MemoTestRepository implements MemoRepository {
         }
     }
 
-    public MemoTestRepository(int num) {
+    private void addMemoByNonRandom(LocalDateTime dateTime, int num) {
+
+
+    }
+
+    public MemoTestRepository(int num, boolean random) {
         this.num = num;
+        this.random = random;
         LocalDateTime dateTime = LocalDateTime.now();
-        addMemo(dateTime, this.num);
+
+        if (random)
+            addMemoByRandom(dateTime, this.num);
+
     }
 
     @Override
@@ -46,7 +56,7 @@ public class MemoTestRepository implements MemoRepository {
 
     @Override
     public Memo save(Memo memo) {
-        return null;
+        return memo;
     }
 
     @Override
