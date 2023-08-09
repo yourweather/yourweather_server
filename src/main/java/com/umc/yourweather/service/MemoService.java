@@ -4,19 +4,18 @@ import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
+import com.umc.yourweather.exception.WeatherNotFoundException;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.WeatherRepository;
 import com.umc.yourweather.request.MemoRequestDto;
 import com.umc.yourweather.request.MemoUpdateRequestDto;
-import com.umc.yourweather.response.MemoDailyResponseDto;
-import com.umc.yourweather.response.MemoItemResponseDto;
-import com.umc.yourweather.response.MemoResponseDto;
+import com.umc.yourweather.response.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import com.umc.yourweather.response.MemoUpdateResponseDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -95,12 +94,22 @@ public class MemoService {
     }
 
     @Transactional
-    public MemoDailyResponseDto getDailyList(LocalDate localDate, CustomUserDetails userDetails) {
+    public MemoDailyResponseDto getDailyList(Long weatherId, CustomUserDetails userDetails) {
+        Weather weather = weatherRepository.findById(weatherId)
+                .orElseThrow(() -> new WeatherNotFoundException("해당하는 Weather 객체가 없습니다."));
 
-        List<MemoItemResponseDto> memoList = memoRepository.findByDateAndUser(userDetails.getUser(), localDate); // User 파라미터를 추가해야 함
-        //.orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
+        List<MemoItemResponseDto> memoList = memoRepository.findByUserAndWeatherId(userDetails.getUser(), weather)
+                .stream()
+                .map(MemoItemResponseDto::new)
+                .collect(Collectors.toList()); // User 파라미터를 추가해야 함
 
-        MemoDailyResponseDto result = new MemoDailyResponseDto(memoList);
+        List<MemoContentResponseDto> memoContentList = memoRepository.findByUserAndWeatherId(userDetails.getUser(), weather)
+                .stream()
+                .map(MemoContentResponseDto::new)
+                .collect(Collectors.toList()); // User 파라미터를 추가해야 함
+
+
+        MemoDailyResponseDto result = new MemoDailyResponseDto(memoList,memoContentList);
         return result;
     }
 }
