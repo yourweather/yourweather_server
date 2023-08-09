@@ -21,18 +21,27 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
     private final WeatherJpaRepository weatherJpaRepository;
 
+    @Override
+    public Optional<Weather> findById(Long id) {
+        return weatherJpaRepository.findById(id);
+    }
+
+    @Override
     public List<Weather> findWeatherByDateBetween(LocalDate startDate, LocalDate endDate) {
         return weatherJpaRepository.findWeatherByDateBetween(startDate, endDate);
     }
 
+    @Override
     public Optional<Weather> findByDateAndUser(LocalDate localDate, User user) {
         return weatherJpaRepository.findByDateAndUser(localDate, user);
     }
 
+    @Override
     public Optional<Weather> findByDate(LocalDate localDate) {
         return weatherJpaRepository.findByDate(localDate);
     }
 
+    @Override
     public List<WeatherItemResponseDto> findByMonthAndUser(User user, LocalDate startDate, LocalDate endDate) {
         return weatherJpaRepository.findByMonthAndUser(user, startDate, endDate);
     }
