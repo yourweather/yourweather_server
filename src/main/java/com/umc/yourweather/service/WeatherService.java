@@ -104,7 +104,7 @@ public class WeatherService {
         LocalDate startDateTime = LocalDate.of(year, month, 1);
         LocalDate endDateTime = LocalDate.of(year, month, 31);
 
-        List<Weather> weatherList = weatherRepository.findByMonthAndUser(userDetails.getUser(), startDateTime, endDateTime); // User 파라미터를 추가해야 함
+        List<WeatherItemResponseDto> weatherList = weatherRepository.findByMonthAndUser(userDetails.getUser(), startDateTime, endDateTime); // User 파라미터를 추가해야 함
         //.orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
 
         WeatherMonthlyResponseDto result = new WeatherMonthlyResponseDto(weatherList);

@@ -19,7 +19,7 @@ public interface WeatherRepository extends JpaRepository<Weather, Long> {
 
     Optional<Weather> findByDate(LocalDate localDate);
 
-    //List<Weather> findMonthAndUser(int year, int month, User user);
+    List<WeatherItemResponseDto> findByMonthAndUser(User user, LocalDate startDate, LocalDate endDate);
 
 
     @Query("SELECT w FROM Weather w "
