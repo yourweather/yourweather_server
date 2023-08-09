@@ -95,11 +95,10 @@ public class WeatherService {
         return result;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public WeatherMonthlyResponseDto getMonthlyList(int year, int month, CustomUserDetails userDetails) {
 
         LocalDate startDate = LocalDate.of(year, month, 1);
-//        LocalDate endDate = LocalDate.of(year, month, 31);
         LocalDate lastDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
 
         List<WeatherItemResponseDto> weatherList = weatherRepository.findByMonthAndUser(userDetails.getUser(), startDate, lastDate); // User 파라미터를 추가해야 함
