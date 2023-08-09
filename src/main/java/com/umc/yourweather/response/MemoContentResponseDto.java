@@ -7,20 +7,15 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class MemoItemResponseDto {
-
+public class MemoContentResponseDto {
     private Long memoId; //메모 아이디
 
     private LocalDateTime creationDatetime;
-    private Status status;
-    private int temperature;
-//    private String content;
+    private String content;
 
-    public MemoItemResponseDto(Memo memo) {
+    public MemoContentResponseDto(Memo memo) {
         this.memoId = memo.getId();
         this.creationDatetime = memo.getCreatedDateTime();
-        this.status = memo.getStatus();
-        this.temperature = memo.getTemperature();
-//        this.content = memo.getContent();
+        this.content = memo.getContent();
     }
 }
