@@ -13,7 +13,7 @@ import com.umc.yourweather.service.ReportService;
 import org.junit.jupiter.api.Test;
 
 class ReportControllerTest {
-    private MemoRepository memoRepository = new MemoTestRepository(31);
+    private MemoRepository memoRepository = new MemoTestRepository(31, false);
     private ReportService reportService = new ReportService(memoRepository);
     private ReportController reportController = new ReportController(reportService);
 
