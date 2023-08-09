@@ -10,7 +10,6 @@ import com.umc.yourweather.response.MemoUpdateResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.service.MemoService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,7 +20,6 @@ import java.time.LocalDate;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(RequestURI.MEMO_URI)
-@Tag(name = "Memo controller")
 public class MemoController {
 
     private final MemoService memoService;

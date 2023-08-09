@@ -40,11 +40,11 @@ public class User {
 
     @Builder
     public User(String email,
-        String password,
-        String nickname,
-        String platform,
-        Role role,
-        boolean isActivate) {
+                String password,
+                String nickname,
+                String platform,
+                Role role,
+                boolean isActivate) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;

@@ -1,20 +1,19 @@
 package com.umc.yourweather.service;
 
-import com.umc.yourweather.auth.CustomUserDetails;
-import com.umc.yourweather.domain.entity.User;
-import com.umc.yourweather.domain.entity.Weather;
+import com.umc.yourweather.domain.entity.*;
 import com.umc.yourweather.repository.WeatherRepository;
 import com.umc.yourweather.response.MissedInputResponseDto;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @SpringBootTest
 class WeatherServiceTest {
