@@ -31,7 +31,7 @@ public class ReportController {
     private final ReportService reportService;
 
     @GetMapping("/weekly-statistic")
-    @Operation(summary = "주간 통계 요청", description = "이번 주로부터 n주 전(0도 포함=이번 주도 가능)의 데이터에 대한 통계를 얻을 수 있습니다. 단위는 Percentage(%)입니다.\n 개발 단계에서 요구 사항에 대한 잘못된 이해로 이렇게 n주 전 데이터도 얻을 수 있게 되었지만, 현 요구사항에 크게 어긋나는 것이 없고 추후 확장 가능성도 고려하여 그대로 뒀습니다.")
+    @Operation(summary = "주간 통계 요청", description = "이번 주로부터 n주 전(0도 포함=이번 주도 가능)의 데이터에 대한 통계를 얻을 수 있습니다. 단위는 Percentage(%)입니다.\n 개발 단계에서 요구 사항에 대한 잘못된 이해로 이렇게 n주 전 데이터도 얻을 수 있게 되었지만, 현 요구사항에 크게 어긋나는 것이 없고 추후 확장 가능성도 고려하여 그대로 뒀습니다. ++ 만약 모든 필드가 0으로 채워져서 온다면 그 주에 해당하는 데이터가 없는 것입니다.")
     @Parameter(name = "ago", description = "현재로부터 몇 주 전의 데이터를 얻을 지에 대한 파라미터입니다. default 값은 0(이번 주)입니다.", in = ParameterIn.QUERY)
     public ResponseDto<StatisticResponseDto> getWeeklyStatistic(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -45,7 +45,7 @@ public class ReportController {
     }
 
     @GetMapping("/monthly-statistic")
-    @Operation(summary = "월간 통계 요청", description = "이번 달로부터 n달 전(0도 포함=이번 달도 가능)의 데이터에 대한 통계를 얻을 수 있습니다. 단위는 Percentage(%)입니다.\n 개발 단계에서 요구 사항에 대한 잘못된 이해로 이렇게 n달 전 데이터도 얻을 수 있게 되었지만, 현 요구사항에 크게 어긋나는 것이 없고 추후 확장 가능성도 고려하여 그대로 뒀습니다.")
+    @Operation(summary = "월간 통계 요청", description = "이번 달로부터 n달 전(0도 포함=이번 달도 가능)의 데이터에 대한 통계를 얻을 수 있습니다. 단위는 Percentage(%)입니다.\n 개발 단계에서 요구 사항에 대한 잘못된 이해로 이렇게 n달 전 데이터도 얻을 수 있게 되었지만, 현 요구사항에 크게 어긋나는 것이 없고 추후 확장 가능성도 고려하여 그대로 뒀습니다. ++ 만약 모든 필드가 0으로 채워져서 온다면 그 달에 해당하는 데이터가 없는 것입니다.")
     @Parameter(name = "ago", description = "현재로부터 몇 달 전의 데이터를 얻을 지에 대한 파라미터입니다. default 값은 0(이번 달)입니다.", in = ParameterIn.QUERY)
     public ResponseDto<StatisticResponseDto> getThisMonth(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
