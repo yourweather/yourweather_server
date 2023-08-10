@@ -113,7 +113,7 @@ public class JwtTokenManager {
             );
         } catch (Exception e) {
             log.error("유효하지 않은 액세스 토큰입니다.");
-            throw new IllegalArgumentException("유효하지 않은 액세스 토큰입니다.");
+            return Optional.empty();
         }
     }
 
@@ -127,7 +127,7 @@ public class JwtTokenManager {
             return true;
         } catch (Exception e) {
             log.error("유효하지 않은 Acess Token입니다." + e.getMessage());
-            throw new IllegalArgumentException("유효하지 않은 Access Token입니다.");
+            return false;
         }
     }
 
@@ -141,7 +141,7 @@ public class JwtTokenManager {
             return true;
         } catch (Exception e) {
             log.error("유효하지 않은 Refresh Token입니다." + e.getMessage());
-            throw new IllegalArgumentException("유효하지 않은 Refresh Token입니다.");
+            return false;
         }
     }
 
