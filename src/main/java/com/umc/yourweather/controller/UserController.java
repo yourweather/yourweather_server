@@ -2,6 +2,7 @@ package com.umc.yourweather.controller;
 
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
+import com.umc.yourweather.request.ChangeNicknameRequestDto;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
 import com.umc.yourweather.response.AuthorizationResponseDto;
 import com.umc.yourweather.response.UserResponseDto;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +43,16 @@ public class UserController {
     public ResponseDto<UserResponseDto> mypage(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("마이 페이지 조회 완료", userService.mypage(userDetails));
+    }
+
+
+    @PatchMapping("/nickname")
+    @Operation(summary = "닉네임 변경 api", description = "닉네임 변경 api입니다.")
+    public ResponseDto<UserResponseDto> nickname(
+            @RequestBody @Valid ChangeNicknameRequestDto changeNicknameRequestDto,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseDto.success("닉네임 변경 완료", userService.changeNickname(
+                changeNicknameRequestDto.getNickname(), userDetails.getUser().getEmail()));
     }
 
     @PostMapping("/password")
