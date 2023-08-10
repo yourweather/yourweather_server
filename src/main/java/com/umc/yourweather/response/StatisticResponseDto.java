@@ -16,17 +16,17 @@ import lombok.extern.slf4j.Slf4j;
 public class StatisticResponseDto {
 
     // 단위는 percentage(%).
-    private final float sunny;
-    private final float cloudy;
-    private final float rainy;
-    private final float lightning;
+    private final int sunny;
+    private final int cloudy;
+    private final int rainy;
+    private final int lightning;
 
     public StatisticResponseDto(Statistic statistic) {
         int sum = statistic.getSum();
-        sunny = ((float) statistic.getSunny()) / sum * 100;
-        cloudy = ((float) statistic.getCloudy()) / sum * 100;
-        rainy = ((float) statistic.getRainy()) / sum * 100;
-        lightning = ((float) statistic.getLightning()) / sum * 100;
+        sunny = Math.round(((float) statistic.getSunny()) / sum * 100) ;
+        cloudy = Math.round(((float) statistic.getCloudy()) / sum * 100);
+        rainy = Math.round(((float) statistic.getRainy()) / sum * 100);
+        lightning = Math.round(((float) statistic.getLightning()) / sum * 100);
     }
 
     public float getProportion(Status status) {
