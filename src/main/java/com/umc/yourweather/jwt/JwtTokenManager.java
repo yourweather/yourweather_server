@@ -117,7 +117,7 @@ public class JwtTokenManager {
         }
     }
 
-    public boolean isTokenValid(String token) {
+    public boolean isAccessTokenValid(String token) {
         try {
             JWT
                 .require(Algorithm.HMAC512(secretKey))
@@ -126,8 +126,22 @@ public class JwtTokenManager {
 
             return true;
         } catch (Exception e) {
-            log.error("유효하지 않은 액세스 토큰입니다." + e.getMessage());
-            return false;
+            log.error("유효하지 않은 Acess Token입니다." + e.getMessage());
+            throw new IllegalArgumentException("유효하지 않은 Access Token입니다.");
+        }
+    }
+
+    public boolean isRefreshTokenValid(String token) {
+        try {
+            JWT
+                    .require(Algorithm.HMAC512(secretKey))
+                    .build()
+                    .verify(token);
+
+            return true;
+        } catch (Exception e) {
+            log.error("유효하지 않은 Refresh Token입니다." + e.getMessage());
+            throw new IllegalArgumentException("유효하지 않은 Refresh Token입니다.");
         }
     }
 
