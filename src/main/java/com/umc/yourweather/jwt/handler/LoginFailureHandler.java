@@ -23,7 +23,7 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException exception) throws IOException, ServletException {
 
-        ResponseDto<Void> responseDto = ResponseDto.fail(HttpStatus.BAD_REQUEST, "로그인 실패. 이메일, 비밀번호를 확인해주세요.");
+        ResponseDto<Void> responseDto = ResponseDto.fail(HttpStatus.BAD_REQUEST, "로그인 실패했습니다. 메시지: " + exception.getMessage());
 
         String result = objectMapper.writeValueAsString(responseDto);
 
