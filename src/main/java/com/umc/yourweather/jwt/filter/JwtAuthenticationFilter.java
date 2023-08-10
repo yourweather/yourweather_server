@@ -1,16 +1,19 @@
 package com.umc.yourweather.jwt.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.repository.UserRepository;
+import com.umc.yourweather.response.ResponseDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
@@ -45,6 +48,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
@@ -69,7 +74,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (checkRefreshToken(refreshToken)) {
                 reissueToken(response, refreshToken);
             } else {
-                throw new IllegalArgumentException("유효한 refresh token이 아닙니다.");
+                // refresh token은 유효기간이 만료되었거나 해서 상하면 자동으로 null처리 됨.
+                // 따라서 여기까지 왔서 DB에 있는지 검사를 했는데 이런다면 악의적인 외부 접근일 가능성이 높음
+                ResponseDto<Void> responseDto = ResponseDto.fail(HttpStatus.BAD_REQUEST, "유효하지 않은 Refresh Token입니다.");
+                String result = objectMapper.writeValueAsString(responseDto);
+
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType("application/json");
+                response.getWriter().write(result);
             }
             // 만약 refresh 토큰이 온 경우에는 더 이상 인증을 진행시키지 않고 필터 진행 자체를 끊어버린다.
             return;
@@ -87,8 +100,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 setAuthentication(user);
                 filterChain.doFilter(request, response);
+                return;
             }
         }
+
+        ResponseDto<Void> responseDto = ResponseDto.fail(HttpStatus.BAD_REQUEST, "유효하지 않은 Refresh Token입니다. login을 통해 토큰을 재발급 받으세요.");
+        String result = objectMapper.writeValueAsString(responseDto);
+
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        response.getWriter().write(result);
     }
 
     private boolean checkRefreshToken(String refreshToken) {
