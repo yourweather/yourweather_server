@@ -2,6 +2,7 @@ package com.umc.yourweather.jwt;
 
 import com.umc.yourweather.domain.entity.User;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,7 +59,7 @@ class JwtTokenManagerTest {
 
     @Test
     @DisplayName("sendAccessTokenAndRefreshToken 테스트")
-    void test3() {
+    void test3() throws IOException {
         //given
         ServletWebRequest servletContainer = (ServletWebRequest) RequestContextHolder.getRequestAttributes();
         HttpServletResponse httpServletResponse = servletContainer.getResponse();

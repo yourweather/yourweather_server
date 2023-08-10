@@ -3,6 +3,7 @@ package com.umc.yourweather.repository.test;
 import com.umc.yourweather.domain.Proportion;
 import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
+import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.domain.enums.Status;
 import com.umc.yourweather.repository.MemoRepository;
 import java.time.LocalDate;
@@ -181,5 +182,10 @@ public class MemoTestRepository implements MemoRepository {
     @Override
     public void delete(Memo memo) {
 
+    }
+
+    @Override
+    public List<Memo> findByUserAndWeatherId(User user, Weather weather) {
+        return null;
     }
 }

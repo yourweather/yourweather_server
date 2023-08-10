@@ -2,11 +2,13 @@ package com.umc.yourweather.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.umc.yourweather.domain.entity.User;
-import com.umc.yourweather.repository.UserRepository;
+import com.umc.yourweather.response.AuthorizationResponseDto;
+import com.umc.yourweather.response.ResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,7 +18,6 @@ import java.util.Date;
 import java.util.Optional;
 
 @Component
-@RequiredArgsConstructor
 @Slf4j
 public class JwtTokenManager {
 
@@ -42,7 +43,7 @@ public class JwtTokenManager {
     private static final String EMAIL = "email";
     private static final String BEARER = "Bearer ";
 
-    private final UserRepository userRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public String createAccessToken(User user) {
         Date now = new Date();
@@ -63,12 +64,24 @@ public class JwtTokenManager {
 
     public void sendAccessTokenAndRefreshToken(HttpServletResponse response,
         String accessToken,
-        String refreshToken) {
+        String refreshToken) throws IOException {
         response.setStatus(HttpServletResponse.SC_OK);
 
-        response.setHeader(accessTokenHeader, accessToken);
-        response.setHeader(refreshTokenHeader, refreshToken);
-        log.info("Access Token, Refresh Token 헤더 설정 완료");
+        AuthorizationResponseDto authDto = AuthorizationResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+
+        ResponseDto<AuthorizationResponseDto> responseDto = ResponseDto.success("토큰 발급 성공", authDto);
+
+        String result = objectMapper.writeValueAsString(responseDto);
+
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        response.getWriter().write(result);
+
+        log.info("Access Token, Refresh Token 전송");
     }
 
     public Optional<String> extractToken(String token) {
@@ -100,11 +113,11 @@ public class JwtTokenManager {
             );
         } catch (Exception e) {
             log.error("유효하지 않은 액세스 토큰입니다.");
-            throw new IllegalArgumentException("유효하지 않은 액세스 토큰입니다.");
+            return Optional.empty();
         }
     }
 
-    public boolean isTokenValid(String token) {
+    public boolean isAccessTokenValid(String token) {
         try {
             JWT
                 .require(Algorithm.HMAC512(secretKey))
@@ -113,7 +126,21 @@ public class JwtTokenManager {
 
             return true;
         } catch (Exception e) {
-            log.error("유효하지 않은 액세스 토큰입니다." + e.getMessage());
+            log.error("유효하지 않은 Acess Token입니다." + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean isRefreshTokenValid(String token) {
+        try {
+            JWT
+                    .require(Algorithm.HMAC512(secretKey))
+                    .build()
+                    .verify(token);
+
+            return true;
+        } catch (Exception e) {
+            log.error("유효하지 않은 Refresh Token입니다." + e.getMessage());
             return false;
         }
     }
