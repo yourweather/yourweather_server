@@ -56,11 +56,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String refreshToken = jwtTokenManager.extractRefreshToken(request)
-                .filter(jwtTokenManager::isTokenValid)
+                .filter(jwtTokenManager::isRefreshTokenValid)
                 .orElse(null);
 
         String accessToken = jwtTokenManager.extractAccessToken(request)
-                .filter(jwtTokenManager::isTokenValid)
+                .filter(jwtTokenManager::isAccessTokenValid)
                 .orElse(null);
 
         if (refreshToken != null) {
@@ -68,6 +68,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // Access Token, Refresh Token 둘 다 재발행 해주는 코드가 필요.
             if (checkRefreshToken(refreshToken)) {
                 reissueToken(response, refreshToken);
+            } else {
+                throw new IllegalArgumentException("유효한 refresh token이 아닙니다.");
             }
             // 만약 refresh 토큰이 온 경우에는 더 이상 인증을 진행시키지 않고 필터 진행 자체를 끊어버린다.
             return;
