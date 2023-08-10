@@ -89,6 +89,15 @@ public class UserService {
     }
 
     @Transactional
+    public UserResponseDto changeNickname(String nickname, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("닉네임 변경 실패: 등록된 사용자가 없습니다."));
+
+        user.changeNickname(nickname);
+        return new UserResponseDto(user);
+    }
+
+    @Transactional
     public UserResponseDto withdraw(CustomUserDetails userDetails) {
         User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
             () -> new UserNotFoundException("등록된 사용자가 없습니다.")
