@@ -93,7 +93,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return userRepository.findByRefreshToken(refreshToken).isPresent();
     }
 
-    private void reissueToken(HttpServletResponse response, String refreshToken) {
+    private void reissueToken(HttpServletResponse response, String refreshToken)
+            throws IOException {
         Optional<User> optionalUser = userRepository.findByRefreshToken(refreshToken);
         User user = optionalUser.orElse(null);
 
