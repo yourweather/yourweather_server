@@ -62,6 +62,10 @@ public class User {
         this.password = newPassword;
     }
 
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public void unActivate() {
         this.isActivate = false;
     }
