@@ -61,9 +61,12 @@ public class UserService {
         return getSignupResponse(userRepository.save(user));
     }
 
+    @Transactional
     protected AuthorizationResponseDto getSignupResponse(User user) {
         String accessToken = jwtTokenManager.createAccessToken(user);
         String refreshToken = jwtTokenManager.createRefreshToken();
+
+        user.updateRefreshToken(refreshToken);
 
         return AuthorizationResponseDto.builder()
                 .accessToken(accessToken)
