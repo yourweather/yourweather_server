@@ -4,6 +4,7 @@ import com.umc.yourweather.domain.enums.Status;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +14,8 @@ public class MemoRequestDto {
 
     @Enumerated(EnumType.STRING)
     private Status status;
-    @NotBlank
+
+    @NotNull
     private String content;
 
     private String localDateTime;
