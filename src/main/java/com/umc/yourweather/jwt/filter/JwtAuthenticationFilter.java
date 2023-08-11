@@ -60,54 +60,78 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        boolean isRefreshTokenValid;
+        boolean isAccessTokenValid;
+
         String refreshToken = jwtTokenManager.extractRefreshToken(request)
-                .filter(jwtTokenManager::isRefreshTokenValid)
                 .orElse(null);
 
         String accessToken = jwtTokenManager.extractAccessToken(request)
-                .filter(jwtTokenManager::isAccessTokenValid)
                 .orElse(null);
+
+        isRefreshTokenValid = jwtTokenManager.isRefreshTokenValid(refreshToken);
+        isAccessTokenValid = jwtTokenManager.isAccessTokenValid(accessToken);
 
         if (refreshToken != null) {
             // refreshToken이 실존하는 토큰인지 검증한 뒤,
             // Access Token, Refresh Token 둘 다 재발행 해주는 코드가 필요.
+
+            if (!isRefreshTokenValid) {
+                setBadRequestResponse(response, "Token 재발급 실패: 유효한 Refresh Token이 아닙니다. login을 통해 재발급 받으세요.");
+                return;
+            }
+
             if (checkRefreshToken(refreshToken)) {
                 reissueToken(response, refreshToken);
             } else {
                 // refresh token은 유효기간이 만료되었거나 해서 상하면 자동으로 null처리 됨.
-                // 따라서 여기까지 왔서 DB에 있는지 검사를 했는데 이런다면 악의적인 외부 접근일 가능성이 높음
-                ResponseDto<Void> responseDto = ResponseDto.fail(HttpStatus.BAD_REQUEST, "유효하지 않은 Refresh Token입니다.");
-                String result = objectMapper.writeValueAsString(responseDto);
-
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.setCharacterEncoding("UTF-8");
-                response.setContentType("application/json");
-                response.getWriter().write(result);
+                // 따라서 여기까지 와서 DB에 있는지 검사를 했는데 이런다면 악의적인 외부 접근일 가능성이 높음
+                setBadRequestResponse(response, "Token 재발급 실패: DB에 해당 Refresh Token에 대한 기록이 없습니다. 의도하지 않고 일어나기 어려운 상황입니다. 백엔드 팀에게 문의해주세요.");
             }
             // 만약 refresh 토큰이 온 경우에는 더 이상 인증을 진행시키지 않고 필터 진행 자체를 끊어버린다.
             return;
         }
 
-        // else 문은 지양하는 것이 가독성면에서 좋기에 쓰지 않음.
-        // refreshToken이 요청에 없었다는 것은 Access Token을 보낸 경우밖에 없으니까,
-        // Access Token을 검증하여 인가해주는 코드 필요.
-        if (checkEmailInAccessToken(accessToken)) {
-            String email = jwtTokenManager.extractEmail(accessToken).get();
+        if(accessToken != null) {
+            // else 문은 지양하는 것이 가독성면에서 좋기에 쓰지 않음.
+            // refreshToken이 요청에 없었다는 것은 Access Token을 보낸 경우밖에 없으니까,
+            // Access Token을 검증하여 인가해주는 코드 필요.
 
-            if (checkEmailIsInDB(email)) {
-                // 쿼리가 두 번 날아갈 것 같지만 영속성 컨텍스트에 잘 저장하고 있을테니 상관 X
-                User user = userRepository.findByEmail(email).get();
+            if (!isAccessTokenValid) {
+                setBadRequestResponse(response, "인증 실패: 유효하지 않은 Access Token입니다.");
+            }
 
-                setAuthentication(user);
-                filterChain.doFilter(request, response);
+            Optional<String> optionalEmail = jwtTokenManager.extractEmail(accessToken);
+            if (optionalEmail.isPresent()) {
+                String email = optionalEmail.get();
+
+                Optional<User> optionalUser = userRepository.findByEmail(email);
+                if (optionalUser.isPresent()) {
+                    User user = optionalUser.get();
+
+                    setAuthentication(user);
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+
+                setBadRequestResponse(response, "인증 실패: Access Token에 있는 email 정보에 해당하는 유저가 없습니다.");
                 return;
             }
+
+            setBadRequestResponse(response, "인증 실패: Access Token에서 email 정보를 추출하지 못했습니다. 의도하지 않고 일어나기 어려운 상황입니다. 백엔드 팀에 문의해주세요.");
+            return;
         }
 
-        ResponseDto<Void> responseDto = ResponseDto.fail(HttpStatus.BAD_REQUEST, "유효하지 않은 Refresh Token입니다. login을 통해 토큰을 재발급 받으세요.");
+        // refresh token, access token 둘 다 null인 상황
+        setBadRequestResponse(response, "인증 실패: Access Token, Refresh Token이 모두 없습니다. 요청 시에 둘 중 하나를 꼭 헤더에 넣어 보내주세요.");
+    }
+
+    private void setBadRequestResponse(HttpServletResponse response, String message)
+            throws IOException {
+        ResponseDto<Void> responseDto = ResponseDto.fail(HttpStatus.BAD_REQUEST, message);
         String result = objectMapper.writeValueAsString(responseDto);
 
-        response.setStatus(HttpServletResponse.SC_OK);
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         response.getWriter().write(result);
@@ -119,23 +143,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private void reissueToken(HttpServletResponse response, String refreshToken)
             throws IOException {
-        Optional<User> optionalUser = userRepository.findByRefreshToken(refreshToken);
-        User user = optionalUser.orElse(null);
+        User user = userRepository.findByRefreshToken(refreshToken)
+                .orElse(null);
 
-        String newAccessToken = jwtTokenManager.createAccessToken(user);
+        String newAccessToken = jwtTokenManager.createAccessToken(Objects.requireNonNull(user));
         String newRefreshToken = jwtTokenManager.createRefreshToken();
 
         jwtTokenManager.updateRefreshToken(user, refreshToken);
 
         jwtTokenManager.sendAccessTokenAndRefreshToken(response, newAccessToken, newRefreshToken);
-    }
-
-    private boolean checkEmailInAccessToken(String accessToken) {
-        return jwtTokenManager.extractEmail(accessToken).isPresent();
-    }
-
-    private boolean checkEmailIsInDB(String email) {
-        return userRepository.findByEmail(email).isPresent();
     }
 
     private void setAuthentication(User user) {
