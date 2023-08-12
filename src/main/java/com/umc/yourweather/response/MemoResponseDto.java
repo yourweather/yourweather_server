@@ -1,5 +1,6 @@
 package com.umc.yourweather.response;
 
+import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.enums.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -16,11 +17,19 @@ public class MemoResponseDto {
     @Schema(description = "온도" , example = "30")
     private int temperature;
 
+//    @Builder
+//    public MemoResponseDto(Status status, String content, String localDateTime, int temperature) {
+//        this.status = status;
+//        this.content = content;
+//        this.localDateTime = localDateTime;
+//        this.temperature = temperature;
+//    }
+
     @Builder
-    public MemoResponseDto(Status status, String content, String localDateTime, int temperature) {
-        this.status = status;
-        this.content = content;
-        this.localDateTime = localDateTime;
-        this.temperature = temperature;
+    public MemoResponseDto(Memo memo) {
+        this.status = memo.getStatus();
+        this.content = memo.getContent();
+        this.localDateTime = String.valueOf(memo.getCreatedDateTime());
+        this.temperature = memo.getTemperature();
     }
 }

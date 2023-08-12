@@ -31,10 +31,17 @@ public class MemoController {
 
     @GetMapping("/daily/{weatherId}")
     @Operation(summary = "하루 치 메모 반환 api", description = "하루치 메모 리스트를 반환하기 위한 API입니다. weather-controller에 있는 monthly API의 반환 값에 있는 weather_id를 이용해서 조회합니다. ")
-    public ResponseDto<MemoDailyResponseDto> daily(@PathVariable long weatherId,
+    public ResponseDto<MemoDailyResponseDto> daily(@PathVariable Long weatherId,
                                                    @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        return ResponseDto.success(weatherId + "번의 메모 조회 성공", memoService.getDailyList(weatherId, userDetails));
+        return ResponseDto.success(weatherId + "번의 메모 리스트 조회 성공", memoService.getDailyList(weatherId, userDetails));
+    }
+
+    @Operation(summary = "하루 치 메모 반환 api", description = "특정 메모를 반환하기 위한 API입니다. 특정 날씨 List의 반환 값에 있는 memoId를 이용해서 조회합니다. ")
+    @GetMapping("/{memoId}")
+    public ResponseDto<MemoResponseDto> getMemo(@PathVariable Long memoId) {
+
+        return ResponseDto.success(memoId + "번의 메모 조회 성공", memoService.getOneMemo(memoId));
     }
 
 
