@@ -4,6 +4,7 @@ import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
+import com.umc.yourweather.exception.MemoNotFoundException;
 import com.umc.yourweather.exception.WeatherNotFoundException;
 import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.repository.WeatherRepository;
@@ -109,6 +110,15 @@ public class MemoService {
 
 
         MemoDailyResponseDto result = new MemoDailyResponseDto(memoList, memoContentList);
+        return result;
+    }
+
+    @Transactional
+    public MemoResponseDto getOneMemo(Long memoId) {
+        Memo memo = memoRepository.findById(memoId)
+                .orElseThrow(() -> new MemoNotFoundException("해당하는 Memo 객체가 없습니다."));
+        MemoResponseDto result = new MemoResponseDto(memo);
+
         return result;
     }
 }
