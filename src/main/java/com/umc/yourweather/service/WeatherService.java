@@ -63,9 +63,9 @@ public class WeatherService {
     }
 
     public HomeResponseDto home(CustomUserDetails userDetails) {
-        LocalDate current = LocalDate.now();
+        LocalDate localDate = LocalDate.now();
 
-        Weather weather = weatherRepository.findByDate(current)
+        Weather weather = weatherRepository.findByDateAndUser(localDate,userDetails.getUser())
                 .orElseThrow(() -> new WeatherNotFoundException("해당 날짜에 해당하는 날씨 객체가 존재하지 않습니다."));
 
         User user = userDetails.getUser();
