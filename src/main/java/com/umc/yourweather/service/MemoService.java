@@ -65,10 +65,7 @@ public class MemoService {
 
         memoRepository.save(memo);
         return MemoResponseDto.builder()
-                .status(memo.getStatus())
-                .content(memo.getContent())
-                .localDateTime(memo.getCreatedDateTime().toString())
-                .temperature(memo.getTemperature())
+                .memo(memo)
                 .build();
     }
 

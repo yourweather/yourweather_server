@@ -17,13 +17,13 @@ public class MemoResponseDto {
     @Schema(description = "온도" , example = "30")
     private int temperature;
 
-    @Builder
-    public MemoResponseDto(Status status, String content, String localDateTime, int temperature) {
-        this.status = status;
-        this.content = content;
-        this.localDateTime = localDateTime;
-        this.temperature = temperature;
-    }
+//    @Builder
+//    public MemoResponseDto(Status status, String content, String localDateTime, int temperature) {
+//        this.status = status;
+//        this.content = content;
+//        this.localDateTime = localDateTime;
+//        this.temperature = temperature;
+//    }
 
     @Builder
     public MemoResponseDto(Memo memo) {
