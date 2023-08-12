@@ -87,12 +87,28 @@ public class WeatherService {
     @Transactional
     public WeatherResponseDto delete(LocalDate localDate, CustomUserDetails userDetails) {
         Weather weather = weatherRepository.findByDateAndUser(localDate, userDetails.getUser()) // User 파라미터를 추가해야 함
-                .orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
+                .orElseThrow(() -> new WeatherNotFoundException("해당 날짜에 대한 Weather 엔티티가 존재하지 않습니다."));
 
         WeatherResponseDto result = new WeatherResponseDto(weather);
         weatherRepository.delete(weather);
 
         return result;
+    }
+
+    @Transactional
+    public String checkMemoAndDelete(Long weatherId) {
+        Weather weather = weatherRepository.findById(weatherId)
+                .orElseThrow(
+                        () -> new WeatherNotFoundException("해당 아이디로 조회되는 Weather 엔티티가 존재하지 않습니다."));
+
+        List<Memo> memoList = weather.getMemos();
+        if (memoList.size() > 0) {
+            return "";
+        }
+
+        weatherRepository.delete(weather);
+
+        return " (해당 날짜의 Memo가 전부 삭제되어 해당 날짜의 Weather 또한 같이 삭제되었습니다.)";
     }
 
     @Transactional(readOnly = true)

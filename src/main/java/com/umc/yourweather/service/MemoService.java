@@ -89,12 +89,16 @@ public class MemoService {
                 .build();
     }
 
+    // weather의 id를 반환
     @Transactional
-    public void delete(Long memoId) {
+    public Long delete(Long memoId) {
         Memo memo = memoRepository.findById(memoId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 메모가 없습니다. id =" + memoId));
+                .orElseThrow(() -> new MemoNotFoundException("해당 메모가 없습니다. id =" + memoId));
 
+        Long weatherId = memo.getWeather().getId();
         memoRepository.delete(memo);
+
+        return weatherId;
     }
 
     @Transactional
