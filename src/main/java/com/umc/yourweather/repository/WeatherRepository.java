@@ -1,5 +1,6 @@
 package com.umc.yourweather.repository;
 
+import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.response.WeatherItemResponseDto;
@@ -23,4 +24,6 @@ public interface WeatherRepository {
     Weather save(Weather weather);
 
     void delete(Weather weather);
+
+    List<Weather> findWeatherByDateBetweenAndUser(LocalDate startDate, LocalDate endDate, User user);
 }

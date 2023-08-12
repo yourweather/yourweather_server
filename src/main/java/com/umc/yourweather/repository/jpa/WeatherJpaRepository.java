@@ -31,4 +31,6 @@ public interface WeatherJpaRepository extends JpaRepository<Weather, Long> {
             @Param("user") User user,
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate);
+
+    List<Weather> findWeatherByDateBetweenAndUser(LocalDate startDate, LocalDate endDate, User user);
 }
