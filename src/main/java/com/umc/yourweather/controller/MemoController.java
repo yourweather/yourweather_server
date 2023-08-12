@@ -9,6 +9,7 @@ import com.umc.yourweather.response.MemoResponseDto;
 import com.umc.yourweather.response.MemoUpdateResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.service.MemoService;
+import com.umc.yourweather.service.WeatherService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemoController {
 
     private final MemoService memoService;
+    private final WeatherService weatherService;
 
     @PostMapping("/write")
     @Operation(summary = "메모 작성 api", description = "메모 작성을 위한 API입니다. 전달받은 요청 데이터들을 참조하여 메모를 저장합니다.")
@@ -54,7 +56,8 @@ public class MemoController {
     @Operation(summary = "메모 삭제 api", description = "메모 삭제을 위한 API입니다.")
     @DeleteMapping("/delete/{memoId}")
     public ResponseDto<Void> delete(@PathVariable Long memoId) {
-        memoService.delete(memoId);
-        return ResponseDto.success("메모 삭제 완료");
+        Long weatherId = memoService.delete(memoId);
+        String comment = weatherService.checkMemoAndDelete(weatherId);
+        return ResponseDto.success("메모 삭제 완료" + comment);
     }
 }
