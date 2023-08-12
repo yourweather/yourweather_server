@@ -1,5 +1,6 @@
 package com.umc.yourweather.request;
 
+import com.umc.yourweather.domain.enums.Platform;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,10 +21,10 @@ public class SignupRequestDto {
     @NotBlank
     private String nickname;
     @NotBlank
-    private String platform;
+    private Platform platform;
 
     @Builder
-    public SignupRequestDto(String email, String password, String nickname, String platform) {
+    public SignupRequestDto(String email, String password, String nickname, Platform platform) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
