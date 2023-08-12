@@ -20,7 +20,6 @@ public class SignupRequestDto {
     private String password;
     @NotBlank
     private String nickname;
-    @NotBlank
     private Platform platform;
 
     @Builder
