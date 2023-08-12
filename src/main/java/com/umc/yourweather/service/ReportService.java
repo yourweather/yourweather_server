@@ -36,9 +36,28 @@ public class ReportService {
         return statisticCreator.createMonthlyStatistic(user, dateTime);
     }
 
-    public List<MemoReportResponseDto> getSpecificMemoList(User user, Status status, LocalDateTime startDateTime) {
+    public List<MemoReportResponseDto> getMonthlySpecificWeatherList(User user, Status status, LocalDateTime startDateTime) {
         LocalDate endDate = startDateTime.withDayOfMonth(
                 startDateTime.toLocalDate().lengthOfMonth()).toLocalDate();
+        LocalTime endTime = LocalTime.of(23, 59, 59);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+
+        List<Memo> memoList = memoRepository.findSpecificMemoList(user, status, startDateTime, endDateTime);
+
+        return memoList.stream()
+                .map(MemoReportResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<MemoReportResponseDto> getWeeklySpecificWeatherList(User user, Status status, LocalDateTime dateTime) {
+
+        int dayOfWeek = dateTime.getDayOfWeek().getValue();
+
+        LocalDate startDate = dateTime.toLocalDate().minusDays(dayOfWeek - 1);
+        LocalTime startTime = LocalTime.of(0, 0, 0);
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+
+        LocalDate endDate = dateTime.toLocalDate().plusDays(7 - dayOfWeek);
         LocalTime endTime = LocalTime.of(23, 59, 59);
         LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
 
