@@ -191,13 +191,13 @@ class ReportServiceTest {
 
         // when
         List<MemoReportResponseDto> sunnyList = reportService
-                .getSpecificMemoList(user, Status.SUNNY, now);
+                .getMonthlySpecificWeatherList(user, Status.SUNNY, now);
         List<MemoReportResponseDto> cloudyList = reportService
-                .getSpecificMemoList(user, Status.CLOUDY, now);
+                .getMonthlySpecificWeatherList(user, Status.CLOUDY, now);
         List<MemoReportResponseDto> rainyList = reportService
-                .getSpecificMemoList(user, Status.RAINY, now);
+                .getMonthlySpecificWeatherList(user, Status.RAINY, now);
         List<MemoReportResponseDto> lightningList = reportService
-                .getSpecificMemoList(user, Status.LIGHTNING, now);
+                .getMonthlySpecificWeatherList(user, Status.LIGHTNING, now);
 
         // then
         assertEquals(sunnyNum, sunnyList.size());
