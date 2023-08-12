@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,7 +40,8 @@ public class ReportController {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime dateTime = now.minusWeeks(ago);
 
-        Statistic statistic = reportService.getStatisticForWeek(customUserDetails.getUser(), dateTime);
+        Statistic statistic = reportService.getStatisticForWeek(customUserDetails.getUser(),
+                dateTime);
 
         return ResponseDto.success(ago + "주 전 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
     }
@@ -53,7 +55,8 @@ public class ReportController {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime dateTime = now.minusMonths(ago);
 
-        Statistic statistic = reportService.getStatisticForMonth(customUserDetails.getUser(), dateTime);
+        Statistic statistic = reportService.getStatisticForMonth(customUserDetails.getUser(),
+                dateTime);
 
         return ResponseDto.success(ago + "달 전 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
     }
@@ -71,7 +74,7 @@ public class ReportController {
 
         // getSpecificMemoList에 동일한 LocalDateTime이 있음.
         // 재사용 가능성이 있어보이니 나중에 리팩토링
-        LocalDateTime dateTime = LocalDateTime.of(
+        LocalDateTime startDateTime = LocalDateTime.of(
                 LocalDate.now().getYear(),
                 month,
                 1,
@@ -79,8 +82,14 @@ public class ReportController {
                 0,
                 0);
 
-        List<MemoReportResponseDto> memoList = reportService.getMonthlySpecificWeatherList(user, weather, dateTime);
-        Statistic statistic = reportService.getStatisticForMonth(user, dateTime);
+        LocalDate endDate = startDateTime.withDayOfMonth(
+                startDateTime.toLocalDate().lengthOfMonth()).toLocalDate();
+        LocalTime endTime = LocalTime.of(23, 59, 59);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+
+        List<MemoReportResponseDto> memoList = reportService.getSpecificWeatherList(user,
+                weather, startDateTime, endDateTime);
+        Statistic statistic = reportService.getStatisticForMonth(user, startDateTime);
         StatisticResponseDto statisticResDto = new StatisticResponseDto(statistic);
 
         SpecificMemoResponseDto result = SpecificMemoResponseDto.builder()
@@ -88,16 +97,18 @@ public class ReportController {
                 .proportion(statisticResDto.getProportion(weather))
                 .build();
 
-        return ResponseDto.success("월간 특정 날씨 일자 조회 성공.", result);
+        return ResponseDto.success("월간 특정 날씨 일자 조회 성공."
+                + startDateTime.toLocalDate() + "~" + endDateTime.toLocalDate()
+                + "사이의 데이터", result);
     }
 
     @GetMapping("/weekly-specific-weather")
-    @Operation(summary = "주 중 특정 날씨 리스트 요청", description = "지금으로부터 n주전의 특정 날씨가 있던 날들을 가져옵니다. ex) 8월의 맑음 날씨 리스트 -> ~~ ")
+    @Operation(summary = "주 중 특정 날씨 리스트 요청", description = "지금으로부터 n주전의 특정 날씨가 있던 날들을 가져옵니다. ex) 7.30~8.5의 맑음 날씨 리스트 -> ~~ ")
     @Parameter(name = "week", description = "해당 파라미터만큼 이전 주의 특정 날씨들을 조회합니다.", in = ParameterIn.QUERY)
     @Parameter(name = "weather", description = "요청하고 싶은 날씨 값. SUNNY, CLOUDY, RAINY, LIGHTNING 으로 구분합니다.", in = ParameterIn.QUERY)
     public ResponseDto<SpecificMemoResponseDto> getWeeklySpecificWeatherList(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @RequestParam int week,
+            @RequestParam(defaultValue = "0") int week,
             @RequestParam Status weather) {
 
         User user = customUserDetails.getUser();
@@ -107,7 +118,18 @@ public class ReportController {
         LocalDateTime dateTime = LocalDateTime.now();
         dateTime = dateTime.minusWeeks(week);
 
-        List<MemoReportResponseDto> memoList = reportService.getWeeklySpecificWeatherList(user, weather, dateTime);
+        int dayOfWeek = dateTime.getDayOfWeek().getValue();
+
+        LocalDate startDate = dateTime.toLocalDate().minusDays(dayOfWeek - 1);
+        LocalTime startTime = LocalTime.of(0, 0, 0);
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+
+        LocalDate endDate = dateTime.toLocalDate().plusDays(7 - dayOfWeek);
+        LocalTime endTime = LocalTime.of(23, 59, 59);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+
+        List<MemoReportResponseDto> memoList = reportService.getSpecificWeatherList(user,
+                weather, startDateTime, endDateTime);
         Statistic statistic = reportService.getStatisticForWeek(user, dateTime);
         StatisticResponseDto statisticResDto = new StatisticResponseDto(statistic);
 
@@ -116,7 +138,10 @@ public class ReportController {
                 .proportion(statisticResDto.getProportion(weather))
                 .build();
 
-        return ResponseDto.success("주간 특정 날씨 일자 조회 성공.", result);
+        return ResponseDto.success(
+                "주간 특정 날씨 일자 조회 성공."
+                        + startDateTime.toLocalDate() + "~" + endDateTime.toLocalDate()
+                        + "사이의 데이터", result);
     }
 
     @GetMapping("/weekly-comparison")

@@ -49,17 +49,7 @@ public class ReportService {
                 .collect(Collectors.toList());
     }
 
-    public List<MemoReportResponseDto> getWeeklySpecificWeatherList(User user, Status status, LocalDateTime dateTime) {
-
-        int dayOfWeek = dateTime.getDayOfWeek().getValue();
-
-        LocalDate startDate = dateTime.toLocalDate().minusDays(dayOfWeek - 1);
-        LocalTime startTime = LocalTime.of(0, 0, 0);
-        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
-
-        LocalDate endDate = dateTime.toLocalDate().plusDays(7 - dayOfWeek);
-        LocalTime endTime = LocalTime.of(23, 59, 59);
-        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+    public List<MemoReportResponseDto> getSpecificWeatherList(User user, Status status, LocalDateTime startDateTime, LocalDateTime endDateTime) {
 
         List<Memo> memoList = memoRepository.findSpecificMemoList(user, status, startDateTime, endDateTime);
 
