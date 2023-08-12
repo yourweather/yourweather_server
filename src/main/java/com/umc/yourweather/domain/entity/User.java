@@ -1,5 +1,6 @@
 package com.umc.yourweather.domain.entity;
 
+import com.umc.yourweather.domain.enums.Platform;
 import com.umc.yourweather.domain.enums.Role;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -26,7 +27,9 @@ public class User {
     private String password;
 
     private String nickname;
-    private String platform;
+
+    @Enumerated(EnumType.STRING)
+    private Platform platform;
 
     private String refreshToken;
 
@@ -42,7 +45,7 @@ public class User {
     public User(String email,
                 String password,
                 String nickname,
-                String platform,
+                Platform platform,
                 Role role,
                 boolean isActivate) {
         this.email = email;
