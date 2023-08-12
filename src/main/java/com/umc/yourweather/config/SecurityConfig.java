@@ -1,8 +1,8 @@
 package com.umc.yourweather.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetailsService;
+import com.umc.yourweather.domain.ReIssueTokenProvider;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.jwt.filter.CustomLoginFilter;
 import com.umc.yourweather.jwt.filter.CustomOAuthLoginFilter;
@@ -39,6 +39,8 @@ public class SecurityConfig {
 
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
+
+    private final ReIssueTokenProvider reIssueTokenProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -112,6 +114,6 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtTokenManager, userRepository);
+        return new JwtAuthenticationFilter(jwtTokenManager, userRepository, reIssueTokenProvider);
     }
 }
