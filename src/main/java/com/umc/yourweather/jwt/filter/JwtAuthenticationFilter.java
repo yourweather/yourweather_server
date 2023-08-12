@@ -3,6 +3,8 @@ package com.umc.yourweather.jwt.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
+import com.umc.yourweather.domain.ReIssueTokenProvider;
+import com.umc.yourweather.domain.entity.ReIssuedToken;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.repository.UserRepository;
@@ -50,6 +52,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    private final ReIssueTokenProvider reIssueTokenProvider;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
@@ -77,22 +81,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // Access Token, Refresh Token 둘 다 재발행 해주는 코드가 필요.
 
             if (!isRefreshTokenValid) {
-                setBadRequestResponse(response, "Token 재발급 실패: 유효한 Refresh Token이 아닙니다. login을 통해 재발급 받으세요.");
+                setBadRequestResponse(response,
+                        "Token 재발급 실패: 유효한 Refresh Token이 아닙니다. login을 통해 재발급 받으세요.");
                 return;
             }
 
             if (checkRefreshToken(refreshToken)) {
-                reissueToken(response, refreshToken);
+                ReIssuedToken reIssuedToken = reIssueTokenProvider.reissueToken(refreshToken);
+                jwtTokenManager.sendAccessTokenAndRefreshToken(response,
+                        reIssuedToken.getAccessToken(),
+                        reIssuedToken.getRefreshToken());
             } else {
                 // refresh token은 유효기간이 만료되었거나 해서 상하면 자동으로 null처리 됨.
                 // 따라서 여기까지 와서 DB에 있는지 검사를 했는데 이런다면 악의적인 외부 접근일 가능성이 높음
-                setBadRequestResponse(response, "Token 재발급 실패: DB에 해당 Refresh Token에 대한 기록이 없습니다. 의도하지 않고 일어나기 어려운 상황입니다. 백엔드 팀에게 문의해주세요.");
+                setBadRequestResponse(response,
+                        "Token 재발급 실패: DB에 해당 Refresh Token에 대한 기록이 없습니다. 의도하지 않고 일어나기 어려운 상황입니다. 백엔드 팀에게 문의해주세요.");
             }
             // 만약 refresh 토큰이 온 경우에는 더 이상 인증을 진행시키지 않고 필터 진행 자체를 끊어버린다.
             return;
         }
 
-        if(accessToken != null) {
+        if (accessToken != null) {
             // else 문은 지양하는 것이 가독성면에서 좋기에 쓰지 않음.
             // refreshToken이 요청에 없었다는 것은 Access Token을 보낸 경우밖에 없으니까,
             // Access Token을 검증하여 인가해주는 코드 필요.
@@ -118,12 +127,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            setBadRequestResponse(response, "인증 실패: Access Token에서 email 정보를 추출하지 못했습니다. 의도하지 않고 일어나기 어려운 상황입니다. 백엔드 팀에 문의해주세요.");
+            setBadRequestResponse(response,
+                    "인증 실패: Access Token에서 email 정보를 추출하지 못했습니다. 의도하지 않고 일어나기 어려운 상황입니다. 백엔드 팀에 문의해주세요.");
             return;
         }
 
         // refresh token, access token 둘 다 null인 상황
-        setBadRequestResponse(response, "인증 실패: Access Token, Refresh Token이 모두 없습니다. 요청 시에 둘 중 하나를 꼭 헤더에 넣어 보내주세요.");
+        setBadRequestResponse(response,
+                "인증 실패: Access Token, Refresh Token이 모두 없습니다. 요청 시에 둘 중 하나를 꼭 헤더에 넣어 보내주세요.");
     }
 
     private void setBadRequestResponse(HttpServletResponse response, String message)
@@ -139,19 +150,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private boolean checkRefreshToken(String refreshToken) {
         return userRepository.findByRefreshToken(refreshToken).isPresent();
-    }
-
-    private void reissueToken(HttpServletResponse response, String refreshToken)
-            throws IOException {
-        User user = userRepository.findByRefreshToken(refreshToken)
-                .orElse(null);
-
-        String newAccessToken = jwtTokenManager.createAccessToken(Objects.requireNonNull(user));
-        String newRefreshToken = jwtTokenManager.createRefreshToken();
-
-        jwtTokenManager.updateRefreshToken(user, refreshToken);
-
-        jwtTokenManager.sendAccessTokenAndRefreshToken(response, newAccessToken, newRefreshToken);
     }
 
     private void setAuthentication(User user) {
