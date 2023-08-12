@@ -28,7 +28,7 @@ class ReportControllerTest {
         Status sunny = Status.SUNNY;
 
         // when
-        ResponseDto<SpecificMemoResponseDto> specificMemoList = reportController.getSpecificMemoList(
+        ResponseDto<SpecificMemoResponseDto> specificMemoList = reportController.getMonthlySpecificWeatherList(
                 customUserDetails, month, sunny);
 
         // then

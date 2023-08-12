@@ -58,11 +58,44 @@ public class ReportController {
         return ResponseDto.success(ago + "달 전 데이터 통계 요청 완료.", new StatisticResponseDto(statistic));
     }
 
-    @GetMapping("/list")
+    @GetMapping("/monthly-specific-weather")
     @Operation(summary = "월 중 특정 날씨 리스트 요청", description = "특정 월의 특정 날씨가 있던 날들을 가져옵니다. ex) 8월의 맑음 날씨 리스트 -> ~~ ")
     @Parameter(name = "month", description = "1월부터 12월 사이의 데이터를 요청하고 싶은 달", in = ParameterIn.QUERY)
     @Parameter(name = "weather", description = "요청하고 싶은 날씨 값. SUNNY, CLOUDY, RAINY, LIGHTNING 으로 구분합니다.", in = ParameterIn.QUERY)
-    public ResponseDto<SpecificMemoResponseDto> getSpecificMemoList(
+    public ResponseDto<SpecificMemoResponseDto> getMonthlySpecificWeatherList(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam int month,
+            @RequestParam Status weather) {
+
+        User user = customUserDetails.getUser();
+
+        // getSpecificMemoList에 동일한 LocalDateTime이 있음.
+        // 재사용 가능성이 있어보이니 나중에 리팩토링
+        LocalDateTime dateTime = LocalDateTime.of(
+                LocalDate.now().getYear(),
+                month,
+                1,
+                0,
+                0,
+                0);
+
+        List<MemoReportResponseDto> memoList = reportService.getSpecificMemoList(user, weather, dateTime);
+        Statistic statistic = reportService.getStatisticForMonth(user, dateTime);
+        StatisticResponseDto statisticResDto = new StatisticResponseDto(statistic);
+
+        SpecificMemoResponseDto result = SpecificMemoResponseDto.builder()
+                .memoList(memoList)
+                .proportion(statisticResDto.getProportion(weather))
+                .build();
+
+        return ResponseDto.success("월간 특정 날씨 일자 조회 성공.", result);
+    }
+
+    @GetMapping("/weekly-specific-weather")
+    @Operation(summary = "월 중 특정 날씨 리스트 요청", description = "특정 월의 특정 날씨가 있던 날들을 가져옵니다. ex) 8월의 맑음 날씨 리스트 -> ~~ ")
+    @Parameter(name = "month", description = "1월부터 12월 사이의 데이터를 요청하고 싶은 달", in = ParameterIn.QUERY)
+    @Parameter(name = "weather", description = "요청하고 싶은 날씨 값. SUNNY, CLOUDY, RAINY, LIGHTNING 으로 구분합니다.", in = ParameterIn.QUERY)
+    public ResponseDto<SpecificMemoResponseDto> getWeeklySpecificWeatherList(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestParam int month,
             @RequestParam Status weather) {
