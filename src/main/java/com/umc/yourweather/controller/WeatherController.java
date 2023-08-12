@@ -35,11 +35,10 @@ public class WeatherController {
     }
 
     @GetMapping("monthly/{year}/{month}")
-    @Operation(summary = "Weather 월별 조회", description = "Weather 삭제 API 입니다. 전달 받은 날짜에 해당하는 Weather 객체를 삭제합니다.")
+    @Operation(summary = "Weather 월별 조회", description = "Weather 캘린더에 바인딩 할 API 입니다. 전달 받은 년,월에 해당하는 Weather 객체 리스트를 반환합니다.")
     public ResponseDto<WeatherMonthlyResponseDto> monthly (@PathVariable int year,
                                                   @PathVariable int month,
                                                   @AuthenticationPrincipal CustomUserDetails userDetails) {
-//        LocalDate localDate = LocalDate.of(year, month, day);
         return ResponseDto.success(month+"월 날씨 조회 성공", weatherService.getMonthlyList(year,month, userDetails));
     }
 

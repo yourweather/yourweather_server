@@ -1,6 +1,7 @@
 package com.umc.yourweather.service;
 
 import com.umc.yourweather.auth.CustomUserDetails;
+import com.umc.yourweather.domain.enums.Platform;
 import com.umc.yourweather.domain.enums.Role;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
@@ -39,7 +40,7 @@ public class UserService {
 
         password = passwordEncoder.encode(password);
         String nickname = signupRequestDto.getNickname();
-        String platform = signupRequestDto.getPlatform();
+        Platform platform = signupRequestDto.getPlatform();
 
         // 이메일 중복 검증 로직
         userRepository.findByEmail(email).ifPresent(
@@ -77,7 +78,7 @@ public class UserService {
     public UserResponseDto mypage(CustomUserDetails userDetails) {
         User user = userRepository.findByEmail(userDetails.getUser().getEmail())
             .orElseThrow(() -> new UserNotFoundException("등록된 사용자가 없습니다."));
-        return new UserResponseDto(user.getNickname(), user.getEmail());
+        return new UserResponseDto(user.getNickname(), user.getEmail(), user.getPlatform());
     }
 
     @Transactional
@@ -108,6 +109,6 @@ public class UserService {
 
         // Unactivate
         user.unActivate();
-        return new UserResponseDto(user.getNickname(), user.getEmail());
+        return new UserResponseDto(user.getNickname(), user.getEmail(), user.getPlatform());
     }
 }
