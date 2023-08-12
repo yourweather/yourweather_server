@@ -12,7 +12,6 @@ import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
@@ -145,7 +144,6 @@ public class JwtTokenManager {
         }
     }
 
-    @Transactional
     public void updateRefreshToken(User user, String refreshToken) {
         user.updateRefreshToken(refreshToken);
     }
