@@ -40,7 +40,7 @@ public class UserService {
 
         password = passwordEncoder.encode(password);
         String nickname = signupRequestDto.getNickname();
-        String platform = signupRequestDto.getPlatform();
+        Platform platform = signupRequestDto.getPlatform();
 
         // 이메일 중복 검증 로직
         userRepository.findByEmail(email).ifPresent(
@@ -53,7 +53,7 @@ public class UserService {
             .email(email)
             .password(password)
             .nickname(nickname)
-            .platform(Platform.valueOf(platform))
+            .platform(platform)
             .role(Role.ROLE_USER)
             .isActivate(true)
             .build();
