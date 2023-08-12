@@ -1,5 +1,6 @@
 package com.umc.yourweather.repository.impl;
 
+import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.repository.WeatherRepository;
@@ -51,4 +52,9 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
     @Override
     public void delete(Weather weather) { weatherJpaRepository.delete(weather); }
+
+    @Override
+    public List<Weather> findWeatherByDateBetweenAndUser(LocalDate oneWeekAgo, LocalDate current, User user) {
+        return weatherJpaRepository.findWeatherByDateBetweenAndUser(oneWeekAgo, current, user);
+    }
 }
