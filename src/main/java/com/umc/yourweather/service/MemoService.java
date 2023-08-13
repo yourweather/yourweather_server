@@ -12,6 +12,7 @@ import com.umc.yourweather.request.MemoRequestDto;
 import com.umc.yourweather.request.MemoUpdateRequestDto;
 import com.umc.yourweather.response.*;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ public class MemoService {
     private final MemoRepository memoRepository;
 
     @Transactional
-    public MemoResponseDto write(MemoRequestDto memoRequestDto, CustomUserDetails userDetails) {
+    public Optional<MemoResponseDto> write(MemoRequestDto memoRequestDto, CustomUserDetails userDetails) {
         LocalDateTime dateTime = LocalDateTime.parse(memoRequestDto.getLocalDateTime());
 
         LocalDate date = dateTime.toLocalDate();
@@ -51,6 +52,11 @@ public class MemoService {
                     return weatherRepository.save(newWeather);
                 });
 
+        // 10보다 클 수는 없겠지만 확실한 쪽이 안심이 되니까,,
+        if (weather.getMemos().size() >= 10) {
+            return Optional.empty();
+        }
+
         //처음에 last에 대한 정보가 생기고 바로 update를 호출하는게 조금 마음에 걸리긴하지만.. 일단 패스~
         weather.update(memoRequestDto.getStatus(), memoRequestDto.getTemperature());
 
@@ -64,9 +70,10 @@ public class MemoService {
                 .build();
 
         memoRepository.save(memo);
-        return MemoResponseDto.builder()
+        return Optional.of(
+                MemoResponseDto.builder()
                 .memo(memo)
-                .build();
+                .build());
     }
 
     @Transactional
@@ -82,12 +89,16 @@ public class MemoService {
                 .build();
     }
 
+    // weather의 id를 반환
     @Transactional
-    public void delete(Long memoId) {
+    public Long delete(Long memoId) {
         Memo memo = memoRepository.findById(memoId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 메모가 없습니다. id =" + memoId));
+                .orElseThrow(() -> new MemoNotFoundException("해당 메모가 없습니다. id =" + memoId));
 
+        Long weatherId = memo.getWeather().getId();
         memoRepository.delete(memo);
+
+        return weatherId;
     }
 
     @Transactional
