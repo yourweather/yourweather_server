@@ -8,11 +8,13 @@ import com.umc.yourweather.response.AuthorizationResponseDto;
 import com.umc.yourweather.response.UserResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.request.SignupRequestDto;
+import com.umc.yourweather.response.VerifyEmailResponseDto;
 import com.umc.yourweather.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -68,6 +71,19 @@ public class UserController {
     public ResponseDto<UserResponseDto> withdraw(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("회원 탈퇴 성공", userService.withdraw(userDetails));
+    }
+
+    @GetMapping("/verify-user-email")
+    @Operation(summary = "이메일 검사 api", description = "비밀번호 찾기 전, 유저의 이메일(아이디)가 실제 DB에 있는 이메일과 같은지 확인을 해줍니다.")
+    public ResponseDto<VerifyEmailResponseDto> verifyEmail(
+            @RequestParam String email) {
+        VerifyEmailResponseDto responseDto = userService.verifyEmail(email);
+
+        boolean isOauth = responseDto.isOauth();
+
+        return isOauth
+                ? ResponseDto.fail(HttpStatus.BAD_REQUEST,"Email 검증 실패: 소셜 로그인 유저입니다.", responseDto)
+                : ResponseDto.success("Email 검증 성공: 존재하는 Email 입니다.", responseDto);
     }
 }
 

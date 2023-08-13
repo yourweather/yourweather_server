@@ -41,8 +41,8 @@ public class EmailController {
     @Parameter(name = "code", description = "인증코드")
     public ResponseDto<Boolean> certify(@RequestParam String email, @RequestParam String code) {
         boolean isCorrect = emailService.certifyingData(email, code);
-        return isCorrect ?
-                ResponseDto.success("이메일 인증이 성공했습니다.", isCorrect) :
-                ResponseDto.fail(HttpStatus.BAD_REQUEST, "이메일 인증에 실패했습니다. 인증코드를 다시 확인해주세요.");
+        return isCorrect
+                ? ResponseDto.success("이메일 인증이 성공했습니다.", true)
+                : ResponseDto.fail(HttpStatus.BAD_REQUEST, "이메일 인증에 실패했습니다. 인증코드를 다시 확인해주세요.");
     }
 }

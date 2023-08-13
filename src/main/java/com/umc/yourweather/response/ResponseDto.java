@@ -34,4 +34,8 @@ public class ResponseDto<T> {
     public static <T> ResponseDto<T> fail(HttpStatus httpStatus, String message) {
         return new ResponseDto<>(false, httpStatus.value(), message, null);
     }
+
+    public static <T> ResponseDto<T> fail(HttpStatus httpStatus, String message, T result) {
+        return new ResponseDto<>(false, httpStatus.value(), message, result);
+    }
 }

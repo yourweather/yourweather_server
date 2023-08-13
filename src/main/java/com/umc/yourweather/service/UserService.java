@@ -11,7 +11,10 @@ import com.umc.yourweather.request.SignupRequestDto;
 import com.umc.yourweather.exception.UserNotFoundException;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.repository.UserRepository;
+import com.umc.yourweather.response.VerifyEmailResponseDto;
 import jakarta.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,19 +47,19 @@ public class UserService {
 
         // 이메일 중복 검증 로직
         userRepository.findByEmail(email).ifPresent(
-            user -> {
-                throw new RuntimeException("이미 해당 이메일로 가입된 유저가 존재합니다.");
-            }
+                user -> {
+                    throw new RuntimeException("이미 해당 이메일로 가입된 유저가 존재합니다.");
+                }
         );
 
         User user = User.builder()
-            .email(email)
-            .password(password)
-            .nickname(nickname)
-            .platform(platform)
-            .role(Role.ROLE_USER)
-            .isActivate(true)
-            .build();
+                .email(email)
+                .password(password)
+                .nickname(nickname)
+                .platform(platform)
+                .role(Role.ROLE_USER)
+                .isActivate(true)
+                .build();
 
         // 회원 가입으로 DB에 데이터를 넣는 책임과 token을 제공하는 dto를 만드는 책임은 분리를 하는게 더 좋아보임
         return getSignupResponse(userRepository.save(user));
@@ -77,15 +80,15 @@ public class UserService {
 
     public UserResponseDto mypage(CustomUserDetails userDetails) {
         User user = userRepository.findByEmail(userDetails.getUser().getEmail())
-            .orElseThrow(() -> new UserNotFoundException("등록된 사용자가 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException("등록된 사용자가 없습니다."));
         return new UserResponseDto(user.getNickname(), user.getEmail(), user.getPlatform());
     }
 
     @Transactional
     public String changePassword(ChangePasswordRequestDto changePasswordRequestDto,
-        CustomUserDetails userDetails) {
+            CustomUserDetails userDetails) {
         User user = userRepository.findByEmail(userDetails.getUser().getEmail())
-            .orElseThrow(() -> new UserNotFoundException("등록된 사용자가 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException("등록된 사용자가 없습니다."));
 
         String password = changePasswordRequestDto.getPassword();
         user.changePassword(passwordEncoder.encode(password));
@@ -104,11 +107,35 @@ public class UserService {
     @Transactional
     public UserResponseDto withdraw(CustomUserDetails userDetails) {
         User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
-            () -> new UserNotFoundException("등록된 사용자가 없습니다.")
+                () -> new UserNotFoundException("등록된 사용자가 없습니다.")
         );
 
         // Unactivate
         user.unActivate();
         return new UserResponseDto(user.getNickname(), user.getEmail(), user.getPlatform());
+    }
+
+    public VerifyEmailResponseDto verifyEmail(String email) {
+
+        List<String> platforms = Arrays.stream(Platform.values())
+                .map(Enum::toString)
+                .toList();
+        System.out.println("platforms = " + platforms);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(
+                        () -> new UserNotFoundException("email 검증 실패: 해당 email을 가진 유저가 없습니다."));
+
+        if(user.getPlatform().equals(Platform.YOURWEATHER))
+            return VerifyEmailResponseDto
+                    .builder()
+                    .oauth(false)
+                    .platform(Platform.YOURWEATHER)
+                    .build();
+
+        return VerifyEmailResponseDto.builder()
+                .oauth(true)
+                .platform(user.getPlatform())
+                .build();
     }
 }
