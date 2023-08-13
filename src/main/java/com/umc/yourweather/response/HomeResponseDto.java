@@ -11,12 +11,14 @@ public class HomeResponseDto {
     private String nickname;
     private Status status;
     private int temperature;
+    private String imageName;
 
     @Builder
-    public HomeResponseDto(String nickname, Status status, int temperature) {
+    public HomeResponseDto(String nickname, Status status, int temperature, String imageName) {
         this.nickname = nickname;
         this.status = status;
         this.temperature = temperature;
+        this.imageName = imageName;
     }
 }
 
