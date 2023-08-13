@@ -31,7 +31,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    @Operation(summary = "회원 가입 api", description = "회원 가입을 합니다. 반환받은 응답 헤더에 토큰이 있습니다.")
+    @Operation(summary = "회원 가입", description = "회원 가입을 합니다. 반환받은 응답 헤더에 토큰이 있습니다.")
     public ResponseDto<AuthorizationResponseDto> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         AuthorizationResponseDto response = userService.signup(signupRequestDto);
 
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("/mypage")
-    @Operation(summary = "마이 페이지 api", description = "마이 페이지를 조회하는 API 입니다.")
+    @Operation(summary = "마이 페이지", description = "마이 페이지를 조회하는 API 입니다.")
     public ResponseDto<UserResponseDto> mypage(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("마이 페이지 조회 완료", userService.mypage(userDetails));
@@ -47,7 +47,7 @@ public class UserController {
 
 
     @PatchMapping("/nickname")
-    @Operation(summary = "닉네임 변경 api", description = "닉네임 변경 api입니다.")
+    @Operation(summary = "닉네임 변경", description = "닉네임 변경 api입니다.")
     public ResponseDto<UserResponseDto> nickname(
             @RequestBody @Valid ChangeNicknameRequestDto changeNicknameRequestDto,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -56,7 +56,7 @@ public class UserController {
     }
 
     @PostMapping("/password")
-    @Operation(summary = "비밀번호 변경 api", description = "비밀번호 변경 API 입니다. 요청으로 보낸 데이터 값을 비밀번호로 재설정합니다.")
+    @Operation(summary = "비밀번호 변경", description = "비밀번호 변경 API 입니다. 요청으로 보낸 데이터 값을 비밀번호로 재설정합니다.")
     public ResponseDto<UserResponseDto> password(
         @RequestBody @Valid ChangePasswordRequestDto changePasswordRequestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @PutMapping("/withdraw")
-    @Operation(summary = "회원 탈퇴 api", description = "회원 탈퇴 API 입니다. 회원 상태를 비활성화 합니다.")
+    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 API 입니다. 회원 상태를 비활성화 합니다.")
     public ResponseDto<UserResponseDto> withdraw(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("회원 탈퇴 성공", userService.withdraw(userDetails));

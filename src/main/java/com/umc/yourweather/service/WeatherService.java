@@ -66,13 +66,13 @@ public class WeatherService {
         LocalDate localDate = LocalDate.now();
 
         Weather weather = weatherRepository.findByDateAndUser(localDate,userDetails.getUser())
-                .orElseThrow(() -> new WeatherNotFoundException("해당 날짜에 해당하는 날씨 객체가 존재하지 않습니다."));
+                .orElseThrow(() -> new WeatherNotFoundException("오늘 날짜에 해당하는 날씨 객체가 존재하지 않습니다."));
 
         User user = userDetails.getUser();
         // 션: 튜닝 가능성이 있어보입니다! 나중에 튜닝해봐용
         List<Memo> memos = weather.getMemos();
         if (memos.isEmpty()) {
-            throw new MemoNotFoundException("해당 날짜의 날씨에 대한 메모가 없습니다.");
+            throw new MemoNotFoundException("오늘 날짜의 날씨에 대한 메모가 없습니다.");
         }
 
         Memo lastMemo = memos.get(memos.size() - 1);
