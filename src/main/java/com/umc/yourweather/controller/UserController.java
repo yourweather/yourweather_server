@@ -8,6 +8,7 @@ import com.umc.yourweather.response.AuthorizationResponseDto;
 import com.umc.yourweather.response.UserResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.request.SignupRequestDto;
+import com.umc.yourweather.response.VerifyEmailResponseDto;
 import com.umc.yourweather.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -74,12 +75,15 @@ public class UserController {
 
     @GetMapping("/verify-user-email")
     @Operation(summary = "이메일 검사 api", description = "비밀번호 찾기 전, 유저의 이메일(아이디)가 실제 DB에 있는 이메일과 같은지 확인을 해줍니다.")
-    public ResponseDto<Boolean> verifyEmail(
+    public ResponseDto<VerifyEmailResponseDto> verifyEmail(
             @RequestParam String email) {
-        Boolean isEmailPresent = userService.verifyEmail(email);
-        return isEmailPresent
-                ? ResponseDto.success("존재하는 Email 입니다.", true)
-                : ResponseDto.fail(HttpStatus.BAD_REQUEST,"존재하지 않는 Email 입니다.");
+        VerifyEmailResponseDto responseDto = userService.verifyEmail(email);
+
+        boolean isOauth = responseDto.isOauth();
+
+        return isOauth
+                ? ResponseDto.fail(HttpStatus.BAD_REQUEST,"Email 검증 실패: 소셜 로그인 유저입니다.", responseDto)
+                : ResponseDto.success("Email 검증 성공: 존재하는 Email 입니다.", responseDto);
     }
 }
 
