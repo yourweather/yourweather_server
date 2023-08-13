@@ -56,3 +56,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// 플레인 .jar 파일의 생성을 막기 위해
+jar {
+	enabled = false
+}
