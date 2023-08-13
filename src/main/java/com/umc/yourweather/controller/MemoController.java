@@ -37,7 +37,7 @@ public class MemoController {
         return ResponseDto.success(weatherId + "번의 메모 리스트 조회 성공", memoService.getDailyList(weatherId, userDetails));
     }
 
-    @Operation(summary = "하루 치 메모 반환", description = "특정 메모를 반환하기 위한 API입니다. 특정 날씨 List의 반환 값에 있는 memoId를 이용해서 조회합니다. ")
+    @Operation(summary = "특정 메모 반환", description = "특정 메모를 반환하기 위한 API입니다. 특정 날씨 List의 반환 값에 있는 memoId를 이용해서 조회합니다. ")
     @GetMapping("/{memoId}")
     public ResponseDto<MemoResponseDto> getMemo(@PathVariable Long memoId) {
 
