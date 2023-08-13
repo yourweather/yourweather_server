@@ -1,18 +1,14 @@
 package com.umc.yourweather.service;
 
 import com.umc.yourweather.auth.CustomUserDetails;
+import com.umc.yourweather.domain.MemoManager;
 import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
-import com.umc.yourweather.exception.MemoNotFoundException;
 import com.umc.yourweather.exception.WeatherNotFoundException;
 import com.umc.yourweather.response.*;
-//import com.umc.yourweather.request.MissedInputRequestDto;
-//import com.umc.yourweather.request.WeatherRequestDto;
 import com.umc.yourweather.repository.WeatherRepository;
-//import jakarta.validation.Valid;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,23 +59,24 @@ public class WeatherService {
     }
 
     public HomeResponseDto home(CustomUserDetails userDetails) {
-        LocalDate localDate = LocalDate.now();
-
-        Weather weather = weatherRepository.findByDateAndUser(localDate,userDetails.getUser())
-                .orElseThrow(() -> new WeatherNotFoundException("오늘 날짜에 해당하는 날씨 객체가 존재하지 않습니다."));
 
         User user = userDetails.getUser();
-        // 션: 튜닝 가능성이 있어보입니다! 나중에 튜닝해봐용
-        List<Memo> memos = weather.getMemos();
-        if (memos.isEmpty()) {
-            throw new MemoNotFoundException("오늘 날짜의 날씨에 대한 메모가 없습니다.");
-        }
+        LocalDate localDate = LocalDate.now();
+        MemoManager memoManager = new MemoManager();
 
-        Memo lastMemo = memos.get(memos.size() - 1);
+        Weather weather = weatherRepository.findByDateAndUser(localDate, user)
+                .orElseThrow(() -> new WeatherNotFoundException("오늘 날짜에 해당하는 날씨 객체가 존재하지 않습니다."));
+
+        List<Memo> memoList = weather.getMemos();
+        memoManager.isMemoListEmpty(memoList);
+        String imageName = memoManager.getImageName(memoList);
+
+        Memo lastMemo = memoList.get(memoList.size() - 1);
         return HomeResponseDto.builder()
                 .nickname(user.getNickname())
                 .status(lastMemo.getStatus())
                 .temperature(lastMemo.getTemperature())
+                .imageName(imageName)
                 .build();
 
     }
