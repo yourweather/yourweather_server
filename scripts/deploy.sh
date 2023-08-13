@@ -17,5 +17,8 @@ else
   sleep 5
 fi
 
+echo "> Redis Server Start"
+nohup redis-server &
+
 echo "> Deploying - $JAR_PATH"
 nohup java -jar $JAR_PATH > /dev/null 2> /dev/null < /dev/null &
