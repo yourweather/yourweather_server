@@ -1,6 +1,7 @@
 package com.umc.yourweather.jwt;
 
 import com.umc.yourweather.domain.entity.User;
+import com.umc.yourweather.domain.enums.Platform;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +26,7 @@ class JwtTokenManagerTest {
                 .email("asdf@gmail.com")
                 .password("asdf")
                 .nickname("ffff")
-                .platform("google")
+                .platform(Platform.GOOGLE)
                 .build();
     }
 
