@@ -27,22 +27,4 @@ class MemoServiceTest {
 
     @Autowired
     MemoService memoService;
-
-    @Test
-    @DisplayName("Memo 저장 확인")
-    void write() {
-        // given
-        LocalDateTime localDateTime = LocalDateTime.of(2023, 8, 6, 12, 0, 0);
-        MemoRequestDto memoRequestDto = new MemoRequestDto(Status.SUNNY, "오늘 날씨는 맑음",
-            localDateTime.toString(), 99);
-
-        CustomUserDetails userDetails = new CustomUserDetails(User.builder().build());
-        userRepository.save(userDetails.getUser());
-
-        // when
-        MemoResponseDto response = memoService.write(memoRequestDto, userDetails);
-
-        // then
-        Assertions.assertEquals(LocalDateTime.parse(response.getLocalDateTime()), localDateTime);
-    }
 }

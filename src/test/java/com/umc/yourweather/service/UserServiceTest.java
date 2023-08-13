@@ -3,6 +3,7 @@ package com.umc.yourweather.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.umc.yourweather.auth.CustomUserDetails;
+import com.umc.yourweather.domain.enums.Platform;
 import com.umc.yourweather.domain.enums.Role;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.repository.UserRepository;
@@ -30,7 +31,7 @@ class UserServiceTest {
             .email("test@test.com")
             .password("password")
             .nickname("nickname")
-            .platform("platform")
+            .platform(Platform.YOURWEATHER)
             .role(Role.ROLE_USER)
             .isActivate(true)
             .build());
@@ -44,7 +45,7 @@ class UserServiceTest {
             .email("test@test.com")
             .password("password")
             .nickname("nickname")
-            .platform("platform")
+            .platform(Platform.YOURWEATHER)
             .role(Role.ROLE_USER)
             .isActivate(true)
             .build();
@@ -69,7 +70,7 @@ class UserServiceTest {
             .email("test@test.com")
             .password("password")
             .nickname("nickname")
-            .platform("platform")
+            .platform(Platform.YOURWEATHER)
             .role(Role.ROLE_USER)
             .isActivate(true)
             .build();
@@ -92,7 +93,7 @@ class UserServiceTest {
             .email("test@test.com")
             .password("password")
             .nickname("nickname")
-            .platform("platform")
+            .platform(Platform.YOURWEATHER)
             .role(Role.ROLE_USER)
             .isActivate(true)
             .build();
