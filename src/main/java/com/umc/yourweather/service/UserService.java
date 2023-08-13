@@ -111,4 +111,8 @@ public class UserService {
         user.unActivate();
         return new UserResponseDto(user.getNickname(), user.getEmail(), user.getPlatform());
     }
+
+    public Boolean verifyEmail(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
 }
