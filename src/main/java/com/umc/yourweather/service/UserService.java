@@ -91,12 +91,17 @@ public class UserService {
         User user = userRepository.findByEmail(userDetails.getUser().getEmail())
                 .orElseThrow(() -> new UserNotFoundException("등록된 사용자가 없습니다."));
 
-        String encodedRequestPassword = passwordEncoder.encode(changePasswordRequestDto.getPassword());
-        if (encodedRequestPassword.equals(user.getPassword())) {
+        String password = changePasswordRequestDto.getPassword();
+        String newPassword = changePasswordRequestDto.getNewPassword();
+
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("비밀번호 변경 실패: 요청으로 들어온 기존 비밀번호가 DB에 있는 정보와 일치하지 않습니다.");
         }
 
-        String newPassword = changePasswordRequestDto.getNewPassword();
+        if (password.equals(newPassword)) {
+            throw new IllegalArgumentException("비밀번호 변경 실패: 변경하려는 비밀번호가 기존 비밀번호와 동일합니다.");
+        }
         user.changePassword(passwordEncoder.encode(newPassword));
         return "비밀번호 변경 완료";
     }
