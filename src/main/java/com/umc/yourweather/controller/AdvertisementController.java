@@ -7,10 +7,12 @@ import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.service.AdvertisementService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,5 +39,14 @@ public class AdvertisementController {
                 addAdvertisementRequestDto);
 
         return ResponseDto.success("광고 수정 완료", responseDto);
+    }
+
+    @DeleteMapping("/delete-advertisement")
+    @Operation(summary = "광고 수정 api", description = "광고를 수정하는 api입니다. 어드민 권한이 있어야지만 실행 가능합니다.")
+    public ResponseDto<Void> deleteAdvertisement(
+            @RequestParam String adId) {
+        advertisementService.deleteAdvertisement(adId);
+
+        return ResponseDto.success("광고 삭제 성공");
     }
 }
