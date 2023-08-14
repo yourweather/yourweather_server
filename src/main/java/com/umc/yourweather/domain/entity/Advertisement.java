@@ -38,4 +38,12 @@ public class Advertisement {
     public String getUrl() {
         return url;
     }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
 }
