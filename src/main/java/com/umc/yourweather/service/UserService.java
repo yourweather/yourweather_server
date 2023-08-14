@@ -6,6 +6,7 @@ import com.umc.yourweather.domain.enums.Role;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
 import com.umc.yourweather.response.AuthorizationResponseDto;
+import com.umc.yourweather.response.ChangePasswordResponseDto;
 import com.umc.yourweather.response.UserResponseDto;
 import com.umc.yourweather.request.SignupRequestDto;
 import com.umc.yourweather.exception.UserNotFoundException;
@@ -85,7 +86,7 @@ public class UserService {
     }
 
     @Transactional
-    public String changePassword(ChangePasswordRequestDto changePasswordRequestDto,
+    public ChangePasswordResponseDto changePassword(ChangePasswordRequestDto changePasswordRequestDto,
             CustomUserDetails userDetails) {
 
         User user = userRepository.findByEmail(userDetails.getUser().getEmail())
@@ -96,14 +97,31 @@ public class UserService {
 
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호 변경 실패: 요청으로 들어온 기존 비밀번호가 DB에 있는 정보와 일치하지 않습니다.");
+            return ChangePasswordResponseDto.builder()
+                    .success(false)
+                    .message("요청으로 들어온 기존 비밀번호가 DB에 있는 정보와 일치하지 않습니다.")
+                    .occurredByDB(true)
+                    .occurredByPassword(false)
+                    .build();
         }
 
         if (password.equals(newPassword)) {
-            throw new IllegalArgumentException("비밀번호 변경 실패: 변경하려는 비밀번호가 기존 비밀번호와 동일합니다.");
+            return ChangePasswordResponseDto.builder()
+                    .success(false)
+                    .message("변경하려는 비밀번호가 기존 비밀번호와 동일합니다.")
+                    .occurredByDB(false)
+                    .occurredByPassword(true)
+                    .build();
         }
+
         user.changePassword(passwordEncoder.encode(newPassword));
-        return "비밀번호 변경 완료";
+
+        return ChangePasswordResponseDto.builder()
+                .success(true)
+                .message("비밀번호 변경 완료")
+                .occurredByDB(false)
+                .occurredByPassword(false)
+                .build();
     }
 
     @Transactional
