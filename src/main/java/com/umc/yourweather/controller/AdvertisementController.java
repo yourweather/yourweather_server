@@ -56,8 +56,9 @@ public class AdvertisementController {
     }
 
     @GetMapping("/get-advertisement")
+    @ResponseBody
     @Operation(summary = "광고 제공 api", description = "광고를 가져오는 api입니다")
     public String getAdvertisement() {
-        return "광고 페이지";
+        return "<h1>광고 페이지</h1>";
     }
 }
