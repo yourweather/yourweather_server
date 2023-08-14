@@ -3,6 +3,7 @@ package com.umc.yourweather.domain.entity;
 import com.umc.yourweather.domain.enums.Platform;
 import com.umc.yourweather.domain.enums.Role;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -37,6 +38,7 @@ public class User {
     private Role role;
 
     private boolean isActivate;
+    private LocalDateTime unActivatedDateTime;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     List<Weather> weathers = new ArrayList<>();
@@ -69,7 +71,13 @@ public class User {
         this.nickname = nickname;
     }
 
+    @PrePersist
+    public void setUnActivatedDateTime() {
+        this.unActivatedDateTime = null;
+    }
+
     public void unActivate() {
         this.isActivate = false;
+        this.unActivatedDateTime = LocalDateTime.now();
     }
 }
