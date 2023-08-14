@@ -43,4 +43,12 @@ public class AdvertisementService {
                 .url(advertisement.getUrl())
                 .build();
     }
+
+    @Transactional
+    public void deleteAdvertisement(String adId) {
+        Advertisement advertisement = advertisementRepository.findByAdId(adId)
+                .orElseThrow(
+                        () -> new EntityNotFoundException("광고 찾기 실패: 해당 AdId와 매칭되는 광고가 없습니다."));
+        advertisementRepository.delete(advertisement);
+    }
 }
