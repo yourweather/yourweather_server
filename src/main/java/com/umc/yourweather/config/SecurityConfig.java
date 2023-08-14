@@ -1,8 +1,10 @@
 package com.umc.yourweather.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetailsService;
 import com.umc.yourweather.domain.ReIssueTokenProvider;
+import com.umc.yourweather.domain.enums.Role;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.jwt.filter.CustomLoginFilter;
 import com.umc.yourweather.jwt.filter.CustomOAuthLoginFilter;
@@ -55,13 +57,8 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(authorize -> {
-//                    // /signup에 대한건 다 허락.
-//                    authorize.requestMatchers(RequestURI.USER_URI + "/signup").permitAll();
-//                    authorize.requestMatchers(RequestURI.USER_URI + "/login").permitAll();
-//                    authorize.requestMatchers(RequestURI.USER_URI + "/oauth-login").permitAll();
-//
-//                    // 그 외의 모든 요청은 인증이 되어있어야함.
-//                    authorize.anyRequest().authenticated();
+                    authorize.requestMatchers(RequestURI.ADVERTISEMENT_URI + "/add-advertisement")
+                            .hasRole(Role.ROLE_ADMIN.toString());
                     authorize.anyRequest().permitAll();
                 });
 
