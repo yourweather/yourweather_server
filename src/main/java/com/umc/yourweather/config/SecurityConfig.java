@@ -58,7 +58,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers(RequestURI.ADVERTISEMENT_URI + "/add-advertisement")
-                            .hasRole(Role.ROLE_ADMIN.toString());
+                            .hasRole("ADMIN");
                     authorize.anyRequest().permitAll();
                 });
 
