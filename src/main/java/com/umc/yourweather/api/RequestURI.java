@@ -9,4 +9,5 @@ public class RequestURI {
     public static final String MEMO_URI = CURRENT_VER + "/memo";
     public static final String REPORT_URI = CURRENT_VER + "/report";
     public static final String ADVERTISEMENT_URI = CURRENT_VER + "/ad";
+    public static final String POLICY_URI = CURRENT_VER + "/policy";
 }
