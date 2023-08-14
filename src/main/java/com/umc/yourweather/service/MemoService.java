@@ -73,6 +73,7 @@ public class MemoService {
         return Optional.of(
                 MemoResponseDto.builder()
                 .memo(memo)
+                .weatherId(weather.getId())
                 .build());
     }
 
@@ -125,7 +126,7 @@ public class MemoService {
     public MemoResponseDto getOneMemo(Long memoId) {
         Memo memo = memoRepository.findById(memoId)
                 .orElseThrow(() -> new MemoNotFoundException("해당하는 Memo 객체가 없습니다."));
-        MemoResponseDto result = new MemoResponseDto(memo);
+        MemoResponseDto result = new MemoResponseDto(memo, memo.getWeather().getId());
 
         return result;
     }
