@@ -3,6 +3,8 @@ package com.umc.yourweather.repository.impl;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.repository.UserRepository;
 import com.umc.yourweather.repository.jpa.UserJpaRepository;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +29,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user) {
         return userJpaRepository.save(user);
+    }
+
+    @Override
+    public void deleteExpiredUser() {
+        LocalDate cutoffDate = LocalDate.now().minusDays(30);
+        userJpaRepository.deleteExpiredUser(cutoffDate);
     }
 }

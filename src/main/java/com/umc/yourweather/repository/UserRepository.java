@@ -11,4 +11,6 @@ public interface UserRepository {
     Optional<User> findByRefreshToken(String refreshToken);
 
     User save(User user);
+
+    void deleteExpiredUser();
 }
