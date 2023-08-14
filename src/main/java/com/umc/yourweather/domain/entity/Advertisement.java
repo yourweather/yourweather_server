@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 public class Advertisement {
 
     @Id
