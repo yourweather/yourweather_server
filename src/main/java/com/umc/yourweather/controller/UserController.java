@@ -5,6 +5,7 @@ import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.request.ChangeNicknameRequestDto;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
 import com.umc.yourweather.response.AuthorizationResponseDto;
+import com.umc.yourweather.response.ChangePasswordResponseDto;
 import com.umc.yourweather.response.UserResponseDto;
 import com.umc.yourweather.response.ResponseDto;
 import com.umc.yourweather.request.SignupRequestDto;
@@ -60,10 +61,15 @@ public class UserController {
 
     @PatchMapping("/password")
     @Operation(summary = "비밀번호 변경", description = "비밀번호 변경 API 입니다. 기존 비밀번호와 새 비밀번호를 요청 값으로 받습니다.")
-    public ResponseDto<UserResponseDto> password(
+    public ResponseDto<ChangePasswordResponseDto> password(
         @RequestBody @Valid ChangePasswordRequestDto changePasswordRequestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return ResponseDto.success(userService.changePassword(changePasswordRequestDto, userDetails));
+        ChangePasswordResponseDto changePasswordResponseDto = userService.changePassword(
+                changePasswordRequestDto, userDetails);
+
+        return changePasswordResponseDto.isSuccess()
+                ? ResponseDto.success("비밀번호 변경 성공", changePasswordResponseDto)
+                : ResponseDto.fail(HttpStatus.BAD_REQUEST, "비밀번호 변경 실패", changePasswordResponseDto);
     }
 
     @PutMapping("/withdraw")
