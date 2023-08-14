@@ -41,6 +41,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             RequestURI.EMAIL_URI + "/send",
             RequestURI.EMAIL_URI + "/certify",
 
+            RequestURI.ADVERTISEMENT_URI + "/get-advertisement",
+
             "/swagger-ui/index.html",
             "/favicon.ico"
     };
