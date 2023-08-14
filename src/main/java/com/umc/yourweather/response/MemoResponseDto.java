@@ -17,6 +17,9 @@ public class MemoResponseDto {
     @Schema(description = "온도" , example = "30")
     private int temperature;
 
+    @Schema(description = "weather의 id입니다.", example = "1")
+    private long weatherId;
+
 //    @Builder
 //    public MemoResponseDto(Status status, String content, String localDateTime, int temperature) {
 //        this.status = status;
@@ -26,10 +29,11 @@ public class MemoResponseDto {
 //    }
 
     @Builder
-    public MemoResponseDto(Memo memo) {
+    public MemoResponseDto(Memo memo, Long weatherId) {
         this.status = memo.getStatus();
         this.content = memo.getContent();
         this.localDateTime = String.valueOf(memo.getCreatedDateTime());
         this.temperature = memo.getTemperature();
+        this.weatherId = weatherId;
     }
 }
