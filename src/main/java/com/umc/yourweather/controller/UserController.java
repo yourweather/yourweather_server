@@ -58,8 +58,8 @@ public class UserController {
                 changeNicknameRequestDto.getNickname(), userDetails.getUser().getEmail()));
     }
 
-    @PostMapping("/password")
-    @Operation(summary = "비밀번호 변경", description = "비밀번호 변경 API 입니다. 요청으로 보낸 데이터 값을 비밀번호로 재설정합니다.")
+    @PatchMapping("/password")
+    @Operation(summary = "비밀번호 변경", description = "비밀번호 변경 API 입니다. 기존 비밀번호와 새 비밀번호를 요청 값으로 받습니다.")
     public ResponseDto<UserResponseDto> password(
         @RequestBody @Valid ChangePasswordRequestDto changePasswordRequestDto,
         @AuthenticationPrincipal CustomUserDetails userDetails) {
