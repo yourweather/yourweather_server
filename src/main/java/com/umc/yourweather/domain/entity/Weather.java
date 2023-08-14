@@ -45,7 +45,9 @@ public class Weather {
     }
 
     public void update(Status lastStatus, int lastTemperature) {
-        this.lastStatus = lastStatus;
-        this.lastTemperature = lastTemperature;
+        if (lastTemperature >= this.lastTemperature) {
+            this.lastStatus = lastStatus;
+            this.lastTemperature = lastTemperature;
+        }
     }
 }
