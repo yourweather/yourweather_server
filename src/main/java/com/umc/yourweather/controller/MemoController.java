@@ -51,7 +51,7 @@ public class MemoController {
     @GetMapping("/{memoId}")
     public ResponseDto<MemoResponseDto> getMemo(@PathVariable Long memoId) {
 
-        return ResponseDto.success(memoId + "번의 메모 조회 성공", memoService.getOneMemo(memoId));
+        return ResponseDto.success(memoId + "번 메모 조회 성공", memoService.getOneMemo(memoId));
     }
 
 
