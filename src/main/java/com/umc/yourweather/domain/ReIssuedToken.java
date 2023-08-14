@@ -1,4 +1,4 @@
-package com.umc.yourweather.domain.entity;
+package com.umc.yourweather.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

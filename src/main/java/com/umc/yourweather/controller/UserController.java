@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,8 +37,10 @@ public class UserController {
 
     @PostMapping("/signup")
     @Operation(summary = "회원 가입", description = "회원 가입을 합니다. 반환받은 응답 헤더에 토큰이 있습니다.")
-    public ResponseDto<AuthorizationResponseDto> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
-        AuthorizationResponseDto response = userService.signup(signupRequestDto);
+    public ResponseDto<AuthorizationResponseDto> signup(
+            @RequestBody @Valid SignupRequestDto signupRequestDto,
+            @RequestHeader(defaultValue = "dummy") String secretKey) {
+        AuthorizationResponseDto response = userService.signup(signupRequestDto, secretKey);
 
         return ResponseDto.success("회원 가입 성공", response);
     }

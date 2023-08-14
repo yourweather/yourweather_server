@@ -37,8 +37,13 @@ public class UserService {
     @Value("${jwt.refresh.header}")
     private String refreshTokenHeader;
 
+    @Value("${admin.secret}")
+    private String secretKey;
+
     @Transactional
-    public AuthorizationResponseDto signup(@Valid SignupRequestDto signupRequestDto) {
+    public AuthorizationResponseDto signup(
+            @Valid SignupRequestDto signupRequestDto,
+            String secretKey) {
         String email = signupRequestDto.getEmail();
         String password = signupRequestDto.getPassword();
 
@@ -53,14 +58,26 @@ public class UserService {
                 }
         );
 
-        User user = User.builder()
-                .email(email)
-                .password(password)
-                .nickname(nickname)
-                .platform(platform)
-                .role(Role.ROLE_USER)
-                .isActivate(true)
-                .build();
+        User user;
+        if(secretKey.equals(this.secretKey)) {
+            user = User.builder()
+                    .email(email)
+                    .password(password)
+                    .nickname(nickname)
+                    .platform(platform)
+                    .role(Role.ROLE_ADMIN)
+                    .isActivate(true)
+                    .build();
+        } else {
+            user = User.builder()
+                    .email(email)
+                    .password(password)
+                    .nickname(nickname)
+                    .platform(platform)
+                    .role(Role.ROLE_USER)
+                    .isActivate(true)
+                    .build();
+        }
 
         // 회원 가입으로 DB에 데이터를 넣는 책임과 token을 제공하는 dto를 만드는 책임은 분리를 하는게 더 좋아보임
         return getSignupResponse(userRepository.save(user));

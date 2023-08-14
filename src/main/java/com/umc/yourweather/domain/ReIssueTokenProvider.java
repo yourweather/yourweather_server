@@ -1,6 +1,5 @@
 package com.umc.yourweather.domain;
 
-import com.umc.yourweather.domain.entity.ReIssuedToken;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.repository.UserRepository;

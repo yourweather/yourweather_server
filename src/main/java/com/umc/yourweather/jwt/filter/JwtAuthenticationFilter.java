@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.ReIssueTokenProvider;
-import com.umc.yourweather.domain.entity.ReIssuedToken;
+import com.umc.yourweather.domain.ReIssuedToken;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.repository.UserRepository;
@@ -40,6 +40,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             RequestURI.EMAIL_URI + "/send",
             RequestURI.EMAIL_URI + "/certify",
+
+            RequestURI.ADVERTISEMENT_URI + "/get-advertisement",
 
             "/swagger-ui/index.html",
             "/favicon.ico"
