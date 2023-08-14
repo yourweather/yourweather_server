@@ -8,6 +8,7 @@ import com.umc.yourweather.service.AdvertisementService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,5 +27,15 @@ public class AdvertisementController {
                 addAdvertisementRequestDto);
 
         return ResponseDto.success("광고 추가 성공", responseDto);
+    }
+
+    @PutMapping("/edit-advertisement")
+    @Operation(summary = "광고 수정 api", description = "광고를 수정하는 api입니다. 어드민 권한이 있어야지만 실행 가능합니다.")
+    public ResponseDto<AddAdvertisementResponseDto> editAdvertisement(
+            @RequestBody AddAdvertisementRequestDto addAdvertisementRequestDto) {
+        AddAdvertisementResponseDto responseDto = advertisementService.editAdvertisement(
+                addAdvertisementRequestDto);
+
+        return ResponseDto.success("광고 수정 완료", responseDto);
     }
 }
