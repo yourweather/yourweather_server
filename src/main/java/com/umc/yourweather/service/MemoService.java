@@ -122,7 +122,7 @@ public class MemoService {
         return result;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public MemoResponseDto getOneMemo(Long memoId) {
         Memo memo = memoRepository.findById(memoId)
                 .orElseThrow(() -> new MemoNotFoundException("해당하는 Memo 객체가 없습니다."));
