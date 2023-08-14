@@ -87,11 +87,17 @@ public class UserService {
     @Transactional
     public String changePassword(ChangePasswordRequestDto changePasswordRequestDto,
             CustomUserDetails userDetails) {
+
         User user = userRepository.findByEmail(userDetails.getUser().getEmail())
                 .orElseThrow(() -> new UserNotFoundException("등록된 사용자가 없습니다."));
 
-        String password = changePasswordRequestDto.getPassword();
-        user.changePassword(passwordEncoder.encode(password));
+        String encodedRequestPassword = passwordEncoder.encode(changePasswordRequestDto.getPassword());
+        if (encodedRequestPassword.equals(user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호 변경 실패: 요청으로 들어온 기존 비밀번호가 DB에 있는 정보와 일치하지 않습니다.");
+        }
+
+        String newPassword = changePasswordRequestDto.getNewPassword();
+        user.changePassword(passwordEncoder.encode(newPassword));
         return "비밀번호 변경 완료";
     }
 
