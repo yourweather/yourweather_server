@@ -23,6 +23,11 @@ public class AdvertisementRepositoryImpl implements AdvertisementRepository {
     }
 
     @Override
+    public Optional<Advertisement> findByAdId(String adId) {
+        return advertisementJpaRepository.findByAdId(adId);
+    }
+
+    @Override
     public void delete(Advertisement advertisement) {
         advertisementJpaRepository.delete(advertisement);
     }
