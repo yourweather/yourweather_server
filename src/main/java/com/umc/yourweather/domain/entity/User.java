@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -47,7 +47,7 @@ public class User {
     private Role role;
 
     private boolean isActivate;
-    private LocalDateTime unActivatedDateTime;
+    private LocalDate unActivatedDate;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     List<Weather> weathers = new ArrayList<>();
@@ -81,12 +81,12 @@ public class User {
     }
 
     @PrePersist
-    public void setUnActivatedDateTime() {
-        this.unActivatedDateTime = null;
+    public void setUnActivatedDate() {
+        this.unActivatedDate = null;
     }
 
     public void unActivate() {
         this.isActivate = false;
-        this.unActivatedDateTime = LocalDateTime.now();
+        this.unActivatedDate = LocalDate.now();
     }
 }
