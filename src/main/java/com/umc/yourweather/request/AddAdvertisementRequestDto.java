@@ -13,6 +13,9 @@ public class AddAdvertisementRequestDto {
     private String company;
 
     @NotBlank
+    private String adId;
+
+    @NotBlank
     private String summary;
 
     @NotBlank
@@ -25,6 +28,7 @@ public class AddAdvertisementRequestDto {
     public Advertisement toEntity() {
         return Advertisement.builder()
                 .company(company)
+                .adId(adId)
                 .summary(summary)
                 .message(message)
                 .url(url)
