@@ -4,6 +4,7 @@ import com.umc.yourweather.api.RequestURI;
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.request.ChangeNicknameRequestDto;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
+import com.umc.yourweather.request.ResetPasswordRequestDto;
 import com.umc.yourweather.response.AuthorizationResponseDto;
 import com.umc.yourweather.response.ChangePasswordResponseDto;
 import com.umc.yourweather.response.UserResponseDto;
@@ -73,6 +74,16 @@ public class UserController {
         return changePasswordResponseDto.isSuccess()
                 ? ResponseDto.success("비밀번호 변경 성공", changePasswordResponseDto)
                 : ResponseDto.fail(HttpStatus.BAD_REQUEST, "비밀번호 변경 실패", changePasswordResponseDto);
+    }
+
+    @PatchMapping("/password-reset")
+    @Operation(summary = "비밀번호 재설정", description = "비밀번호 재설정 API 입니다. 새 비밀번호를 요청 값으로 받습니다.")
+    public ResponseDto<ResetPasswordRequestDto> resetPassword(
+            @RequestBody @Valid ResetPasswordRequestDto resetPasswordRequestDto,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        String message = userService.resetPassword(resetPasswordRequestDto, userDetails);
+
+        return ResponseDto.success(message);
     }
 
     @PutMapping("/withdraw")

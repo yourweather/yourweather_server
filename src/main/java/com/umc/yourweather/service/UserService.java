@@ -5,6 +5,7 @@ import com.umc.yourweather.domain.enums.Platform;
 import com.umc.yourweather.domain.enums.Role;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
+import com.umc.yourweather.request.ResetPasswordRequestDto;
 import com.umc.yourweather.response.AuthorizationResponseDto;
 import com.umc.yourweather.response.ChangePasswordResponseDto;
 import com.umc.yourweather.response.UserResponseDto;
@@ -139,6 +140,20 @@ public class UserService {
                 .occurredByDB(false)
                 .occurredByPassword(false)
                 .build();
+    }
+
+    @Transactional
+    public String resetPassword(ResetPasswordRequestDto resetPasswordRequestDto,
+            CustomUserDetails userDetails) {
+
+        User user = userRepository.findByEmail(userDetails.getUser().getEmail())
+                .orElseThrow(() -> new UserNotFoundException("등록된 사용자가 없습니다."));
+
+        String password = resetPasswordRequestDto.getPassword();
+
+        user.changePassword(passwordEncoder.encode(password));
+
+        return "비밀번호 변경 완료";
     }
 
     @Transactional
