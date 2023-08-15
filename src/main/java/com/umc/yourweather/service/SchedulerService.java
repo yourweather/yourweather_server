@@ -12,7 +12,7 @@ public class SchedulerService {
 
     private final UserRepository userRepository;
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     @Transactional
     public void deleteUser() {
         userRepository.deleteExpiredUser();
