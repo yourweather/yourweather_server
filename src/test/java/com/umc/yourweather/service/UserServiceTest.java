@@ -11,18 +11,24 @@ import com.umc.yourweather.repository.UserRepository;
 import com.umc.yourweather.repository.test.UserTestRepository;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
 import com.umc.yourweather.request.SignupRequestDto;
+import com.umc.yourweather.response.AuthorizationResponseDto;
+import com.umc.yourweather.response.ChangePasswordResponseDto;
 import com.umc.yourweather.response.UserResponseDto;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 class UserServiceTest {
 
     // 의존성 주입 최소화
+    private final String secretKey = "secretKey";
     private UserRepository userRepository = new UserTestRepository();
+    private JwtTokenManager jwtTokenManager = new JwtTokenManager();
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private UserService userService = new UserService(userRepository,
-        new BCryptPasswordEncoder(), new JwtTokenManager());
+        passwordEncoder, jwtTokenManager);
 
     private final String secretKey = "secretKey";
 
