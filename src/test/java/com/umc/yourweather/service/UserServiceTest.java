@@ -66,8 +66,24 @@ class UserServiceTest {
     }
 
     @Test
-    void 회원_가입을_할_수_있다() {
+    void 회원_가입이_정상적으로_작동한다() {
+        // given
+        SignupRequestDto request = SignupRequestDto.builder()
+            .email("user@test.com")
+            .password("password")
+            .nickname("nickname")
+            .platform(Platform.YOURWEATHER)
+            .build();
 
+        // @Value 값을 채워주기 위한 임시 값 세팅
+        jwtTokenManager.setValue(secretKey, 1L, 1L);
+
+        // when
+        AuthorizationResponseDto authorizationResponseDto = userService.signup(request, secretKey);
+
+        // then
+        assertNotNull(authorizationResponseDto.getAccessToken());
+        assertNotNull(authorizationResponseDto.getRefreshToken());
     }
 
     @Test
