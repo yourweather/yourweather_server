@@ -147,6 +147,11 @@ public class JwtTokenManager {
     public void updateRefreshToken(User user, String refreshToken) {
         user.updateRefreshToken(refreshToken);
     }
+
+    public void setValue(String secretKey, Long accessTokenExpiration) {
+        this.secretKey = secretKey;
+        this.accessTokenExpiration = accessTokenExpiration;
+    }
 }
 
 
