@@ -30,13 +30,12 @@ class UserServiceTest {
     private UserService userService = new UserService(userRepository,
         passwordEncoder, jwtTokenManager);
 
-    private final String secretKey = "secretKey";
 
     @BeforeEach
     void setup() {
         userRepository.save(User.builder()
             .email("test@test.com")
-            .password("password")
+            .password(passwordEncoder.encode("password"))
             .nickname("nickname")
             .platform(Platform.YOURWEATHER)
             .role(Role.ROLE_USER)
@@ -135,5 +134,62 @@ class UserServiceTest {
         // then
         User findUser = userRepository.findByEmail("test@test.com").get();
         assertEquals(findUser.isActivate(), false);
+    }
+
+    @Test
+    void 비밀번호_변경이_가능하다() {
+        // given
+        User user = User.builder()
+            .email("test@test.com")
+            .password(passwordEncoder.encode("password"))
+            .nickname("nickname")
+            .platform(Platform.YOURWEATHER)
+            .role(Role.ROLE_USER)
+            .isActivate(true)
+            .build();
+
+        CustomUserDetails userDetails = new CustomUserDetails(user);
+
+        ChangePasswordRequestDto request = ChangePasswordRequestDto.builder()
+            .password("password")
+            .newPassword("newPassword")
+            .build();
+
+        // when
+        ChangePasswordResponseDto changePasswordResponseDto = userService.changePassword(request,
+            userDetails);
+
+        // then
+        assertEquals(true, changePasswordResponseDto.isSuccess());
+        assertEquals("비밀번호 변경 완료", changePasswordResponseDto.getMessage());
+    }
+
+    @Test
+    void 기존_비밀번호를_틀릴_시_비밀번호_변경이_불가하다() {
+        // given
+        User user = User.builder()
+            .email("test@test.com")
+            .password(passwordEncoder.encode("password"))
+            .nickname("nickname")
+            .platform(Platform.YOURWEATHER)
+            .role(Role.ROLE_USER)
+            .isActivate(true)
+            .build();
+
+        CustomUserDetails userDetails = new CustomUserDetails(user);
+
+        ChangePasswordRequestDto request = ChangePasswordRequestDto.builder()
+            .password("wrongPassword")
+            .newPassword("newPassword")
+            .build();
+
+        // when
+        ChangePasswordResponseDto changePasswordResponseDto = userService.changePassword(request,
+            userDetails);
+
+        // then
+        assertEquals(changePasswordResponseDto.isSuccess(), false);
+        assertEquals(changePasswordResponseDto.getMessage(),
+            "요청으로 들어온 기존 비밀번호가 DB에 있는 정보와 일치하지 않습니다.");
     }
 }
