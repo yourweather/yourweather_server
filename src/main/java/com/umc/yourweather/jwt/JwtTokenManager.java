@@ -148,9 +148,10 @@ public class JwtTokenManager {
         user.updateRefreshToken(refreshToken);
     }
 
-    public void setValue(String secretKey, Long accessTokenExpiration) {
+    public void setValue(String secretKey, Long accessTokenExpiration, Long refreshTokenExpiration) {
         this.secretKey = secretKey;
         this.accessTokenExpiration = accessTokenExpiration;
+        this.refreshTokenExpiration = refreshTokenExpiration;
     }
 }
 
