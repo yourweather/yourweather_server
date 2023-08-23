@@ -12,6 +12,7 @@ import com.umc.yourweather.repository.WeatherRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -98,6 +99,22 @@ public class WeatherService {
         weatherRepository.delete(weather);
 
         return " (해당 날짜의 Memo가 전부 삭제되어 해당 날짜의 Weather 또한 같이 삭제되었습니다.)";
+    }
+
+    public void update(Long weatherId){
+        Weather weather = weatherRepository.findById(weatherId).orElseThrow(()
+                -> new WeatherNotFoundException("해당 아이디로 조회되는 Weather 엔티티가 존재하지 않습니다."));
+        List<Memo> memoList = weather.getMemos();
+
+        Memo memoWithHighestTemperature = memoList.get(0); // Initialize with the first memo
+
+        for (Memo tmpMemo : memoList) {
+            if (tmpMemo.getTemperature() > memoWithHighestTemperature.getTemperature()) {
+                memoWithHighestTemperature = tmpMemo; // Update if a memo with higher temperature is found
+            }
+        }
+
+        weather.update(memoWithHighestTemperature.getStatus(),memoWithHighestTemperature.getTemperature());
     }
 
     @Transactional(readOnly = true)

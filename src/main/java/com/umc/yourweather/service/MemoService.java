@@ -101,32 +101,11 @@ public class MemoService {
     public Long delete(Long memoId) {
         Memo memo = memoRepository.findById(memoId)
                 .orElseThrow(() -> new MemoNotFoundException("해당 메모가 없습니다. id =" + memoId));
+        memoRepository.delete(memo);
 
         Long weatherId = memo.getWeather().getId();
 
-        List<Memo> memoList = memoRepository.findByWeatherId(memo.getWeather());
-
-        Memo memoWithHighestTemperature = memoList.get(0); // Initialize with the first memo
-
-        for (Memo tmpMemo : memoList) {
-            if (tmpMemo.getTemperature() > memoWithHighestTemperature.getTemperature()) {
-                memoWithHighestTemperature = tmpMemo; // Update if a memo with higher temperature is found
-            }
-        }
-
-        Optional<Weather> weather = weatherRepository.findById(weatherId);
-
-//        Optional<Weather> weather = weatherRepository.findByDateAndUser(memo.getWeather().getDate(), memo.getWeather().getUser());
-
-        if (weather.isPresent()) {
-            Weather tempWeather = weather.get();
-            tempWeather.update(memoWithHighestTemperature.getStatus(), memoWithHighestTemperature.getTemperature());
-
-        }
-
-        memoRepository.delete(memo);
-
-        return memoId;
+        return weatherId;
     }
 
     @Transactional
