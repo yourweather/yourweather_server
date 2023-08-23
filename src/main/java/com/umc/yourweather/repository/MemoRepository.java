@@ -4,9 +4,7 @@ import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.domain.enums.Status;
-import com.umc.yourweather.response.MemoItemResponseDto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -28,4 +26,6 @@ public interface MemoRepository {
 //    List<MemoItemResponseDto> findByDateAndUser(User user, LocalDate localDate);
 
     List<Memo> findByUserAndWeatherId(User user, Weather weather);
+
+    List<Memo> findByWeatherId(Weather weather);
 }

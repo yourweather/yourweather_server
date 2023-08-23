@@ -26,4 +26,6 @@ public interface WeatherRepository {
     void delete(Weather weather);
 
     List<Weather> findWeatherByDateBetweenAndUser(LocalDate startDate, LocalDate endDate, User user);
+
+    Optional<Weather> findByDateAtHighestTemperature(LocalDate localDate);
 }

@@ -8,9 +8,11 @@ import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.exception.WeatherNotFoundException;
 import com.umc.yourweather.response.*;
 import com.umc.yourweather.repository.WeatherRepository;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,8 +27,7 @@ public class WeatherService {
 
 
     @Transactional
-    public MissedInputResponseDto getMissedInputs(
-            CustomUserDetails userDetails) {
+    public MissedInputResponseDto getMissedInputs(CustomUserDetails userDetails) {
 
         // 응답 변수 추가
         MissedInputResponseDto missedInputResponseDto = new MissedInputResponseDto();
@@ -45,8 +46,7 @@ public class WeatherService {
             dateIterator = dateIterator.plusDays(1);
         }
 
-        List<Weather> weathers = weatherRepository.findWeatherByDateBetweenAndUser(oneWeekAgo,
-                current,userDetails.getUser());
+        List<Weather> weathers = weatherRepository.findWeatherByDateBetweenAndUser(oneWeekAgo, current, userDetails.getUser());
 
         for (Weather weather : weathers) {
             LocalDate localDate = weather.getDate();
@@ -64,20 +64,14 @@ public class WeatherService {
         LocalDate localDate = LocalDate.now();
         MemoManager memoManager = new MemoManager();
 
-        Weather weather = weatherRepository.findByDateAndUser(localDate, user)
-                .orElseThrow(() -> new WeatherNotFoundException("오늘 날짜에 해당하는 날씨 객체가 존재하지 않습니다."));
+        Weather weather = weatherRepository.findByDateAndUser(localDate, user).orElseThrow(() -> new WeatherNotFoundException("오늘 날짜에 해당하는 날씨 객체가 존재하지 않습니다."));
 
         List<Memo> memoList = weather.getMemos();
         memoManager.isMemoListEmpty(memoList);
         String imageName = memoManager.getImageName(memoList);
 
         Memo lastMemo = memoList.get(memoList.size() - 1);
-        return HomeResponseDto.builder()
-                .nickname(user.getNickname())
-                .status(lastMemo.getStatus())
-                .temperature(lastMemo.getTemperature())
-                .imageName(imageName)
-                .build();
+        return HomeResponseDto.builder().nickname(user.getNickname()).status(lastMemo.getStatus()).temperature(lastMemo.getTemperature()).imageName(imageName).build();
 
     }
 
@@ -94,9 +88,8 @@ public class WeatherService {
 
     @Transactional
     public String checkMemoAndDelete(Long weatherId) {
-        Weather weather = weatherRepository.findById(weatherId)
-                .orElseThrow(
-                        () -> new WeatherNotFoundException("해당 아이디로 조회되는 Weather 엔티티가 존재하지 않습니다."));
+        Weather weather = weatherRepository.findById(weatherId).orElseThrow(()
+                -> new WeatherNotFoundException("해당 아이디로 조회되는 Weather 엔티티가 존재하지 않습니다."));
 
         List<Memo> memoList = weather.getMemos();
         if (memoList.size() > 0) {
@@ -106,6 +99,22 @@ public class WeatherService {
         weatherRepository.delete(weather);
 
         return " (해당 날짜의 Memo가 전부 삭제되어 해당 날짜의 Weather 또한 같이 삭제되었습니다.)";
+    }
+
+    public void update(Long weatherId){
+        Weather weather = weatherRepository.findById(weatherId).orElseThrow(()
+                -> new WeatherNotFoundException("해당 아이디로 조회되는 Weather 엔티티가 존재하지 않습니다."));
+        List<Memo> memoList = weather.getMemos();
+
+        Memo memoWithHighestTemperature = memoList.get(0); // Initialize with the first memo
+
+        for (Memo tmpMemo : memoList) {
+            if (tmpMemo.getTemperature() > memoWithHighestTemperature.getTemperature()) {
+                memoWithHighestTemperature = tmpMemo; // Update if a memo with higher temperature is found
+            }
+        }
+
+        weather.update(memoWithHighestTemperature.getStatus(),memoWithHighestTemperature.getTemperature());
     }
 
     @Transactional(readOnly = true)

@@ -66,6 +66,7 @@ public class MemoController {
     @DeleteMapping("/delete/{memoId}")
     public ResponseDto<Void> delete(@PathVariable Long memoId) {
         Long weatherId = memoService.delete(memoId);
+        weatherService.update(weatherId);
         String comment = weatherService.checkMemoAndDelete(weatherId);
         return ResponseDto.success("메모 삭제 완료" + comment);
     }

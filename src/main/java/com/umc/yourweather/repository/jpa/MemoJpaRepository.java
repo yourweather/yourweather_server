@@ -52,4 +52,13 @@ public interface MemoJpaRepository extends JpaRepository<Memo, Long> {
     List<Memo> findByUserAndWeatherId(
             @Param("user") User user,
             @Param("weather") Weather weatherId);
+
+    @Query("SELECT m FROM Memo m "
+            + "JOIN FETCH m.weather w "
+            + "JOIN FETCH w.user u "
+            + "WHERE "
+            + "m.weather = :weather "
+            + "ORDER BY m.temperature asc")
+    List<Memo> findByWeatherId(
+            @Param("weather") Weather weatherId);
 }
