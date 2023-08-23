@@ -12,7 +12,9 @@ import com.umc.yourweather.request.MemoRequestDto;
 import com.umc.yourweather.request.MemoUpdateRequestDto;
 import com.umc.yourweather.response.*;
 import jakarta.persistence.EntityNotFoundException;
+
 import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,7 +60,11 @@ public class MemoService {
         }
 
         //처음에 last에 대한 정보가 생기고 바로 update를 호출하는게 조금 마음에 걸리긴하지만.. 일단 패스~
-        weather.update(memoRequestDto.getStatus(), memoRequestDto.getTemperature());
+
+        //최고온도 update 함수의 조건을 여기서 넣어야함. update 함수를 재활용하기 위해서
+        if (memoRequestDto.getTemperature() >= weather.getLastTemperature()) {
+            weather.update(memoRequestDto.getStatus(), memoRequestDto.getTemperature());
+        }
 
         // MemoRequestDto에 넘어온 정보를 토대로 Memo 객체 생성
         Memo memo = Memo.builder()
@@ -72,9 +78,9 @@ public class MemoService {
         memoRepository.save(memo);
         return Optional.of(
                 MemoResponseDto.builder()
-                .memo(memo)
-                .weatherId(weather.getId())
-                .build());
+                        .memo(memo)
+                        .weatherId(weather.getId())
+                        .build());
     }
 
     @Transactional
@@ -97,9 +103,30 @@ public class MemoService {
                 .orElseThrow(() -> new MemoNotFoundException("해당 메모가 없습니다. id =" + memoId));
 
         Long weatherId = memo.getWeather().getId();
+
+        List<Memo> memoList = memoRepository.findByWeatherId(memo.getWeather());
+
+        Memo memoWithHighestTemperature = memoList.get(0); // Initialize with the first memo
+
+        for (Memo tmpMemo : memoList) {
+            if (tmpMemo.getTemperature() > memoWithHighestTemperature.getTemperature()) {
+                memoWithHighestTemperature = tmpMemo; // Update if a memo with higher temperature is found
+            }
+        }
+
+        Optional<Weather> weather = weatherRepository.findById(weatherId);
+
+//        Optional<Weather> weather = weatherRepository.findByDateAndUser(memo.getWeather().getDate(), memo.getWeather().getUser());
+
+        if (weather.isPresent()) {
+            Weather tempWeather = weather.get();
+            tempWeather.update(memoWithHighestTemperature.getStatus(), memoWithHighestTemperature.getTemperature());
+
+        }
+
         memoRepository.delete(memo);
 
-        return weatherId;
+        return memoId;
     }
 
     @Transactional

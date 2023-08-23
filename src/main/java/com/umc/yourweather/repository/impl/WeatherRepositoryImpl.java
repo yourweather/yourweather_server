@@ -57,4 +57,10 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     public List<Weather> findWeatherByDateBetweenAndUser(LocalDate oneWeekAgo, LocalDate current, User user) {
         return weatherJpaRepository.findWeatherByDateBetweenAndUser(oneWeekAgo, current, user);
     }
+
+    @Override
+    public Optional<Weather> findByDateAtHighestTemperature(LocalDate localDate) {
+        return weatherJpaRepository.findByDateAtHighestTemperature(localDate);
+    }
+
 }
