@@ -44,6 +44,28 @@ class UserServiceTest {
     }
 
     @Test
+    void createAccessToken이_정상적으로_작동한다() {
+        // given
+        User user = User.builder()
+            .email("test@test.com")
+            .password("password")
+            .nickname("nickname")
+            .platform(Platform.YOURWEATHER)
+            .role(Role.ROLE_USER)
+            .isActivate(true)
+            .build();
+
+        // @Value 값을 채워주기 위한 임시 값 세팅
+        jwtTokenManager.setValue(secretKey, 1L, 1L);
+
+        // when
+        String accessToken = jwtTokenManager.createAccessToken(user);
+
+        // then
+        assertNotNull(accessToken);
+    }
+
+    @Test
     void 회원_가입을_할_수_있다() {
 
     }
