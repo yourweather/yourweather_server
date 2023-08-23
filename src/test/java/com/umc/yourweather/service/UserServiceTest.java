@@ -104,51 +104,23 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("mypage 조회")
-    void mypage() {
+    void 데이터베이스에_정상적으로_저장된다() {
         // given
-        User user = User.builder()
-            .email("test@test.com")
+        SignupRequestDto request = SignupRequestDto.builder()
+            .email("user@test.com")
             .password("password")
             .nickname("nickname")
             .platform(Platform.YOURWEATHER)
-            .role(Role.ROLE_USER)
-            .isActivate(true)
             .build();
-
-        CustomUserDetails userDetails = new CustomUserDetails(user);
+        jwtTokenManager.setValue(secretKey, 1L, 1L);
 
         // when
-        UserResponseDto response = userService.mypage(userDetails);
+        userService.signup(request, secretKey);
 
         // then
-        assertEquals(userDetails.getUser().getEmail(), response.getEmail());
-        assertEquals(userDetails.getUser().getNickname(), response.getNickname());
-    }
-
-    @Test
-    @DisplayName("비밀번호 변경")
-    void changePassword() {
-        // given
-        ChangePasswordRequestDto request = new ChangePasswordRequestDto("password2");
-
-        User user = User.builder()
-            .email("test@test.com")
-            .password("password")
-            .nickname("nickname")
-            .platform(Platform.YOURWEATHER)
-            .role(Role.ROLE_USER)
-            .isActivate(true)
-            .build();
-
-        CustomUserDetails userDetails = new CustomUserDetails(user);
-
-        // when
-        userService.changePassword(request, userDetails);
-
-        // then
-        User findUser = userRepository.findByEmail("test@test.com").get();
-        assertEquals(findUser.getPassword(), "password2");
+        Optional<User> optionalUser = userRepository.findByEmail("user@test.com");
+        assertTrue(optionalUser.isPresent());
+        assertEquals("nickname", optionalUser.get().getNickname());
     }
 
     @Test
