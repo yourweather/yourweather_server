@@ -124,9 +124,8 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("회원 탈퇴")
-    void withdraw() {
-        //given
+    void 마이_페이지_조회가_가능하다() {
+        // given
         User user = User.builder()
             .email("test@test.com")
             .password("password")
@@ -139,11 +138,11 @@ class UserServiceTest {
         CustomUserDetails userDetails = new CustomUserDetails(user);
 
         // when
-        userService.withdraw(userDetails);
+        UserResponseDto response = userService.mypage(userDetails);
 
         // then
-        User findUser = userRepository.findByEmail("test@test.com").get();
-        assertEquals(findUser.isActivate(), false);
+        assertEquals(userDetails.getUser().getEmail(), response.getEmail());
+        assertEquals(userDetails.getUser().getNickname(), response.getNickname());
     }
 
     @Test
