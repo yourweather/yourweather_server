@@ -6,6 +6,7 @@ import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.exception.WeatherNotFoundException;
+import com.umc.yourweather.repository.MemoRepository;
 import com.umc.yourweather.response.*;
 import com.umc.yourweather.repository.WeatherRepository;
 
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class WeatherService {
 
     private final WeatherRepository weatherRepository;
+    private final MemoRepository memoRepository;
 
 
     @Transactional
@@ -113,8 +115,6 @@ public class WeatherService {
                 memoWithHighestTemperature = tmpMemo; // Update if a memo with higher temperature is found
             }
         }
-
-        weather.update(memoWithHighestTemperature.getStatus(),memoWithHighestTemperature.getTemperature());
     }
 
     @Transactional(readOnly = true)
@@ -123,10 +123,23 @@ public class WeatherService {
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate lastDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
 
-        List<WeatherItemResponseDto> weatherList = weatherRepository.findByMonthAndUser(userDetails.getUser(), startDate, lastDate); // User 파라미터를 추가해야 함
-        //.orElseThrow(() -> new WeatherNotFoundException("해당 아이디로 조회되는 날씨 객체가 존재하지 않습니다."));
+        List<WeatherItemResponseDto> weatherItemResponseDtoList = new ArrayList<>();
+        List<Weather> weatherList = weatherRepository.findByMonthAndUser(userDetails.getUser(), startDate, lastDate);
 
-        WeatherMonthlyResponseDto result = new WeatherMonthlyResponseDto(weatherList);
-        return result;
+        for(Weather weather : weatherList){
+
+            Memo highestMemo = memoRepository.findFirstByWeatherIdOrderByTemperatureDesc(weather.getId());
+            WeatherItemResponseDto weatherItemResponseDto = WeatherItemResponseDto.builder()
+                    .weatherId(weather.getId())
+                    .date(weather.getDate())
+                    .highestStatus(highestMemo.getStatus())
+                    .highestTemperature(highestMemo.getTemperature())
+                    .build();
+
+            weatherItemResponseDtoList.add(weatherItemResponseDto);
+        }
+
+
+        return new WeatherMonthlyResponseDto(weatherItemResponseDtoList);
     }
 }
