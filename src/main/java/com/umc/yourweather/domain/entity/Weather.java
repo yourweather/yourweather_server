@@ -24,10 +24,6 @@ public class Weather {
     private Long id;
     private LocalDate date;
 
-    // 대표날씨 필드, 그 날씨의 온도
-    @Enumerated(EnumType.STRING)
-    private Status lastStatus;
-    private int lastTemperature;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -37,17 +33,8 @@ public class Weather {
     List<Memo> memos = new ArrayList<>();
 
     @Builder
-    public Weather(LocalDate date, User user, Status lastStatus, int lastTemperature) {
+    public Weather(LocalDate date, User user) {
         this.date = date;
         this.user = user;
-        this.lastStatus = lastStatus;
-        this.lastTemperature = lastTemperature;
-    }
-
-    public void update(Status lastStatus, int lastTemperature) {
-//        if (lastTemperature >= this.lastTemperature) {
-        this.lastStatus = lastStatus;
-        this.lastTemperature = lastTemperature;
-//        }
     }
 }

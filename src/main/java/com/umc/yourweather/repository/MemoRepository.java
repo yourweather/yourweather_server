@@ -28,4 +28,6 @@ public interface MemoRepository {
     List<Memo> findByUserAndWeatherId(User user, Weather weather);
 
     List<Memo> findByWeatherId(Weather weather);
+
+    Memo findFirstByWeatherIdOrderByTemperatureDesc(Long weatherId);
 }

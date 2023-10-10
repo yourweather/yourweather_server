@@ -1,11 +1,9 @@
 package com.umc.yourweather.repository.impl;
 
-import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
 import com.umc.yourweather.repository.WeatherRepository;
 import com.umc.yourweather.repository.jpa.WeatherJpaRepository;
-import com.umc.yourweather.response.WeatherItemResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -43,7 +41,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     }
 
     @Override
-    public List<WeatherItemResponseDto> findByMonthAndUser(User user, LocalDate startDate, LocalDate endDate) {
+    public List<Weather> findByMonthAndUser(User user, LocalDate startDate, LocalDate endDate) {
         return weatherJpaRepository.findByMonthAndUser(user, startDate, endDate);
     }
 

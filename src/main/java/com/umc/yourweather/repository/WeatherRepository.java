@@ -1,9 +1,7 @@
 package com.umc.yourweather.repository;
 
-import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
-import com.umc.yourweather.response.WeatherItemResponseDto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +17,7 @@ public interface WeatherRepository {
 
     Optional<Weather> findByDate(LocalDate localDate);
 
-    List<WeatherItemResponseDto> findByMonthAndUser(User user, LocalDate startDate, LocalDate endDate);
+    List<Weather> findByMonthAndUser(User user, LocalDate startDate, LocalDate endDate);
 
     Weather save(Weather weather);
 

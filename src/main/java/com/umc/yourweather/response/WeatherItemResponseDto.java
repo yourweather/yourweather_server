@@ -14,15 +14,8 @@ import java.time.LocalDate;
 public class WeatherItemResponseDto {
 
     private Long weatherId; //웨더 아이디
-
     private LocalDate date;
-    private Status lastStatus;
-    private int lastTemperature;
 
-    public WeatherItemResponseDto(Weather weather) {
-        this.weatherId = weather.getId();
-        this.date = weather.getDate();
-        this.lastStatus = weather.getLastStatus();
-        this.lastTemperature = weather.getLastTemperature();
-    }
+    private Status highestStatus;
+    private int highestTemperature;
 }
