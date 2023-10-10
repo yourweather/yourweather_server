@@ -41,14 +41,11 @@ public class MemoService {
         User user = userDetails.getUser();
 
         // weather 찾아보고 만약 없으면 새로 등록해줌.
-        // 새로 등록할 때에 최신 날씨, 최신 온도도 같이 필드에 추가
         Weather weather = weatherRepository.findByDateAndUser(date, user)
                 .orElseGet(() -> {
                     Weather newWeather = Weather.builder()
                             .user(user)
                             .date(date)
-                            .lastStatus(memoRequestDto.getStatus())
-                            .lastTemperature(memoRequestDto.getTemperature())
                             .build();
 
                     return weatherRepository.save(newWeather);
@@ -57,13 +54,6 @@ public class MemoService {
         // 10보다 클 수는 없겠지만 확실한 쪽이 안심이 되니까,,
         if (weather.getMemos().size() >= 10) {
             return Optional.empty();
-        }
-
-        //처음에 last에 대한 정보가 생기고 바로 update를 호출하는게 조금 마음에 걸리긴하지만.. 일단 패스~
-
-        //최고온도 update 함수의 조건을 여기서 넣어야함. update 함수를 재활용하기 위해서
-        if (memoRequestDto.getTemperature() >= weather.getLastTemperature()) {
-            weather.update(memoRequestDto.getStatus(), memoRequestDto.getTemperature());
         }
 
         // MemoRequestDto에 넘어온 정보를 토대로 Memo 객체 생성
