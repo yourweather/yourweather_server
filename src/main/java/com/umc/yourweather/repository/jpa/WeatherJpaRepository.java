@@ -2,7 +2,6 @@ package com.umc.yourweather.repository.jpa;
 
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
-import com.umc.yourweather.response.WeatherItemResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,7 +26,7 @@ public interface WeatherJpaRepository extends JpaRepository<Weather, Long> {
             + "w.date >= :startDate AND "
             + "w.date <= :endDate "
             + "ORDER BY w.date asc")
-    List<WeatherItemResponseDto> findByMonthAndUser(
+    List<Weather> findByMonthAndUser(
             @Param("user") User user,
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate);
