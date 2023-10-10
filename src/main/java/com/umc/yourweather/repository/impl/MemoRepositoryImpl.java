@@ -66,6 +66,11 @@ public class MemoRepositoryImpl implements MemoRepository {
         return memoJpaRepository.findByWeatherId(weather);
     }
 
+    @Override
+    public Memo findFirstByWeatherIdOrderByTemperatureDesc(Long weatherId) {
+        return memoJpaRepository.findFirstByWeatherIdOrderByTemperatureDesc(weatherId);
+    }
+
 //    public List<MemoItemResponseDto> findByDateAndUser(User user, LocalDate localDate) {
 //        return memoJpaRepository.findByDateAndUser(user,localDate);
 //    }

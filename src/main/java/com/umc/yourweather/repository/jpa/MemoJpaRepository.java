@@ -61,4 +61,6 @@ public interface MemoJpaRepository extends JpaRepository<Memo, Long> {
             + "ORDER BY m.temperature asc")
     List<Memo> findByWeatherId(
             @Param("weather") Weather weatherId);
+
+    Memo findFirstByWeatherIdOrderByTemperatureDesc(Long weatherId);
 }
