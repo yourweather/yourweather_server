@@ -38,25 +38,20 @@ jobs:
         run: ./gradlew build
         shell: bash
 
-  # AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-    - name: Make zip file
-      run: zip -r ./$GITHUB_SHA.zip .
-      shell: bash
+      - name: Make zip file
+        run: zip -r ./$GITHUB_SHA.zip .
+        shell: bash
 
-    # 빌드 결과물을 S3 버킷에 업로드
-    - name: Upload to AWS S3
-      run: aws --region ap-northeast-2 s3 cp ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
+        # 빌드 결과물을 S3 버킷에 업로드
+      - name: Upload to AWS S3
+        run: aws --region ap-northeast-2 s3 cp ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
       # run: |
       #   aws deploy push \
       #     --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
@@ -72,3 +67,11 @@ jobs:
     #       --deployment-config-name CodeDeployDefault.AllAtOnce \
     #       --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
     #       --s3-location bucket=$S3_BUCKET_NAME,key=$GITHUB_SHA.zip,bundleType=zip
+
+
+  # AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+    
