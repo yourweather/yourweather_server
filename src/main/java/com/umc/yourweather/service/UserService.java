@@ -102,8 +102,7 @@ public class UserService {
     }
 
     public UserResponseDto myPage(CustomUserDetails userDetails) {
-        User user = userRepository.findByEmail(userDetails.getEmail())
-            .orElseThrow(() -> new UserNotExistException("등록된 사용자가 없습니다."));
+        User user = findUserByEmail(userDetails.getEmail());
         return UserResponseDto.from(user);
     }
 
@@ -112,8 +111,7 @@ public class UserService {
         ChangePasswordRequestDto changePasswordRequestDto,
         CustomUserDetails userDetails) {
 
-        User user = userRepository.findByEmail(userDetails.getUser().getEmail())
-            .orElseThrow(() -> new UserNotFoundException("등록된 사용자가 없습니다."));
+        User user = findUserByEmail(userDetails.getEmail());
 
         String password = changePasswordRequestDto.getPassword();
         String newPassword = changePasswordRequestDto.getNewPassword();
@@ -149,10 +147,7 @@ public class UserService {
     @Transactional
     public String resetPassword(ResetPasswordRequestDto resetPasswordRequestDto,
         CustomUserDetails userDetails) {
-
-        User user = userRepository.findByEmail(userDetails.getUser().getEmail())
-            .orElseThrow(() -> new UserNotFoundException("등록된 사용자가 없습니다."));
-
+        User user = findUserByEmail(userDetails.getEmail());
         String password = resetPasswordRequestDto.getPassword();
 
         user.changePassword(passwordEncoder.encode(password));
@@ -162,8 +157,7 @@ public class UserService {
 
     @Transactional
     public UserResponseDto changeNickname(String nickname, String email) {
-        User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new UserNotFoundException("닉네임 변경 실패: 등록된 사용자가 없습니다."));
+        User user = findUserByEmail(email);
 
         user.changeNickname(nickname);
         return new UserResponseDto(user);
@@ -171,11 +165,7 @@ public class UserService {
 
     @Transactional
     public UserResponseDto withdraw(CustomUserDetails userDetails) {
-        User user = userRepository.findByEmail(userDetails.getUser().getEmail()).orElseThrow(
-            () -> new UserNotFoundException("등록된 사용자가 없습니다.")
-        );
-
-        // Unactivate
+        User user = findUserByEmail(userDetails.getEmail());
         user.unActivate();
         return new UserResponseDto(user.getNickname(), user.getEmail(), user.getPlatform());
     }
@@ -187,9 +177,7 @@ public class UserService {
             .toList();
         System.out.println("platforms = " + platforms);
 
-        User user = userRepository.findByEmail(email)
-            .orElseThrow(
-                () -> new UserNotFoundException("email 검증 실패: 해당 email을 가진 유저가 없습니다."));
+        User user = findUserByEmail(email);
 
         if (user.getPlatform().equals(Platform.YOURWEATHER)) {
             return VerifyEmailResponseDto
@@ -206,11 +194,13 @@ public class UserService {
     }
 
     public UserResponseDto findPassword(EmailRequestDto emailRequestDto) {
-
-        User findUser = userRepository.findByEmail(emailRequestDto.getEmail())
-            .orElseThrow(() -> new UserNotFoundException("email 검증 실패: 해당 email을 가진 유저가 없습니다."));
-
-        return new UserResponseDto(findUser.getNickname(), findUser.getEmail(),
-            findUser.getPlatform());
+        User user = findUserByEmail(emailRequestDto.getEmail());
+        return UserResponseDto.from(user);
     }
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+            .orElseThrow(() -> new UserNotExistException(USER_NOT_EXIST.getMessage()));
+    }
+
 }
