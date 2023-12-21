@@ -2,7 +2,7 @@ package com.umc.yourweather.service;
 
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.MemoManager;
-import com.umc.yourweather.domain.SystemDateProvider;
+import com.umc.yourweather.domain.DateProvider;
 import com.umc.yourweather.domain.entity.Memo;
 import com.umc.yourweather.domain.entity.User;
 import com.umc.yourweather.domain.entity.Weather;
@@ -28,7 +28,7 @@ public class WeatherService {
 
     private final WeatherRepository weatherRepository;
     private final MemoRepository memoRepository;
-    private final SystemDateProvider dateProvider;
+    private final DateProvider dateProvider;
 
 
     @Transactional
