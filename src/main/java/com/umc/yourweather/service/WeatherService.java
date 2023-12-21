@@ -15,6 +15,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,43 +28,35 @@ public class WeatherService {
 
     private final WeatherRepository weatherRepository;
     private final MemoRepository memoRepository;
-
     private final SystemDateProvider dateProvider;
 
 
     @Transactional
-    public MissedInputResponseDto getMissedInputs(CustomUserDetails userDetails) {
-
+    public MissedInputResponseDto getNotEnteredDates(CustomUserDetails userDetails) {
         List<LocalDate> lastWeekDates = generateLastWeekDates();
         List<Weather> lastWeekWeathers = weatherRepository.findWeatherByDateBetweenAndUser(
             dateProvider.getOneWeekAgo(), dateProvider.getToday(),
             userDetails.getUser());
-        List<LocalDate> missedDates = generateLastWeekMissedDates(lastWeekDates,
+        List<LocalDate> missedDates = findNotEnteredDates(lastWeekDates,
             lastWeekWeathers);
 
         return new MissedInputResponseDto(missedDates);
     }
 
-    List<LocalDate> generateLastWeekDates() {
+    public List<LocalDate> generateLastWeekDates() {
         LocalDate startDate = dateProvider.getOneWeekAgo();
         LocalDate endDate = dateProvider.getToday();
-        List<LocalDate> dates = new ArrayList<>();
-
-        for (; !startDate.isAfter(endDate);
-            startDate = startDate.plusDays(1)) {
-            dates.add(startDate);
-        }
-        return dates;
+        return startDate.datesUntil(endDate.plusDays(1)).collect(Collectors.toList());
     }
 
-    List<LocalDate> generateLastWeekMissedDates(List<LocalDate> lastWeekDates,
-        List<Weather> lastWeekWeather) {
-        for (Weather weather : lastWeekWeather) {
-            LocalDate localDate = weather.getDate();
-            lastWeekDates.remove(localDate);
-        }
-
-        return lastWeekDates;
+    List<LocalDate> findNotEnteredDates(List<LocalDate> allDates,
+        List<Weather> weathers) {
+        Set<LocalDate> enteredDates = weathers.stream()
+            .map(Weather::getDate)
+            .collect(Collectors.toSet());
+        return allDates.stream()
+            .filter(date -> !enteredDates.contains(date))
+            .collect(Collectors.toList());
     }
 
     public HomeResponseDto home(CustomUserDetails userDetails) {
@@ -87,7 +81,7 @@ public class WeatherService {
     @Transactional
     public WeatherResponseDto delete(LocalDate localDate, CustomUserDetails userDetails) {
         Weather weather = weatherRepository.findByDateAndUser(localDate,
-                userDetails.getUser()) // User 파라미터를 추가해야 함
+	userDetails.getUser())
             .orElseThrow(() -> new WeatherNotFoundException("해당 날짜에 대한 Weather 엔티티가 존재하지 않습니다."));
 
         WeatherResponseDto result = new WeatherResponseDto(weather);
@@ -120,7 +114,7 @@ public class WeatherService {
 
         for (Memo tmpMemo : memoList) {
             if (tmpMemo.getTemperature() > memoWithHighestTemperature.getTemperature()) {
-                memoWithHighestTemperature = tmpMemo; // Update if a memo with higher temperature is found
+	memoWithHighestTemperature = tmpMemo; // Update if a memo with higher temperature is found
             }
         }
     }
@@ -139,13 +133,13 @@ public class WeatherService {
         for (Weather weather : weatherList) {
 
             Memo highestMemo = memoRepository.findFirstByWeatherIdOrderByTemperatureDesc(
-                weather.getId());
+	weather.getId());
             WeatherItemResponseDto weatherItemResponseDto = WeatherItemResponseDto.builder()
-                .weatherId(weather.getId())
-                .date(weather.getDate())
-                .highestStatus(highestMemo.getStatus())
-                .highestTemperature(highestMemo.getTemperature())
-                .build();
+	.weatherId(weather.getId())
+	.date(weather.getDate())
+	.highestStatus(highestMemo.getStatus())
+	.highestTemperature(highestMemo.getTemperature())
+	.build();
 
             weatherItemResponseDtoList.add(weatherItemResponseDto);
         }
