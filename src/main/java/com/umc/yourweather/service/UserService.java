@@ -98,10 +98,10 @@ public class UserService {
             .build();
     }
 
-    public UserResponseDto mypage(CustomUserDetails userDetails) {
-        User user = userRepository.findByEmail(userDetails.getUser().getEmail())
-            .orElseThrow(() -> new UserNotFoundException("등록된 사용자가 없습니다."));
-        return new UserResponseDto(user.getNickname(), user.getEmail(), user.getPlatform());
+    public UserResponseDto myPage(CustomUserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getEmail())
+            .orElseThrow(() -> new UserNotExistException("등록된 사용자가 없습니다."));
+        return UserResponseDto.from(user);
     }
 
     @Transactional

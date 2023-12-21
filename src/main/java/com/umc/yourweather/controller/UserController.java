@@ -50,9 +50,9 @@ public class UserController {
 
     @GetMapping("/mypage")
     @Operation(summary = "마이 페이지", description = "마이 페이지를 조회하는 API 입니다.")
-    public ResponseDto<UserResponseDto> mypage(
+    public ResponseDto<UserResponseDto> myPage(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return ResponseDto.success("마이 페이지 조회 완료", userService.mypage(userDetails));
+        return ResponseDto.success("마이 페이지 조회 완료", userService.myPage(userDetails));
     }
 
 

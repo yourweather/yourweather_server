@@ -11,7 +11,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             IllegalArgumentException.class,
-            UserNotFoundException.class,
+            UserNotExistException.class,
             RuntimeException.class,
             WeatherNotFoundException.class,
             IllegalStateException.class,
