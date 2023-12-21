@@ -1,9 +1,13 @@
 package com.umc.yourweather.service;
 
+import static com.umc.yourweather.utils.messages.ErrorMessages.*;
+import static com.umc.yourweather.utils.messages.ErrorMessages.USER_NOT_EXIST;
+
 import com.umc.yourweather.auth.CustomUserDetails;
 import com.umc.yourweather.domain.enums.Platform;
 import com.umc.yourweather.domain.enums.Role;
 import com.umc.yourweather.domain.entity.User;
+import com.umc.yourweather.exception.UserAlreadyExistException;
 import com.umc.yourweather.request.ChangePasswordRequestDto;
 import com.umc.yourweather.request.EmailRequestDto;
 import com.umc.yourweather.request.ResetPasswordRequestDto;
@@ -11,7 +15,7 @@ import com.umc.yourweather.response.AuthorizationResponseDto;
 import com.umc.yourweather.response.ChangePasswordResponseDto;
 import com.umc.yourweather.response.UserResponseDto;
 import com.umc.yourweather.request.SignupRequestDto;
-import com.umc.yourweather.exception.UserNotFoundException;
+import com.umc.yourweather.exception.UserNotExistException;
 import com.umc.yourweather.jwt.JwtTokenManager;
 import com.umc.yourweather.repository.UserRepository;
 import com.umc.yourweather.response.VerifyEmailResponseDto;
@@ -53,10 +57,9 @@ public class UserService {
         String nickname = signupRequestDto.getNickname();
         Platform platform = signupRequestDto.getPlatform();
 
-        // 이메일 중복 검증 로직
         userRepository.findByEmail(email).ifPresent(
             user -> {
-                throw new RuntimeException("이미 해당 이메일로 가입된 유저가 존재합니다.");
+	throw new UserAlreadyExistException(USER_ALREADY_EXIST_BY_EMAIL.getMessage());
             }
         );
 
