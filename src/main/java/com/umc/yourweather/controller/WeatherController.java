@@ -31,7 +31,7 @@ public class WeatherController {
     public ResponseDto<MissedInputResponseDto> getMissedInputs(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseDto.success("미 입력 날짜 조회 성공",
-            weatherService.getMissedInputs(userDetails));
+            weatherService.getNotEnteredDates(userDetails));
     }
 
     @GetMapping("monthly/{year}/{month}")

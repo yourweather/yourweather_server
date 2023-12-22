@@ -1,10 +1,10 @@
 package com.umc.yourweather.exception;
 
-public class UserNotFoundException extends RuntimeException {
+public class UserNotExistException extends RuntimeException {
 
     String message;
 
-    public UserNotFoundException(String message) {
+    public UserNotExistException(String message) {
         super(message);
         this.message = message;
     }

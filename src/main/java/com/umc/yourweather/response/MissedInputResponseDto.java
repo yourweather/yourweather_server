@@ -12,7 +12,7 @@ public class MissedInputResponseDto {
 
     List<LocalDate> localDates = new ArrayList<>();
 
-    public void addDate(LocalDate localDate) {
-        localDates.add(localDate);
+    public MissedInputResponseDto(List<LocalDate> localDates) {
+        this.localDates = localDates;
     }
 }
