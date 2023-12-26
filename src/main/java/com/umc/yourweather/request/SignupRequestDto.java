@@ -11,16 +11,14 @@ import lombok.ToString;
 
 @Getter
 @ToString
-@NoArgsConstructor
-public class SignupRequestDto {
-
+public record SignupRequestDto(
     @Email
     @NotNull
-    private String email;
-    private String password;
+    String email,
+    String password,
     @NotBlank
-    private String nickname;
-    private Platform platform;
+    String nickname,
+    Platform platform) {
 
     @Builder
     public SignupRequestDto(String email, String password, String nickname, Platform platform) {
